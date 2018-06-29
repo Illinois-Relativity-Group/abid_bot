@@ -9,4 +9,4 @@ cd $PBS_O_WORKDIR
 . ${MODULESHOME}/init/bash
 module load visit
 
-aprun -n TOTAL_JOBS -S 2 ROOT_DIR/scheduler.x LOG_DIR/JOBLIST /bin/bash > out.log
+aprun -n TOTAL_JOBS -S 2 SCH_DIR/scheduler.x LOG_DIR/JOBLIST /bin/bash > out.log

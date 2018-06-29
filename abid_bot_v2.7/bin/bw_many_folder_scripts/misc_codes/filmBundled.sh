@@ -46,7 +46,7 @@ picsavedir=$( echo $picsavedir | sed "s,/$,,")
 
 #scheduler
 
-schdir=$misc/scheduler
+schdir=$root/bin/scheduler
 numjobs=$(($totranks+1))
 numnodes=$(($numjobs/2+2))
 
@@ -71,7 +71,7 @@ totnodes=$(((totjobs+1)/2))
 cat $schdir/run_template | sed 's,NUMBER_OF_NODES,'"$totnodes"',g;
 								s,TOTAL_JOBS,'"$totjobs"',g;
 								s,LOG_DIR,'"$logfolder"',g;
-								s,ROOT_DIR,'"$schdir"',g;
+								s,SCH_DIR,'"$schdir"',g;
 								s,JOBLIST,joblist/joblist'"$joblistID"',g;
 								s,JOBNAME,'"$jobName$joblistID"',g' > $logfolder/run/run$joblistID
 

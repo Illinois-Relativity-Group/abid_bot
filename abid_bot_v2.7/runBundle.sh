@@ -21,7 +21,7 @@ visitScript=$root/bin/bw_many_folder_scripts/run_movie_ranks.py
 totranks=5
 
 #scheduler variables
-schdir=$root/scheduler
+schdir=$root/bin/scheduler
 if [ $all = false ]; then
 	echo Submitting $((lastFolder-firstFolder+1)) folders
 else
@@ -65,7 +65,7 @@ for i in `seq 0 $runcount`; do
 	cat $schdir/run_template | sed 's,JOBNAME,'"$jobName"'_'"$i"',g;
 									s,NUMBER_OF_NODES,'"$numnodes"',g;
 									s,TOTAL_JOBS,'"$numjobs"',g;
-									s,ROOT_DIR,'"$schdir"',g;
+									s,SCH_DIR,'"$schdir"',g;
 									s,LOG_DIR,'"$logfolder"',g;
 									s,JOBLIST,joblist/joblist'"$i"',g' > $logfolder/run/run$i
 	#Submit job
