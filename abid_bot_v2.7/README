@@ -1,0 +1,109 @@
+###### VERSION 2.7 ######
+
+The purpose of this package is to automate the steps between obtaining the data and submitting jobs to 
+blue waters.
+
+Automating these steps allows you to focus on other physical tasks like setting up the right colorbar 
+or something. There are some steps that you'll still have to modify. For one, the volume attributes 
+xml file must be changed to fit the system. The default volume attribute is for a NSNS system. 
+The only other thing that you'll have to change is the seed points.
+
+In order to run this package, you must modifiy the params file that is unique to your system. Then
+source it.:
+
+	. params
+
+this sets the proper variables in your shell
+
+Then run 
+	./setup.sh
+and it will take care of the rest.
+
+all the code is in the bin directory, where you can modify and run certain setups separately. just make 
+sure you ran 
+	. params
+before doing so. 
+
+After setup is complete, you can run the movie using 
+	./runMovie.sh
+
+
+These scripts call on secondary scripts. The ones you should look at before running the above code are
+
+	particle_code/particlePicker.py 		(to set up the particle seeds)
+	grid_code/seedmaker.py				(to set up the grid seeds)
+	bw_many_folder_scripts/setmovie.py		(to set up the camera at different events)
+	bw_many_folder_scripts/run_many_ranks.py	(if you want to plot something other than density (e.g. P/rho^{Gamma})
+	
+Finally, you can perform zooms and rotations by going into the bw_many_folder_scripts/misc_codes/ directory.
+A file to start with is "run_zooms_and_rots.sh". That's the main script that will be used to run all the 
+zoom/rotation scripts at once.
+
+Of course, you can customize the system's volume attributes, view attributes, and streamline attributes. These are all located in
+"bw_many_folder_scripts/atts/". Just modify the xml file or replace it entirely (for nsns_stream_0.xml, keep the name the same). 
+You'll have to let "setup.sh" know what xml files you want to use in the parameters section.
+
+To create gravitational wave movies, first run hplus_hcross.cpp on your local machine. Create a 1D file and a 3D/ folder, and place these in abid_bot/gwdata/. Then simply run 
+	. makeGW.sh 
+then 
+	./runMovie.sh.
+Note that you need an xml folder with valid times in order for these scripts to work. This mostly likely means that you have to run setup.sh first.
+If you don't have an xml folder or wish to supply your own time_list.txt, you can also create your own list. time_list.txt should contain one integer t/M on each line. Make sure the last is not outside the bounds of the data. If you wish for the script to generate a new time_list.txt, you must delete the old one.
+
+##### CHANGELOG ######
+2.0:
+Original version of 2nd Abid bot
+Cleaned up structure. Introduced param file and sorted scripts in bin folder
+
+2.1:
+Introduced gravitational wave scripts
+Jobs are now run from log folders so that logs will automatically be stored in the proper location
+
+2.2:
+Two colors seeding points implemented
+Change job priority to low
+Optimization for makeparts.awk
+Add the option to output particle data as .3d files in particlePickerModule.py
+<Bug fixes> cm_append.py and SetMovie.sh are now working as intended
+<Bug fixes> Fix the problem that happen when visit load three bh databases when merging.
+<Bug fixes> Fix the problem in setmovie.py when we have gap in data.
+
+2.3:
+Combine all changes from v2.1 and v2.2.
+
+2.4:
+Particle tracer function is complete. Please check the newly added particlePicker-tracer.py
+Detailed changelog about this function can be found in changelog.txt in abid_bot_v2.4
+
+2.5:
+Write volume xml and view xml in the movie folder
+Improve and fix zoom in, zoom out, fly around, fly over scripts inside misc codes. 
+Add an option to create xml files from setmovie.py (We can only copy xml files in previous versions)
+Add an option to change view and volume xml while evolving in setmovie.py.
+Write time filename in float
+<Bug fixes> setmovie.py is now working properly when using two or more lines of run command at the end.
+<Bug fixes> correct globalstate in setmovie.py
+
+2.6:
+DrawPlots() after setup volume attribute. This fix the problem when plotting b^2/2*rho.
+Make the code works when there is only one folder in h5data.
+Move streamXML variable assigning from runMovie.sh to params.
+Correct setmovie.py when the movie does not start from the first frame.
+Correct reflectZ option in gen3dFiles() function in particlePickerModule.py
+Various changes to misc_codes:
+	- Implement two colors field lines option
+	- Combine zoom in and zoom out into one file. Using it with two new arguments, view1XML and view2XML.
+	  You can specify them in run_zooms_and_rots.sh. Otherwise, the code will use the xmls specified in params.
+	- New zoom_in_no_fields.py and zoom_and_change_vol.py. 
+	- <Bug fixes> Fixes rootdir problem in misc_codes/film.sh
+
+2.7:
+Jobs are now submitted with scheduler to not clog the queue
+	-Specify jobsPerFolder to balance less jobs and longer wait times
+	-All submission files are written to log folder and won't be overwritten
+Added parameters to zoom_and_change_vol.py for turning on/off Bfield and  Velocity arrows
+	-This should be the only zoom file you need
+	-Removed run_movie_fixed_view() code to call change view; only need to maintain one function now
+Rewrote particlePicker to be easier to use
+	-Can choose points more easily
+		-Can use multiple methods together (NN and Volume)

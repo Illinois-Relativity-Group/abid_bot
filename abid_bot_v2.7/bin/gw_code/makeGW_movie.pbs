@@ -1,0 +1,13 @@
+#!/bin/bash
+#PBS -j oe
+#PBS -V
+#PBS -l nodes=1:ppn=1
+#PBS -q normal
+#PBS -l walltime=01:00:00
+cd $PBS_O_WORKDIR
+. ${MODULESHOME}/init/bash
+module load visit
+
+#This line calls visit and runs it with a script in nowin mode. It also passes variables for that script to use
+visit -cli -nowin -forceversion 2.7.3 -np 1 -nn 1 -l aprun -s $VISITSCRIPT $KIND $GWDIR $SAVEFOLDER $RANK $TOTRANKS $STOPTIME $GWDT $MASS
+

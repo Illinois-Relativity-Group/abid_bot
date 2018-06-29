@@ -1,0 +1,10 @@
+To run particle codes seperately from abid bot main code, please follow these steps.
+
+1. Copy particles.mon file into misc folder
+2. Run ./makeparts.awk <path to misc folder> (without <>)
+   You can find the full path by using pwd command in terminal
+3. Type in the actual value for each argument in particlePicker.py
+	bigTimeStep = dt between two frames
+	first_time = name of the first file in dat folder, something like '00970.10526316000'
+	root_dir = "path to particle_code folder"
+4. Run python particlePicker.py
