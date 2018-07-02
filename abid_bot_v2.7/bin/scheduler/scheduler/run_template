@@ -1,0 +1,12 @@
+#!/bin/sh
+#PBS -j oe
+#PBS -N JOBNAME
+#PBS -l nodes=NUMBER_OF_NODES:ppn=2
+#PBS -l walltime=1:30:00
+#PBS -q low
+
+cd $PBS_O_WORKDIR
+. ${MODULESHOME}/init/bash
+module load visit
+
+aprun -n TOTAL_JOBS -S 2 ROOT_DIR/scheduler.x LOG_DIR/JOBLIST /bin/bash > out.log

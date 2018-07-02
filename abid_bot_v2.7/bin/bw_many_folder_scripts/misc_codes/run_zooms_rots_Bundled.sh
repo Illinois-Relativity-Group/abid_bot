@@ -8,7 +8,7 @@ fly_around_flag=0
 
 rootdir=/u/sciteam/simone1/scratch/BHNS/case5/abid_bot_v2.7		#Update
 savedir=$rootdir/bin/bw_many_folder_scripts/misc_codes/movies_zooms_rots/
-schdir=$rootdir/bin/bw_many_folder_scripts/misc_codes/scheduler
+schdir=$rootdir/bin/scheduler
 
 ############################# zoom_in
 jobName=zoom_in_end
@@ -110,3 +110,5 @@ then
 	./filmBundled.sh $rootdir $jobName $joblistID $h5folder $idx $savefolder $pyscript
 fi
 #############################
+
+#qsub $schdir/run

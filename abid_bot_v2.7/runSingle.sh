@@ -40,14 +40,14 @@ do
     blah=$(ls -d -1 $extrasDir/** | sed -n ${count}p) 
     tosave="$picsavefolder"/movie_$(printf "%03d" $count)_
 
-if [ $count -eq 1 ]
-then
+#if [ $count -gt 29 ]
+#then
     for rank in `seq 0 $(( $totranks - 1 ))`;
     do
             echo submitting job $count with rank = $rank
             qsub -N $jobName"_"$count"_"$rank -v VISITSCRIPT=$visitScript,H5=$dir,EXTRAS=$blah,SAVEFOLDER=$tosave$(printf "%03d" $rank)"_",RANK=$rank,TOTRANKS=$totranks,STREAMXML=$streamXML,VECXML=$vecXML,MAXDENS=$maxdensity $pbsfile
     done
-fi
+#fi
     count=$((count+1))
 done
 
