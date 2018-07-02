@@ -187,7 +187,7 @@ def run_mov_change_attribute(first_frame, last_frame, view_initial, view_final, 
 		gotFolder,index = getFolder(state)
 		if gotFolder == -1:
 			continue
-		print("Folder: {}\nIdx: {}".foramt(gotFolder,index))
+		print("Folder: {}\nIdx: {}".format(gotFolder,index))
 		h5_idx = gotFolder.find("3d_data")
 		saveFolder = xmldir + gotFolder[h5_idx:]
 
