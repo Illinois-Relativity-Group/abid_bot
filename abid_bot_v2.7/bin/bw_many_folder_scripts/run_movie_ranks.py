@@ -127,7 +127,10 @@ def fill_bh(bh_func, stri):
 			elif not stri == '3' and not isfile(bhFile):
 				f = open(bhFile, 'w')
 				f.write("x\ty\tz\tbh" + stri + "p\n")
-				f.write("0\t0\t0\t0")
+				f.write("-1\t1\t100000\t0\n")
+				f.write("-1\t-1\t100000\t0\n")
+				f.write("1\t-1\t100000\t0\n")
+				f.write("1\t1\t100000\t0")
 				f.close()
 
 fill_bh(bh_formed(), '1')
