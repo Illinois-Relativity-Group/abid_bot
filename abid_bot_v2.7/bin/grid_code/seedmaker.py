@@ -57,4 +57,5 @@ for line in f:
 f.close()
 
 # write seed files 
-map(make_seed_file, coordList)
+for coord in coordList:
+	make_seed_file(coord)
