@@ -419,6 +419,7 @@ if trace2():
 
 #Add velocity arrows #########################
 if velocity():
+	vector_atts = VectorAttributes()
 	print(LoadAttribute(vectorXML, vector_atts))
 	ActivateDatabase(vxdir)
 	AddPlot("Vector","vVec")
@@ -427,7 +428,6 @@ if velocity():
 	SetActivePlots(idx("vel"))
 	AddOperator("Reflect")
 	SetOperatorOptions(ref)
-	vector_atts = VectorAttributes()
 	SetPlotOptions(vector_atts)
 
 myView = GetView3D()
