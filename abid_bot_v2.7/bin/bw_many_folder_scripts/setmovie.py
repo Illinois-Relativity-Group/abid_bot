@@ -79,7 +79,6 @@ if tracer:
 def pseudo_bh(file_name,type):
 	fo = open(file_name,"w")
 	fo.write("x\ty\tz\tbh"+str(type)+"p\n")
-	fo.write("x\ty\tz\tbh{}p\n".format(type))
 	fo.write("0.0\t0.0\t0.0\t0.0")
 	fo.close()
 	return
@@ -89,7 +88,7 @@ def getFolder(state):
 	overlap_txt=overlapFile			  
 	f_overlap=open(overlap_txt,'r')
 	frame_gap = 0
-	for n in range(5):					# Skip the first 5 header lines
+	for n in range(5):					# Skip the first 3 header lines
 		f_overlap.readline()
 	for line in f_overlap:
 		line_str=line.split()
@@ -105,7 +104,7 @@ def getFolder(state):
 			return folder_path,frame_state - 1	 
 		frame_state=frame_state - frame_gap - frame_count
 		frame_gap = 0
-	print("{} has no corresponding folder due to the gap or the density folder is not complete!".format(state))
+	print(str(state)+" has no corresponding folder due to the gap or the density folder is not complete!")
 	return -1,-1				  # Bad input argument
 	f_overlap.close()
 
@@ -153,6 +152,8 @@ def writeViewVariables(varlist, viewXML, outputXML):
 		if field.text == None:
 			field.text = " "
 	tree.write(outputXML, encoding='UTF-8', xml_declaration=True)
+	print("View File: {}".format(viewXML))
+	print("XML File:  {}\n".format(outputXML))
 	return 1
 
 def writeVolVariables(varlist, volXML, outputXML):
@@ -170,6 +171,9 @@ def writeVolVariables(varlist, volXML, outputXML):
 		if field.text == None:
 			field.text = " "
 	tree.write(outputXML, encoding='UTF-8', xml_declaration=True)
+	print("Vol File: {}".format(volXML))
+	print("XML File: {}".format(outputXML))
+	print() #space to make it look pretty
 
 # cpts should be (<initial variable list>, <final variable list>)
 def evalCubicSpline(t, x, cpts):
@@ -178,7 +182,7 @@ def evalCubicSpline(t, x, cpts):
 
 
 def run_mov_change_attribute(first_frame, last_frame, view_initial, view_final, vol_initial, vol_final):
-	print("Copying attributes...")
+
 	first_step = first_frame + offset
 	last_step = last_frame + offset
 
@@ -187,7 +191,9 @@ def run_mov_change_attribute(first_frame, last_frame, view_initial, view_final, 
 		gotFolder,index = getFolder(state)
 		if gotFolder == -1:
 			continue
-		print("Folder: {}\nIdx: {}".format(gotFolder,index))
+		print("Folder: {}".format(gotFolder))
+		print("Index:  {}".format(index))
+		print() #space to make it look pretty
 		h5_idx = gotFolder.find("3d_data")
 		saveFolder = xmldir + gotFolder[h5_idx:]
 
@@ -196,8 +202,8 @@ def run_mov_change_attribute(first_frame, last_frame, view_initial, view_final, 
 			src = bhdir + 'ht' + idx + '_' + str(it*state).zfill(7) + '.3d'
 			dst = saveFolder + 'bh' + idx + '_' + str(index).zfill(6) + '.3d'
 			if isfile(src):
-				print("BH found:")
-				print("src:{}\ndst:{}",src,dst)
+				print("ah found")
+				print() #space to make it look pretty
 				shutil.copy2(src, dst)
 		##################
 
@@ -206,19 +212,24 @@ def run_mov_change_attribute(first_frame, last_frame, view_initial, view_final, 
 			indexstep = state - offset #filelist[0] = seeds[firsttime]
 			if(indexstep >= len(filelist_part)):
 				indexstep = len(filelist_part) - 1
-
-			src = particleseedpath + filelist_part[indexstep]
+			src = particleseedpath + "{:0>7d}.txt".format(state)
+			#src = particleseedpath + filelist_part[indexstep]
 			dst = saveFolder + "particle_seeds_" + str(index).zfill(4) + ".txt"
-			print("Seeds:")
-			print("src:{}\ndst:{}".format(src,dst))
-			shutil.copy2(src,dst)
+			if isfile(src):
+				print("Seed File: {}".format(src))
+				print("XML File:  {}".format(dst))
+				print() #space to make it look pretty
+				shutil.copy2(src,dst)
 		
 			if twoColorsSeeds:
-				src = gridseedpath + filelist_part[indexstep]
+				src = gridseedpath + "{:0>7d}.txt".format(state)
+				#src = gridseedpath + filelist_part[indexstep]
 				dst = saveFolder + "grid_seeds_" + str(index).zfill(4) + ".txt"
-				print("Seeds2:")
-				print("src:{}\ndst:{}".format(src,dst))
-				shutil.copy2(src,dst)
+				if isfile(src):
+					print("Second Color Seed File: {}".format(src))
+					print("Second Color XML File:  {}".format(dst))
+					print() #space to make it look pretty
+					shutil.copy2(src,dst)
 
 		#############################
 
@@ -230,15 +241,17 @@ def run_mov_change_attribute(first_frame, last_frame, view_initial, view_final, 
 
 			src = trace1path + filelist_trace[indexstep]
 			dst = saveFolder + "trace1_" + str(index).zfill(4) + ".3d"
-			print("Particles:")
-			print("src:{}\ndst:{}".format(src,dst))
+			print("Trace File: {}".format(src))
+			print("XML File:   {}".format(dst))
+			print() #space to make it look pretty
 			shutil.copy2(src,dst)
 		
 			if twoColorsTracer:
 				src = trace2path + filelist_trace[indexstep]
 				dst = saveFolder + "trace2_" + str(index).zfill(4) + ".3d"
-				print("Particles2:")
-				print("src:{}\ndst:{}".format(src,dst))
+				print("Trace2 File: {}".format(src))
+				print("XML2 File:   {}".format(dst))
+				print() #space to make it look pretty
 				shutil.copy2(src,dst)
 			
 		#############################
@@ -277,7 +290,7 @@ def run_mov_fixed_view(first_frame,last_frame,view,vol):
 def getTotalNumberOfFrames():
 	f_overlap=open(overlapFile,'r')
 	#skip the header
-	for n in range(5):					# Skip the first 5 header lines
+	for n in range(5):					# Skip the first 3 header lines
 		f_overlap.readline()
 
 	#iterate through each line of the file. 
@@ -292,7 +305,8 @@ def getTotalNumberOfFrames():
 		col2 = int(line_str[1])
 		tot_number_of_frames += col2 - col1
 
-	print("There are {} frames!".format(tot_number_of_frames))
+	print("There are " , tot_number_of_frames, " frames!")
+	print() #space to make it look pretty
 	return tot_number_of_frames
 
 
@@ -307,4 +321,4 @@ def getTotalNumberOfFrames():
 #
 
 
-run_mov_fixed_view(0, getTotalNumberOfFrames(), view_xml, vol2_xml)
+run_mov_fixed_view(0, getTotalNumberOfFrames(), view2_xml, vol2_xml)
