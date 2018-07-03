@@ -61,6 +61,7 @@ for line in in_file:
 	z = float(data[3])
 	timeList.append(t)
 	cmList.append((x, y, z))
+in_file.close()
 
 ### These assume that if two color option is true, filenames in the other folder must be the same.
 if fields:
@@ -307,6 +308,7 @@ def getTotalNumberOfFrames():
 
 	print("There are " , tot_number_of_frames, " frames!")
 	print() #space to make it look pretty
+	f_overlap.close()
 	return tot_number_of_frames
 
 
