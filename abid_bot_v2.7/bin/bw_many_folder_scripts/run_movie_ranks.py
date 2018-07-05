@@ -487,9 +487,6 @@ tot_frames = len(stateList)
 frame_start = int(round((float(rank)/total_ranks)*tot_frames))
 frame_end = int(round(((rank+1.0)/total_ranks)*tot_frames))
 
-drawn = False
-
-#for state in stateList:
 for i in range(frame_start,frame_end):
 
 	state = stateList[i] - stateList[0]
@@ -564,18 +561,16 @@ for i in range(frame_start,frame_end):
 
 
 	######implement loaded plot settings
-	print("setting settings")
+	print("Setting settings")
 	print(SetActivePlots(idx("density")), SetPlotOptions(vol))
 	if particles():
 		print(SetActivePlots(idx("particles")), SetPlotOptions(stream_particles))
 	if gridPoints():
 		print(SetActivePlots(idx("gridPoints")), SetPlotOptions(stream_gridPoints))
-	if not drawn:
-		DrawPlots()
-		drawn = True
+	DrawPlots()
 	print(SetView3D(myView))
 	print("\nprinting myview")
-	print(myView	)
+	print(myView)
 	print(RedrawWindow())
 	SaveWindow()
 
