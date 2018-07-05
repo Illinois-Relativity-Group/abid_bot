@@ -22,6 +22,7 @@ cd $cur
 logdir=$misc/logs
 visitScript=$misc/${pyscript}
 totranks=50
+ranksPerJob=10 # divisor of totranks
 #####end things you have to change
 
 #Overwrite the view1XML and view2XML
@@ -62,21 +63,24 @@ for rank in `seq 0 $(( $totranks - 1 ))`
 do
 	jobfile=$logfolder/job/job_$joblistID$(printf "_%03d" $rank).sh
 	echo visit -forceversion 2.7.3 -cli -nowin -s $visitScript $rank $totranks $picsavefolder $root $h5dir $extrasdir $streamXML $vecXML $maxdensity $idx $view1XML $view2XML > $jobfile
-	echo $logfolder $jobfile >> $logfolder/joblist/joblist$joblistID
+	echo $logfolder $jobfile >> $logfolder/joblist/joblist$((rank/ranksPerJob))
 done
 
 chmod -R 755 $logfolder/job
+tasksPerJob=$((ranksPerJob+1))
+nodesPerJob=$(((ranksPerJob+1)/2))
 totjobs=$((totranks+1))
-totnodes=$(((totjobs+1)/2))
-cat $schdir/run_template | sed 's,NUMBER_OF_NODES,'"$totnodes"',g;
-								s,TOTAL_JOBS,'"$totjobs"',g;
-								s,LOG_DIR,'"$logfolder"',g;
-								s,SCH_DIR,'"$schdir"',g;
-								s,JOBLIST,joblist/joblist'"$joblistID"',g;
-								s,JOBNAME,'"$jobName$joblistID"',g' > $logfolder/run/run$joblistID
-
-qsub $logfolder/run/run$joblistID
-
+totnodes=$(((totjobs+2)/2))
+for i in `seq 0 $((totRanks/ranksPerJob-1))`;
+do
+	cat $schdir/run_template | sed 's,NUMBER_OF_NODES,'"$nodesPerJob"',g;
+									s,TOTAL_JOBS,'"$tasksPerJob"',g;
+									s,LOG_DIR,'"$logfolder"',g;
+									s,SCH_DIR,'"$schdir"',g;
+									s,JOBLIST,joblist/joblist'"$i"',g;
+									s,JOBNAME,'"$jobName$joblistID"',g' > $logfolder/run/run$i
+	echo qsub $logfolder/run/run$i
+done
 echo Done!
 
 cd $cur
