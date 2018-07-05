@@ -107,3 +107,4 @@ Added parameters to zoom_and_change_vol.py for turning on/off Bfield and  Veloci
 Rewrote particlePicker to be easier to use
 	-Can choose points more easily
 		-Can use multiple methods together (NN and Volume)
+Added link_h5data.sh to get updated data folders

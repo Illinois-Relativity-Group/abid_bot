@@ -3,7 +3,7 @@ if [ -z "$paramsSet" ]; then
 	return 1
 fi
 
-#full path to actaul data
+#full path to actual data
 origin="/u/sciteam/ruiz1/scratch/Antonios/Spin_NSNS/med/Magnetized/spHd2.5_K123.6_131_mcor/beta100/"
 #full path to h5dir
 dest=$root/h5data/ 

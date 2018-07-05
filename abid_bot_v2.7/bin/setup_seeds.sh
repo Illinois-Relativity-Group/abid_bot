@@ -55,7 +55,6 @@ then
 	python particlePicker.py $dt $firstTime $particledir/ $arg1 $arg2 $arg3 $arg4 txt
 
 	cp seeds/* $root/seeds/
-	module unload bwpy
 	python $bin/rename_seeds.py $root/ $dt
 fi
 

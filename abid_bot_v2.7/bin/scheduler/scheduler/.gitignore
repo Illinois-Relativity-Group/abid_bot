@@ -1,9 +1,0 @@
-*.o
-*.so
-*.a
-*.slog
-*.log
-*.x
-ccm/data/
-ztest.*
-git.info
