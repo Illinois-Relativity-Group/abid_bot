@@ -71,7 +71,7 @@ tasksPerJob=$((ranksPerJob+1))
 nodesPerJob=$(((ranksPerJob+1)/2))
 totjobs=$((totranks+1))
 totnodes=$(((totjobs+2)/2))
-for i in `seq 0 $((totRanks/ranksPerJob-1))`;
+for i in `seq 0 $((totranks/ranksPerJob-1))`;
 do
 	cat $schdir/run_template | sed 's,NUMBER_OF_NODES,'"$nodesPerJob"',g;
 									s,TOTAL_JOBS,'"$tasksPerJob"',g;
