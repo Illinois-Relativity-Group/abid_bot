@@ -124,7 +124,7 @@
     <Field name="useOpacityVarMax" type="bool">false</Field>
     <Field name="opacityVarMax" type="float">0</Field>
     <Field name="smoothData" type="bool">false</Field>
-    <Field name="samplesPerRay" type="int">1000</Field>
+    <Field name="samplesPerRay" type="int">2000</Field>
     <Field name="rendererType" type="string">RayCasting</Field>
     <Field name="gradientType" type="string">SobelOperator</Field>
     <Field name="num3DSlices" type="int">200</Field>

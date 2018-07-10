@@ -17,7 +17,7 @@ h5prefix=3d_data_
 #run movie variables
 picsavedir=$root/movies
 logdir=$root/log
-visitScript=$root/bin/bw_many_folder_scripts/run_movie_ranks.py
+visitScript=$root/bin/bw_many_folder_scripts/run.py
 totranks=5
 
 #scheduler variables
@@ -31,6 +31,7 @@ fi
 #set up directories
 count=1 #nth folder
 jobcount=0 #nth submitted folder
+date +%y%m%d_%H%M
 picsavefolder=$picsavedir/$(date +%y%m%d_%H%M); mkdir -p $picsavefolder
 logfolder=$logdir/$(date +%y%m%d_%H%M); 		mkdir -p $logfolder
 cd $logfolder;	mkdir -p $logfolder/joblist;	mkdir -p $logfolder/run;	mkdir -p $logfolder/job
@@ -47,7 +48,7 @@ for dir in $(ls -d ${h5dir}"/"$h5prefix* ); do
 		for rank in `seq 0 $(( $totranks - 1 ))`; do
 			#create job script for folder and rank; add to joblist
 			jobfile=$logfolder/job/job$count"_"$rank.sh
-			echo visit -cli -nowin -forceversion 2.7.3 -s $visitScript $dir $xmldir $tosave$(printf "%03d" $rank)"_" $rank $totranks $streamXML $vecXML $maxdensity > $jobfile
+			echo visit -cli -nowin -forceversion 2.7.3 -s $visitScript $dir $xmldir $tosave$(printf "%03d" $rank)"_" $rank $totranks $streamXML $vecXML $bsqXML $maxdensity > $jobfile
 			echo $logfolder $jobfile >> $logfolder/joblist/joblist$((jobcount/foldersPerRun))
 		done
 		jobcount=$((jobcount+1))

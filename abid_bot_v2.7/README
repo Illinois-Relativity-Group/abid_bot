@@ -108,3 +108,6 @@ Rewrote particlePicker to be easier to use
 	-Can choose points more easily
 		-Can use multiple methods together (NN and Volume)
 Added link_h5data.sh to get updated data folders
+Rewrote run_movie_ranks.py as run.py and runModule.py
+	-Can be integrated into the zoom/rotate python scripts to reduce redundant code
+	-Added option to plot B^2/2rho

@@ -13,7 +13,7 @@ h5prefix=3d_data_
 pbsfile=$root/bin/bw_many_folder_scripts/singleRun.pbs
 picsavedir=$root/movies
 logdir=$root/log
-visitScript=$root/bin/bw_many_folder_scripts/run_movie_ranks.py
+visitScript=$root/bin/bw_many_folder_scripts/run.py
 totranks=5
 #####end things you have to change
 
@@ -27,6 +27,7 @@ picsavefolder=$( echo $picsavefolder | sed "s,/$,,")
 ##########This section submits the rest of the files.
 
 count=1
+date +%y%m%d_%H%M
 picsavefolder=$picsavedir/$(date +%y%m%d_%H%M)
 mkdir -p $picsavefolder
 
@@ -45,7 +46,7 @@ do
     for rank in `seq 0 $(( $totranks - 1 ))`;
     do
             echo submitting job $count with rank = $rank
-            qsub -N $jobName"_"$count"_"$rank -v VISITSCRIPT=$visitScript,H5=$dir,EXTRAS=$blah,SAVEFOLDER=$tosave$(printf "%03d" $rank)"_",RANK=$rank,TOTRANKS=$totranks,STREAMXML=$streamXML,VECXML=$vecXML,MAXDENS=$maxdensity $pbsfile
+            qsub -N $jobName"_"$count"_"$rank -v VISITSCRIPT=$visitScript,H5=$dir,EXTRAS=$blah,SAVEFOLDER=$tosave$(printf "%03d" $rank)"_",RANK=$rank,TOTRANKS=$totranks,STREAMXML=$streamXML,VECXML=$vecXML,BSQXML=$bsqXML,MAXDENS=$maxdensity $pbsfile
     done
 #fi
     count=$((count+1))

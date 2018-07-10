@@ -86,6 +86,9 @@ streamXML=$root/bin/bw_many_folder_scripts/atts/Stream.xml
 # vecXML:	The full path to the vector attribute xml file.
 vecXML=$root/bin/bw_many_folder_scripts/atts/Vvec.xml
 
+# bsqXML:	The full path to the bsq2r attribute xml file.
+bsqXML=$root/bin/bw_many_folder_scripts/atts/bsq2r.xml
+
 # particleSeeds:	true if you want to seed field lines using particles.
 particleSeeds=true
 

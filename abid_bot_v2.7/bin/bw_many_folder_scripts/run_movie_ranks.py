@@ -24,15 +24,14 @@ rank = int(sys.argv[9])
 total_ranks = int(sys.argv[10])
 streamXML = sys.argv[11]
 vectorXML = sys.argv[12]
-max_density = sys.argv[13]
+bsqXML = sys.argv[13]
+max_density = sys.argv[14]
 
 time.strftime("%Y-%m-%d %H:%M:%S")
 
 #append a '/' if necessary
-if(h5dir[-1] != '/'):
-	h5dir = h5dir + '/'
-if(extrasDir[-1] != '/'):
-	extrasDir = extrasDir + '/'
+if(h5dir[-1] != '/'): h5dir += '/'
+if(extrasDir[-1] != '/'): extrasDir += '/'
 
 #The first line picks out the files that contain "volume_" in the directory, extrasDir
 #The sorting should sort in numerical order
@@ -127,7 +126,7 @@ def fill_bh(bh_func, stri):
 			elif not stri == '3' and not isfile(bhFile):
 				f = open(bhFile, 'w')
 				f.write("x\ty\tz\tbh" + stri + "p\n")
-				f.write("-1\t1\t100000\t0\n")
+				f.write("-1\t1\t100000\t0\n") #off the screen
 				f.write("-1\t-1\t100000\t0\n")
 				f.write("1\t-1\t100000\t0\n")
 				f.write("1\t1\t100000\t0")
@@ -580,10 +579,10 @@ for i in range(frame_start,frame_end):
 	xmltxt='/'.join(saveFolder.split('/')[:-1])+'/xml.txt'
 	if(not isfile(xmltxt)):
 		xt=open(xmltxt,'w')
-		xt.write('vol:\n')
-		xt.write(str(vol))
-		xt.write('\n\n\n\nview:\n')
+		xt.write('view:\n')
 		xt.write(str(myView))
+		xt.write('\n\n\n\nvol:\n')
+		xt.write(str(vol))
 		xt.close
 
 
