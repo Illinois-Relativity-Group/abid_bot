@@ -28,14 +28,15 @@ def make_seed_file(r):
 
 
 	r = 1.0
+	h = r*2.0
 	m_steps = 20
 	for m in range(m_steps):
 		theta = 2*pi*m/m_steps
 		x = xc + r*cos(theta)
 		y = yc + r*sin(theta)
-		z = zc + r*2.0
-		outfile.write(str(x) + "\t" + str(y) + "\t" + str(z) + "\n")
-		outfile.write(str(x) + "\t" + str(y) + "\t" + str(-z) + "\n")
+		z = zc
+		outfile.write(str(x) + "\t" + str(y) + "\t" + str(z+h) + "\n")
+		outfile.write(str(x) + "\t" + str(y) + "\t" + str(z-h) + "\n")
 	outfile.close()
 ############################################################################################################
 print("removing old seeds...")
