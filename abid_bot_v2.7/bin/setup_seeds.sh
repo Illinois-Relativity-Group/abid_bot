@@ -58,7 +58,7 @@ then
 	python $bin/rename_seeds.py $root/ $dt
 fi
 
-if false #$bhForms
+if $bhForms
 then
 	echo "	making grid seeds"
 	cd $root/bin/grid_code/
