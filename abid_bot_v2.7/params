@@ -153,7 +153,6 @@ fi
 
 # don't change below
 ######################################################################################################
-paramsSet=1
 bin=$root/bin
 [ -d $root"/h5data/horizon/" ] && bhForms=true || bhForms=false 
 [ $(ls $root/h5data/horizon/all_horizon/h.t*.ah2.gp 2>/dev/null | wc -l) -eq 0 ] && binary=false || binary=true

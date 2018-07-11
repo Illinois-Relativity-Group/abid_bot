@@ -1,9 +1,9 @@
 cur=$PWD
 bin=$root"/bin"
 
-if [ -z "$paramsSet" ]; then
-	echo Set params!
-	return 1
+if [[ $(pwd) != $root* || -z "$root" ]]; then
+    echo Set params!
+    return 1
 fi
 
 echo "setting up black hole data..."

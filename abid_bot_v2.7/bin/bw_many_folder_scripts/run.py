@@ -16,6 +16,8 @@ from runModule import *
 PlotDens = 1 # Plot density
 PlotVel  = 0 # Plot velocity arrows
 PlotBsq2r= 0 # Plot B squared over 2 rho
+cut = 0 #only show back half (y>0), needs view like (0,-x,y)
+
 print(sys.argv)
 
 h5dir = sys.argv[6]
@@ -296,13 +298,13 @@ for frame in range(firstFrame,lastFrame):
 	if velocity():
 		SetActivePlots(idx("vel"))
 		cylinder(CoM_x,CoM_y,45, frame==firstFrame)
-		#box(CoM_y, frame==firstFrame)
+		if cut: box(CoM_y, frame==firstFrame)
 	######implement loaded plot settings
 	print("setting settings")
 	if density():
 		SetActivePlots(idx("density"))
 		SetPlotOptions(vol)
-		box(CoM_y, frame==firstFrame)
+		if cut: box(CoM_y, frame==firstFrame)
 	if bsq2r():
 		SetActivePlots(idx("bsq2r"))
 		SetPlotOptions(bsq_atts)
