@@ -343,6 +343,6 @@ if(isfile(xmltxt)==0):
 	xt.write(str(vol))
 	xt.write('\n\n\n\nview:\n')
 	xt.write(str(myView))
-	xt.close
+	xt.close()
 
 sys.exit()
