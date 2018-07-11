@@ -26,7 +26,7 @@ def box(y, addOp): #only show back half, reveals inside
 	SetOperatorOptions(BoxAtts, 0)
 	print("Box set")
 
-def cylinder(x, y, r, addOp z=1000): #for addOp argument, use 'frame==firstFrame'
+def cylinder(x, y, r, addOp, z=1000): #for addOp argument, use 'frame==firstFrame'
 	if (addOp):
 		AddOperator("Cylinder")
 	CylinderAtts = CylinderAttributes()
@@ -147,7 +147,7 @@ def recheckBH(extrasDir):
 	return bh13D, bh23D, bh33D
 
 ########Plot########
-def plotBH(database, id, indx):
+def PlotBH(database, id, indx):
 	ActivateDatabase(database)
 	bhp = 'bh' + id + 'p'
 	AddPlot("Pseudocolor",bhp)
@@ -164,7 +164,7 @@ def plotBH(database, id, indx):
 
 	SetPlotOptions(Pseudo)
 
-def plotTrace(database, id, indx):
+def PlotTrace(database, id, indx):
 	ActivateDatabase(database)
 	trace = 'trace' + id
 	AddPlot("Pseudocolor", "rho")
@@ -187,10 +187,10 @@ def plotTrace(database, id, indx):
 
 	SetPlotOptions(pointAtt)
 
-def PlotB(database, kind, indx):
+def PlotB(database, indx):
 	ActivateDatabase(database)
 	AddPlot("Streamline","BVec")	#plot 1
-	print("Add {}-seeded streamline plot with index = {}".format(kind, indx))
+	print("Add streamline plot with index = {}".format(indx))
 	
 	SetActivePlots(indx)
 	reflect()
@@ -205,14 +205,12 @@ def PlotVol(database, expression, indx):
 	return VolumeAttributes()
 
 def PlotVel(database, expression, indx):
-	ActivateDatabase(vxdir)
+	ActivateDatabase(database)
 	AddPlot("Vector", expression)
 	print("Add velocity plot with index = {}".format(indx))
 	SetActivePlots(indx)
 	reflect()
-	vector_atts = VectorAttributes()
-	LoadAttribute(vectorXML, vector_atts)
-	SetPlotOptions(vector_atts)
+	return VectorAttributes()
 
 
 ########Save########

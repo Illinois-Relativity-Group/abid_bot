@@ -1,4 +1,10 @@
-#Run with something like visit -cli -nowin -forceversion 2.7.3 -np 1 -nn 1 -l aprun -s $VISITSCRIPT $H5 $EXTRAS $SUBMITFOLDER $RANK $TOTRANKS $STREAMXML $VECXML $MAXDEN
+#Created by Brian Taylor
+
+#This script runs the movie once you have created all the necessary xml files
+
+#Source("/home/projects/bhbh_mag_inspiral_extras/many_folders_code/run_movie.py")
+
+#Run with something like visit -cli -nowin -s run_movie.py "h5dir" "extrasDir" "bhdir" "savefolder"
 
 import random
 import csv
@@ -8,7 +14,11 @@ import time
 from os import listdir, rename
 from os.path import isfile, join
 from fnmatch import fnmatch
+from math import pi, sin, cos
+
+sys.path.append("..") #runModule is in parent directory
 from runModule import *
+
 ###############################################################################
 #search for all the necessary data (preprocessing)
 ###############################################################################
@@ -20,16 +30,34 @@ cutPlot  = 0 #only show back half (y>0), needs view like: (0,-x,y)
 
 print(sys.argv)
 
-h5dir = sys.argv[6]
-extrasDir = sys.argv[7] 
-saveFolder = sys.argv[8]
-rank = int(sys.argv[9])
-total_ranks = int(sys.argv[10])
-streamXML = sys.argv[11]
-vectorXML = sys.argv[12]
-bsq2rXML = sys.argv[13]
+rank = int(sys.argv[6])
+total_ranks = int(sys.argv[7])
+saveFolder=sys.argv[8]
+rootdir = sys.argv[9]
+h5dir = sys.argv[10]
+extrasDir = sys.argv[11] 
+streamXML = sys.argv[12]
+vectorXML = sys.argv[13]
+bsq2rXML = "/u/sciteam/simone1/b2rho.xml"
 max_density = sys.argv[14]
+index = int(sys.argv[15])
+
+saveFolder = saveFolder + str(rank).zfill(3)+"_"
+
+tot_frames = 100
+frame_start = int(round((float(rank)/total_ranks)*tot_frames))
+frame_end = int(round(((rank+1.0)/total_ranks)*tot_frames))
+
 time.strftime("%Y-%m-%d %H:%M:%S")
+
+############XMLs##########
+
+view1 = sys.argv[16]
+view2 = sys.argv[17]
+beg_volume_xml = rootdir + '/bin/bw_many_folder_scripts/atts/nsns_dim.xml'
+end_volume_xml = rootdir + '/bin/bw_many_folder_scripts/atts/nsns_bright.xml'
+
+##########################
 
 #append a '/' if necessary
 if(h5dir[-1] != '/'): h5dir += '/'
@@ -41,34 +69,23 @@ if(extrasDir[-1] != '/'): extrasDir += '/'
 volumeXML, particlesTXT, gridPointsTXT, viewXML, timeTXT,\
 bh13D, bh23D, bh33D, trace3D, trace23D, stateList = getLists(extrasDir)
 print("stateList: {}".format(stateList))
-##################################################
-#Choose what to plot
+
+
+#make a copy of viewXML and turn it into numbers by removing "view_" and ".xml"
 def density(): return PlotDens
-#
 def bsq2r(): return PlotBsq2r and not density() #Can't have 2 volume plots
-#
-def bh_formed(): return len(bh13D) > 0 
-#
+def bh_formed(): return len(bh3D) > 0 
 def binary_formed(): return len(bh23D) > 0 
-#
-def merge_formed(): return len(bh33D) > 0 
-#
+def merge_formed():	return len(bh33D) > 0 
 def trace1(): return len(trace3D) > 0
-#
 def trace2(): return len(trace23D) > 0
-#
 def particles(): return len(particlesTXT) > 0
-#
 def gridPoints(): return len(gridPointsTXT) > 0		
-#
 def fields(): return particles() or gridPoints()
-#
-def velocity(): return PlotVel
-#
-##################################################
+def velocity():	return PlotVel
 
 #This adjusts the bh_*.3d files so that the black hole doesn't show up earlier than it's supposed to
-#This will use bh3 data to overwrite the empty bh1 and bh2 files whenever bh1 and bh3 appear together in one folder. Probably won't do anything but necessary for BHBH cases
+#This will use bh3 data to overwrite the empty bh1 and bh2 files whenever bh1 and bh3 appear together in one folder. 
 fill_bh(bh_formed(), '1', extrasDir, stateList)
 fill_bh(binary_formed(), '2', extrasDir, stateList)
 fill_bh(merge_formed(), '3', extrasDir, stateList)
@@ -87,6 +104,7 @@ print("velocity: {}".format(velocity()))
 print("BH1: {}".format(bh_formed()))
 print("BH2: {}".format(binary_formed()))
 print("BH3: {}".format(merge_formed()))
+
 ###############################################################################
 #load the databases
 ###############################################################################
@@ -104,6 +122,7 @@ vxdir = h5dir + "vx.file_* database"
 vydir = h5dir + "vy.file_* database"
 vzdir = h5dir + "vz.file_* database"
 smallb2dir = h5dir + "smallb2.file_* database"
+
 
 if density():
 	LoadandDefine(rho_bdir, "rho_b")
@@ -148,54 +167,49 @@ if velocity():
 	DefineVectorExpression("vVec","if(gt(magnitude(vVec_temp),0.1),vVec_temp,{0,0,0})")#Remove small arrows
 
 print("\tDone")
-
 # Put the additional database into dbs list when you add a new database. 
 dbs = []
 plot_idx = []
 ###
 if density():
-	dbs += [rho_bdir];              plot_idx += ["density"]
+	dbs += [rho_bdir];				plot_idx += ["density"]
 if bsq2r():
-	dbs += [smallb2dir, rho_bdir];  plot_idx += ["bsq2r"]
+	dbs += [smallb2dir, rho_bdir];	plot_idx += ["bsq2r"]
 ###
 if fields():
 	dbs += [Bxdir, Bydir, Bzdir]
 if particles():
-    plot_idx += ["particles"]
+	plot_idx += ["particles"]
 if gridPoints():
-    plot_idx += ["gridPoints"]
+	plot_idx += ["gridPoints"]
 ###
 if bh_formed():
-	dbs += [bh1dir];                plot_idx += ["bh1"]
+	dbs += [bh1dir];				plot_idx += ["bh1"]
 if binary_formed():
-	dbs += [bh2dir];                plot_idx += ["bh2"]
+	dbs += [bh2dir];				plot_idx += ["bh2"]
 if merge_formed():
-	dbs += [bh3dir];                plot_idx += ["bh3"]
+	dbs += [bh3dir];				plot_idx += ["bh3"]
 ###
 if trace1():
-	dbs += [trace1dir];             plot_idx += ["trace1"]
+	dbs += [trace1dir];				plot_idx += ["trace1"]
 if trace2():
-	dbs += [trace2dir];             plot_idx += ["trace2"]
+	dbs += [trace2dir];				plot_idx += ["trace2"]
 ###
 if velocity():
-	dbs += [vxdir, vydir, vzdir];   plot_idx += ["vel"]
+	dbs += [vxdir, vydir, vzdir];	plot_idx += ["vel"]
 ###
 print("Databases loaded: {}".format(dbs))
 print("Plotting: {}".format(plot_idx))
 
 CreateDatabaseCorrelation("Everything", dbs, 0)
 time.strftime("%Y-%m-%d %H:%M:%S")
-###############################################################################
-#load the plots
-###############################################################################
-
 # Use plot_idx.index("plot name") to find its idx
 def idx(name):
 	return plot_idx.index(name)
 
 DeleteAllPlots()
 
-#add Density Volume Plot#################
+#add Density Volume Plot (0)################
 if density():
 	vol = PlotVol(rho_bdir, "logrho", idx("density"))
 #add bsq2r Plot ##################
@@ -228,100 +242,129 @@ if trace2():
 if velocity():
 	vector_atts = PlotVel(vxdir, "vVec", idx("vel"))
 
+
 myView = GetView3D()
-##########################################
+###############################################################################
 #set up the annotations
 txt = setAnnotations()
 
+###############################################################################
 #save window settings
 setSave(saveFolder)
 
-##########################################
-#start the movie                         #
-##########################################
+###############################################################################
+#start the movie
+###############################################################################
 
 print("Starting filming")
 time.strftime("%Y-%m-%d %H:%M:%S")
 
-tot_frames = len(stateList)
+state = stateList[index]
 
-firstFrame = int(round((float(rank)/total_ranks)*tot_frames))
-lastFrame = int(round(((rank+1.0)/total_ranks)*tot_frames))
+print("Loading state {}".format(index))
+SetTimeSliderState(index)
 
-#for state in stateList:
-for frame in range(firstFrame,lastFrame):
+tcur = timeTXT[state][5:-4]
+print("t/M = %g" % int(float(tcur)))
+txt.text = "t/M = %g" % int(float(tcur))
 
-	state = stateList[frame] - stateList[0]
-	print("loading state ", state)
-	SetTimeSliderState(frame) #if statelist is [3,4,5], frame=3(h5data) and state=0(xml list).
+if density(): print(extrasDir + volumeXML[state])
+time.strftime("%Y-%m-%d %H:%M:%S")
 
-	tcur = timeTXT[state][5:-4]
-	print("t/M = %g" % int(float(tcur)))
-	txt.text = "t/M = %g" % int(float(tcur))
+print("Loading Attributes")
+LoadAttribute(extrasDir + viewXML[state], myView)
 
-	if density(): print(extrasDir + volumeXML[state])
-	time.strftime("%Y-%m-%d %H:%M:%S")
+if density():		LoadAttribute(extrasDir + volumeXML[state], vol)
+if bsq2r():			LoadAttribute(bsq2rXML, bsq_atts)
+if velocity():		LoadAttribute(vectorXML, vector_atts))
 
-	print("Loading Attibutes")
-	LoadAttribute(extrasDir + viewXML[state], myView)
-
-	if density():		LoadAttribute(extrasDir + volumeXML[state], vol)
-	if bsq2r():			LoadAttribute(bsq2rXML, bsq_atts)
-	if velocity():		LoadAttribute(vectorXML, vector_atts))
-
-	if particles():		LoadAttribute(streamXML, stream_particles)
-		stream_particles.pointList = getSeeds(extrasDir + particlesTXT[state])
-		if gridPoints():		
-			stream_particles.singleColor = (0, 255, 0, 255)			
-
-	if gridPoints():	LoadAttribute(streamXML, stream_gridPoints)
-		stream_gridPoints.pointList = getSeeds(extrasDir + gridPointsTXT[state])
-
-	### adjust the cm focus ###
-	cmfile = open(extrasDir + timeTXT[state], 'r')
-	cmarray = cmfile.readline().split()
-	CoM_x = float(cmarray[0])
-	CoM_y = float(cmarray[1])
-	CoM_z = float(cmarray[2])
-	CoM = (CoM_x,CoM_y,CoM_z)
-	print("CoM: {}".format(CoM))
-	myView.focus = CoM
-	###########################
-
-	######implement loaded plot settings
-	print("setting settings")
-	if density():
-		SetActivePlots(idx("density"))
-		SetPlotOptions(vol)
-		if cutPlot: box(CoM_y, frame==firstFrame)
-	if bsq2r():
-		SetActivePlots(idx("bsq2r"))
-		SetPlotOptions(bsq_atts)
-		if cutPlot: box(CoM_y, frame==firstFrame)
-	if particles():
-		SetActivePlots(idx("particles"))
-		SetPlotOptions(stream_particles)
+if particles():		LoadAttribute(streamXML, stream_particles)
+	stream_particles.pointList = getSeeds(extrasDir + particlesTXT[state])
 	if gridPoints():
-		SetActivePlots(idx("gridPoints"))
-		SetPlotOptions(stream_gridPoints)
-	if velocity():
-		SetActivePlots(idx("vel"))
-		SetPlotOptions(vecotr_atts)
-		cylinder(CoM_x,CoM_y,45, frame==firstFrame)
-		if cutPlot: box(CoM_y, frame==firstFrame)
+		stream_particles.singleColor = (0, 255, 0, 255)
 
-	DrawAndSave(myView)
-	time.strftime("%Y-%m-%d %H:%M:%S")
+if gridPoints():	LoadAttribute(streamXML, stream_gridPoints)
+	stream_gridPoints.pointList = getSeeds(extrasDir + gridPointsTXT[state])
 
-	xmltxt='/'.join(saveFolder.split('/')[:-1])+'/xml.txt'
-	if(not isfile(xmltxt)):
-		xt=open(xmltxt,'w')
-		if density():
-			xt.write('vol:\n')
-			xt.write(str(vol))
-		xt.write('\n\n\n\nview:\n')
-		xt.write(str(myView))
-		xt.close()
+### adjust the cm focus ###
+cmfile = open(extrasDir + timeTXT[state], 'r')
+cmarray = cmfile.readline().split()
+CoM_x = float(cmarray[0])
+CoM_y = float(cmarray[1])
+CoM_z = float(cmarray[2])
+CoM = (CoM_x,CoM_y,CoM_z)
+print("CoM: {}".format(CoM))
 
+###########################Load xmls
+
+c0 = View3DAttributes()
+LoadAttribute(view1, c0)
+c0.focus = CoM
+
+c1 = View3DAttributes()
+LoadAttribute(view2, c1)
+c1.focus = CoM
+
+vol1 = VolumeAttributes()
+LoadAttribute(beg_volume_xml, vol1)
+
+vol2 = VolumeAttributes()
+LoadAttribute(end_volume_xml, vol2)
+
+######implement loaded plot settings
+print("setting settings")
+if density():
+	SetActivePlots(idx("density"))
+	SetPlotOptions(vol)
+	if cutPlot: box(CoM_y, 1)
+if bsq2r():
+	SetActivePlots(idx("bsq2r"))
+	SetPlotOptions(bsq_atts)
+	if cutPlot: box(CoM_y, 1)
+if particles():
+	SetActivePlots(idx("particles"))
+	SetPlotOptions(stream_particles)
+if gridPoints():
+	SetActivePlots(idx("gridPoints"))
+	SetPlotOptions(stream_gridPoints)
+if velocity():
+	SetActivePlots(idx("vel"))
+	SetPlotOptions(vecotr_atts)
+	cylinder(CoM_x,CoM_y,45, 1)
+	if cutPlot: box(CoM_y, 1)
+
+
+def zoom_fixed_time(zoomsteps, view_initial, view_final,vol,  frame_start, frame_end):
+	zoom_fixed_time_and_change_vol(zoomsteps, view_initial, view_final, vol, vol, frame_start, frame_end)
+
+def zoom_fixed_time_and_change_vol(zoomsteps,view_initial,view_final, vol_initial, vol_final, frame_start, frame_end):
+	print("frame start: " + str(frame_start) + "frame_end: " + str(frame_end))
+	cpts=(view_initial,view_final)
+	x=[0,1]
+	v = vol_initial
+	oi = list(vol_initial.freeformOpacity)
+	of = list(vol_final.freeformOpacity)
+	cr = list(vol_initial.freeformOpacity)
+	for my_i in range(frame_start, frame_end,1):
+		t = float(my_i) / float(zoomsteps - 1)
+		c = EvalCubicSpline(t, x, cpts)
+		SetView3D(c)
+		for i in range(len(oi)):
+			cr[i] = oi[i] + t*(of[i] - oi[i])
+		v.freeformOpacity = tuple(cr)
+		SetPlotOptions(v)
+		SaveWindow()
+
+
+zoom_fixed_time_and_change_vol(tot_frames, c0, c1, vol1, vol2, frame_start, frame_end) 
+
+xmltxt='/'.join(saveFolder.split('/')[:-1])+'/xml.txt'
+if(isfile(xmltxt)==0):
+	xt=open(xmltxt,'w')
+	xt.write('vol:\n')
+	xt.write(str(vol))
+	xt.write('\n\n\n\nview:\n')
+	xt.write(str(myView))
+	xt.close
 
 sys.exit()

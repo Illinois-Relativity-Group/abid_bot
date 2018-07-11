@@ -68,9 +68,7 @@ done
 
 chmod -R 755 $logfolder/job
 tasksPerJob=$((ranksPerJob+1))
-nodesPerJob=$(((ranksPerJob+1)/2))
-totjobs=$((totranks+1))
-totnodes=$(((totjobs+2)/2))
+nodesPerJob=$(((tasksPerJob+1)/2))
 for i in `seq 0 $((totranks/ranksPerJob-1))`;
 do
 	cat $schdir/run_template | sed 's,NUMBER_OF_NODES,'"$nodesPerJob"',g;
@@ -78,7 +76,7 @@ do
 									s,LOG_DIR,'"$logfolder"',g;
 									s,SCH_DIR,'"$schdir"',g;
 									s,JOBLIST,joblist/joblist'"$i"',g;
-									s,JOBNAME,'"$jobName$joblistID"',g' > $logfolder/run/run$i
+									s,JOBNAME,'"$jobName\_$i"',g' > $logfolder/run/run$i
 	echo qsub $logfolder/run/run$i
 done
 echo Done!

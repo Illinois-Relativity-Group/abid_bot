@@ -11,7 +11,7 @@ savedir=$rootdir/bin/bw_many_folder_scripts/misc_codes/movies_zooms_rots/
 schdir=$rootdir/bin/scheduler
 
 ############################# zoom_in
-jobName=zoom_in_end
+jobName=zoomIn
 joblistID=0
 h5folder=3d_data_201801160650 #Last #3d_data_201710120940/
 idx=5 #3
@@ -30,7 +30,7 @@ fi
 
 
 ############################# zoom_in_2
-jobName=zoom_in_2
+jobName=zoomIn2
 joblistID=1
 h5folder=3d_data_201601120701/
 idx=0
@@ -49,7 +49,7 @@ fi
 
 
 ############################# zoom_out
-jobName=zoom_out
+jobName=zoomOut
 joblistID=2
 h5folder=3d_data_201601120701/
 idx=0
@@ -67,7 +67,7 @@ fi
 
 
 ############################# fly_over
-jobName=fly_over
+jobName=flyOver
 joblistID=3
 h5folder=3d_data_201801160650 #3d_data_201802230414  #3d_data_17_05_22_000000/
 idx=5 #7
@@ -83,7 +83,7 @@ fi
 
 
 ############################# zoom_in_3
-jobName=zoom_in_3
+jobName=zoomIn3
 joblistID=4
 savefolder=$savedir$jobName/
 pyscript=zoom.py
@@ -99,7 +99,7 @@ fi
 
 
 ############################# fly_around
-jobName=fly_around
+jobName=flyAround
 joblistID=5
 h5folder=3d_data_201801160650 #3d_data_201802230414
 idx=5
@@ -111,4 +111,3 @@ then
 fi
 #############################
 
-#qsub $schdir/run
