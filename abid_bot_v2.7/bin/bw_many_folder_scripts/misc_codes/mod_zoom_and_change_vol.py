@@ -240,7 +240,7 @@ if trace2():
 
 #Add velocity arrows #####################
 if velocity():
-	vector_atts = PlotVel(vxdir, "vVec", idx("vel"))
+	vector_atts = PlotVelocity(vxdir, "vVec", idx("vel"))
 
 
 myView = GetView3D()
@@ -354,9 +354,8 @@ def zoom_fixed_time_and_change_vol(zoomsteps,view_initial,view_final, vol_initia
 			cr[i] = oi[i] + t*(of[i] - oi[i])
 		v.freeformOpacity = tuple(cr)
 		SetPlotOptions(v)
-		DrawPlots()
-		SetView3D(c)
-		SaveWindow()
+
+		DrawAndSave(c)
 
 
 zoom_fixed_time_and_change_vol(tot_frames, c0, c1, vol1, vol2, frame_start, frame_end) 

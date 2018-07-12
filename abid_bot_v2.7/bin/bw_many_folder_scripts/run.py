@@ -181,7 +181,8 @@ if trace2():
 if velocity():
 	dbs += [vxdir, vydir, vzdir];   plot_idx += ["vel"]
 ###
-print("Databases loaded: {}".format(dbs))
+
+print("Databases loaded: {}\n".format(dbs))
 print("Plotting: {}".format(plot_idx))
 
 CreateDatabaseCorrelation("Everything", dbs, 0)

@@ -14,7 +14,6 @@ lastFolder=3d_data_201710120940
 lastIdx=5
 ############################# zoom_in
 jobName=zoomIn
-joblistID=0
 h5folder=3d_data_201801160650 #Last #3d_data_201710120940/
 idx=5
 savefolder=$savedir$jobName/
@@ -25,7 +24,7 @@ view2XML=$rootdir/bin/bw_many_folder_scripts/atts/c8.xml
 
 if [ $zoom_in_flag -eq 1 ]
 then
-	./filmBundled.sh $rootdir $jobName $joblistID $h5folder $idx $savefolder $pyscript $view1XML $view2XML
+	./filmBundled.sh $rootdir $jobName $h5folder $idx $savefolder $pyscript $view1XML $view2XML
 fi
 #############################
 
@@ -33,7 +32,6 @@ fi
 
 ############################# zoom_in_2
 jobName=zoomIn2
-joblistID=1
 h5folder=3d_data_201601120701/
 idx=0
 savefolder=$savedir$jobName/
@@ -44,7 +42,7 @@ view2XML=$rootdir/bin/bw_many_folder_scripts/atts/c8.xml
 
 if [ $zoom_in_2_flag -eq 1 ]
 then
-	./filmBundled.sh $rootdir $jobName $joblistID $h5folder $idx $savefolder $pyscript $view1XML $view2XML
+	./filmBundled.sh $rootdir $jobName $h5folder $idx $savefolder $pyscript $view1XML $view2XML
 fi
 #############################
 
@@ -52,7 +50,6 @@ fi
 
 ############################# zoom_out
 jobName=zoomOut
-joblistID=2
 h5folder=3d_data_201601120701/
 idx=0
 savefolder=$savedir$jobName/
@@ -62,7 +59,7 @@ view2XML=
 
 if [ $zoom_out_flag -eq 1 ]
 then
-	./filmBundled.sh $rootdir $jobName $joblistID $h5folder $idx $savefolder $pyscript $view1XML $view2XML
+	./filmBundled.sh $rootdir $jobName $h5folder $idx $savefolder $pyscript $view1XML $view2XML
 fi
 #############################
 
@@ -70,14 +67,13 @@ fi
 
 ############################# fly_over
 jobName=flyOver
-joblistID=3
 h5folder=lastFolder 
 idx=lastIdx
 savefolder=$savedir$jobName/
 pyscript=fly_over.py
 if [ $fly_over_flag -eq 1 ]
 then
-	./filmBundled.sh $rootdir $jobName $joblistID $h5folder $idx $savefolder $pyscript
+	./filmBundled.sh $rootdir $jobName $h5folder $idx $savefolder $pyscript
 fi
 #############################
 
@@ -85,7 +81,6 @@ fi
 
 ############################# zoom_in_3
 jobName=zoomIn3
-joblistID=4
 h5folder=lastFolder
 idx=lastIdx
 savefolder=$savedir$jobName/
@@ -95,7 +90,7 @@ view2XML=
 
 if [ $zoom_in_3_flag -eq 1 ]
 then
-	./filmBundled.sh $rootdir $jobName $joblistID $h5folder $idx $savefolder $pyscript $view1XML $view2XML
+	./filmBundled.sh $rootdir $jobName $h5folder $idx $savefolder $pyscript $view1XML $view2XML
 fi
 #############################
 
@@ -103,14 +98,13 @@ fi
 
 ############################# fly_around
 jobName=flyAround
-joblistID=5
 h5folder=lastFolder
 idx=lastIdx
 savefolder=$savedir$jobName/
 pyscript=fly_around.py
 if [ $fly_around_flag -eq 1 ]
 then
-	./filmBundled.sh $rootdir $jobName $joblistID $h5folder $idx $savefolder $pyscript
+	./filmBundled.sh $rootdir $jobName $h5folder $idx $savefolder $pyscript
 fi
 #############################
 

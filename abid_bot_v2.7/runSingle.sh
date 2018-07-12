@@ -27,12 +27,9 @@ picsavefolder=$( echo $picsavefolder | sed "s,/$,,")
 ##########This section submits the rest of the files.
 
 count=1
-date +%y%m%d_%H%M
-picsavefolder=$picsavedir/$(date +%y%m%d_%H%M)
-mkdir -p $picsavefolder
-
-logfolder=$logdir/$(date +%y%m%d_%H%M)
-mkdir -p $logfolder
+DATE=$(date +%y%m%d_%H%M)
+picsavefolder=$picsavedir/$DATE; mkdir -p $picsavefolder
+logfolder=$logdir/$DATE;         mkdir -p $logfolder
 
 cd $logfolder
 
@@ -41,14 +38,14 @@ do
     blah=$(ls -d -1 $extrasDir/** | sed -n ${count}p) 
     tosave="$picsavefolder"/movie_$(printf "%03d" $count)_
 
-#if [ $count -gt 29 ]
-#then
+if [ $count -eq 1 ]
+then
     for rank in `seq 0 $(( $totranks - 1 ))`;
     do
             echo submitting job $count with rank = $rank
             qsub -N $jobName"_"$count"_"$rank -v VISITSCRIPT=$visitScript,H5=$dir,EXTRAS=$blah,SAVEFOLDER=$tosave$(printf "%03d" $rank)"_",RANK=$rank,TOTRANKS=$totranks,STREAMXML=$streamXML,VECXML=$vecXML,BSQXML=$bsqXML,MAXDENS=$maxdensity $pbsfile
     done
-#fi
+fi
     count=$((count+1))
 done
 

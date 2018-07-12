@@ -204,7 +204,7 @@ def PlotVol(database, expression, indx):
 	reflect()
 	return VolumeAttributes()
 
-def PlotVel(database, expression, indx):
+def PlotVelocity(database, expression, indx):
 	ActivateDatabase(database)
 	AddPlot("Vector", expression)
 	print("Add velocity plot with index = {}".format(indx))
@@ -216,9 +216,8 @@ def PlotVel(database, expression, indx):
 ########Save########
 def DrawAndSave(myView):
 	DrawPlots()
-	print(SetView3D(myView))
-	print("\nprinting myview")
+	SetView3D(myView)
+	print("\nView:")
 	print(myView)
-	print(RedrawWindow())
 	SaveWindow()
-	print("saved window")
+	print("Saved Window")

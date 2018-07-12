@@ -31,9 +31,9 @@ fi
 #set up directories
 count=1 #nth folder
 jobcount=0 #nth submitted folder
-date +%y%m%d_%H%M
-picsavefolder=$picsavedir/$(date +%y%m%d_%H%M); mkdir -p $picsavefolder
-logfolder=$logdir/$(date +%y%m%d_%H%M); 		mkdir -p $logfolder
+DATE=$(date +%y%m%d_%H%M); echo $DATE
+picsavefolder=$picsavedir/$DATE; mkdir -p $picsavefolder
+logfolder=$logdir/$DATE;		 mkdir -p $logfolder
 cd $logfolder;	mkdir -p $logfolder/joblist;	mkdir -p $logfolder/run;	mkdir -p $logfolder/job
 echo "Writing jobs to joblist..."
 

@@ -230,7 +230,7 @@ if trace2():
 
 #Add velocity arrows #####################
 if velocity():
-	vector_atts = PlotVel(vxdir, "vVec", idx("vel"))
+	vector_atts = PlotVelocity(vxdir, "vVec", idx("vel"))
 
 myView = GetView3D()
 #Annotations and View ########################
@@ -329,12 +329,8 @@ def rotate(view, nsteps, frame_start, frame_end):
 		c.focus = CoM
 		c.viewUp = viewUp
 		
-		DrawPlots()
-		SetView3D(c)
-		SaveWindow()
+		DrawAndSave(c)
 
-#DrawPlots()
-#SetView3D(c1)
 rotate(c1, tot_frames, frame_start, frame_end)
 
 
