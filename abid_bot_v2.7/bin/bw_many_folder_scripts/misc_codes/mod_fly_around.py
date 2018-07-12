@@ -17,7 +17,7 @@ from os import listdir, rename
 from os.path import isfile, join
 from fnmatch import fnmatch
 from math import pi, sin, cos
-sys.path.append("..")
+sys.path.append("../../..")
 from runModule import *
 
 ###############################################################################
@@ -25,7 +25,7 @@ from runModule import *
 ###############################################################################
 
 PlotDens = 1 # Plot density
-PlotVel  = 0 # Plot velocity arrows
+PlotVel  = 1 # Plot velocity arrows
 PlotBsq2r= 0 # Plot B squared over 2 rho
 cutPlot  = 0 #only show back half (y>0), needs view like: (0,-x,y)
 Factor = 0.4 #See TODO for more info
@@ -64,7 +64,7 @@ print("stateList: {}".format(stateList))
 
 def density(): return PlotDens
 def bsq2r(): return PlotBsq2r and not density() #Can't have 2 volume plots
-def bh_formed(): return len(bh3D) > 0
+def bh_formed(): return len(bh13D) > 0
 def binary_formed(): return len(bh23D) > 0
 def merge_formed(): return len(bh33D) > 0
 def trace1(): return len(trace3D) > 0
@@ -114,46 +114,46 @@ vzdir = h5dir + "vz.file_* database"
 smallb2dir = h5dir + "smallb2.file_* database"
 
 if density():
-    LoadandDefine(rho_bdir, "rho_b")
-    DefineScalarExpression("logrho","log10(<MHD_EVOLVE--rho_b>/" + max_density + ")")
+	LoadandDefine(rho_bdir, "rho_b")
+	DefineScalarExpression("logrho","log10(<MHD_EVOLVE--rho_b>/" + max_density + ")")
 
 if bsq2r():
-    LoadandDefine(rho_bdir, "rho_b")
-    LoadandDefine(smallb2dir, "smallb2")
-    DefineScalarExpression("logbsq2r","log10(<MHD_EVOLVE--smallb2>/(2*<rho_b>), -200)")
+	LoadandDefine(rho_bdir, "rho_b")
+	LoadandDefine(smallb2dir, "smallb2")
+	DefineScalarExpression("logbsq2r","log10(<MHD_EVOLVE--smallb2>/(2*<rho_b>), -200)")
 
 if fields():
-    LoadandDefine(Bxdir, "Bx")
-    LoadandDefine(Bydir, "By")
-    LoadandDefine(Bzdir, "Bz")
-    DefineVectorExpression("BVec","{Bx,By,Bz}")
+	LoadandDefine(Bxdir, "Bx")
+	LoadandDefine(Bydir, "By")
+	LoadandDefine(Bzdir, "Bz")
+	DefineVectorExpression("BVec","{Bx,By,Bz}")
 
 if bh_formed():
-    print("Loading bh1's...")
-    OpenDatabase(bh1dir)
+	print("Loading bh1's...")
+	OpenDatabase(bh1dir)
 
 if binary_formed():
-    print("Loading bh2's...")
-    OpenDatabase(bh2dir)
+	print("Loading bh2's...")
+	OpenDatabase(bh2dir)
 
 if merge_formed():
-    print("Loading bh3's...")
-    OpenDatabase(bh3dir)
+	print("Loading bh3's...")
+	OpenDatabase(bh3dir)
 
 if trace1():
-    print("Loading Particle Tracer...")
-    OpenDatabase(trace1dir)
+	print("Loading Particle Tracer...")
+	OpenDatabase(trace1dir)
 
 if trace2():
-    print("Loading Particle Tracer 2...")
-    OpenDatabase(trace2dir)
+	print("Loading Particle Tracer 2...")
+	OpenDatabase(trace2dir)
 
 if velocity():
-    LoadandDefine(vxdir, vx)
-    LoadandDefine(vydir, vy)
-    LoadandDefine(vzdir, vz)
-    DefineVectorExpression("vVec_temp","{vx,vy,vz}")
-    DefineVectorExpression("vVec","if(gt(magnitude(vVec_temp),0.1),vVec_temp,{0,0,0})")#Remove small arrows
+	LoadandDefine(vxdir, 'vx')
+	LoadandDefine(vydir, 'vy')
+	LoadandDefine(vzdir, 'vz')
+	DefineVectorExpression("vVec_temp","{vx,vy,vz}")
+	DefineVectorExpression("vVec","if(gt(magnitude(vVec_temp),0.1),vVec_temp,{0,0,0})")#Remove small arrows
 
 print("\tDone")
 
@@ -162,31 +162,31 @@ dbs = []
 plot_idx = []
 ###
 if density():
-    dbs += [rho_bdir];              plot_idx += ["density"]
+	dbs += [rho_bdir];				plot_idx += ["density"]
 if bsq2r():
-    dbs += [smallb2dir, rho_bdir];  plot_idx += ["bsq2r"]
+	dbs += [smallb2dir, rho_bdir];	plot_idx += ["bsq2r"]
 ###
 if fields():
-    dbs += [Bxdir, Bydir, Bzdir]
+	dbs += [Bxdir, Bydir, Bzdir]
 if particles():
-    plot_idx += ["particles"]
+	plot_idx += ["particles"]
 if gridPoints():
-    plot_idx += ["gridPoints"]
+	plot_idx += ["gridPoints"]
 ###
 if bh_formed():
-    dbs += [bh1dir];                plot_idx += ["bh1"]
+	dbs += [bh1dir];				plot_idx += ["bh1"]
 if binary_formed():
-    dbs += [bh2dir];                plot_idx += ["bh2"]
+	dbs += [bh2dir];				plot_idx += ["bh2"]
 if merge_formed():
-    dbs += [bh3dir];                plot_idx += ["bh3"]
+	dbs += [bh3dir];				plot_idx += ["bh3"]
 ###
 if trace1():
-    dbs += [trace1dir];             plot_idx += ["trace1"]
+	dbs += [trace1dir];				plot_idx += ["trace1"]
 if trace2():
-    dbs += [trace2dir];             plot_idx += ["trace2"]
+	dbs += [trace2dir];				plot_idx += ["trace2"]
 ###
 if velocity():
-    dbs += [vxdir, vydir, vzdir];   plot_idx += ["vel"]
+	dbs += [vxdir, vydir, vzdir];	plot_idx += ["vel"]
 ###
 print("Databases loaded: {}".format(dbs))
 print("Plotting: {}".format(plot_idx))
@@ -201,36 +201,36 @@ DeleteAllPlots()
 
 #add Density Volume Plot (0)################
 if density():
-    vol = PlotVol(rho_bdir, "logrho", idx("density"))
+	vol = PlotVol(rho_bdir, "logrho", idx("density"))
 #add bsq2r Plot ##################
 if bsq2r():
-    bsq_atts = PlotVol(smallb2dir, "logbsq2r", idx("bsq2r"))
+	bsq_atts = PlotVol(smallb2dir, "logbsq2r", idx("bsq2r"))
 #add particles-seeded Streamline Plot#####
 if particles():
-    stream_particles = PlotB(Bxdir, idx("particles"))
+	stream_particles = PlotB(Bxdir, idx("particles"))
 #add gridPoints-seeded Streamline Plot####
 if gridPoints():
-    stream_gridPoints = PlotB(Bxdir, idx("gridPoints"))
+	stream_gridPoints = PlotB(Bxdir, idx("gridPoints"))
 #add bhplots##############################
 if bh_formed():
-    PlotBH(bh1dir, '1', idx("bh1"))
+	PlotBH(bh1dir, '1', idx("bh1"))
 
 if binary_formed():
-    PlotBH(bh2dir, '2', idx("bh2"))
+	PlotBH(bh2dir, '2', idx("bh2"))
 
 if merge_formed():
-    PlotBH(bh3dir, '3', idx("bh3"))
+	PlotBH(bh3dir, '3', idx("bh3"))
 
 #add particle tracer plots################
 if trace1():
-    PlotTrace(trace1dir, '1', idx("trace1"))
+	PlotTrace(trace1dir, '1', idx("trace1"))
 
 if trace2():
-    PlotTrace(trace2dir, '2', idx("trace2"))
+	PlotTrace(trace2dir, '2', idx("trace2"))
 
 #Add velocity arrows #####################
 if velocity():
-    vector_atts = PlotVel(vxdir, "vVec", idx("vel"))
+	vector_atts = PlotVel(vxdir, "vVec", idx("vel"))
 
 myView = GetView3D()
 #Annotations and View ########################
@@ -261,17 +261,19 @@ time.strftime("%Y-%m-%d %H:%M:%S")
 print("Loading Attributes")
 LoadAttribute(extrasDir + viewXML[state], myView)
 
-if density():       LoadAttribute(extrasDir + volumeXML[state], vol)
-if bsq2r():         LoadAttribute(bsq2rXML, bsq_atts)
-if velocity():      LoadAttribute(vectorXML, vector_atts))
+if density():		LoadAttribute(extrasDir + volumeXML[state], vol)
+if bsq2r():			LoadAttribute(bsq2rXML, bsq_atts)
+if velocity():		LoadAttribute(vectorXML, vector_atts)
 
-if particles():     LoadAttribute(streamXML, stream_particles)
-    stream_particles.pointList = getSeeds(extrasDir + particlesTXT[state])
-    if gridPoints():
-        stream_particles.singleColor = (0, 255, 0, 255)
+if particles():
+	LoadAttribute(streamXML, stream_particles)
+	stream_particles.pointList = getSeeds(extrasDir + particlesTXT[state])
+	if gridPoints():
+		stream_particles.singleColor = (0, 255, 0, 255)
 
-if gridPoints():    LoadAttribute(streamXML, stream_gridPoints)
-    stream_gridPoints.pointList = getSeeds(extrasDir + gridPointsTXT[state])
+if gridPoints():
+	LoadAttribute(streamXML, stream_gridPoints)
+	stream_gridPoints.pointList = getSeeds(extrasDir + gridPointsTXT[state])
 
 ### adjust the cm focus ###
 cmfile = open(extrasDir + timeTXT[state], 'r')
@@ -290,24 +292,24 @@ c1.focus = CoM
 ######implement loaded plot settings
 print("Setting settings")
 if density():
-    SetActivePlots(idx("density"))
-    SetPlotOptions(vol)
-    if cutPlot: box(CoM_y, 1)
+	SetActivePlots(idx("density"))
+	SetPlotOptions(vol)
+	if cutPlot: box(CoM_y, 1)
 if bsq2r():
-    SetActivePlots(idx("bsq2r"))
-    SetPlotOptions(bsq_atts)
-    if cutPlot: box(CoM_y, 1)
+	SetActivePlots(idx("bsq2r"))
+	SetPlotOptions(bsq_atts)
+	if cutPlot: box(CoM_y, 1)
 if particles():
-    SetActivePlots(idx("particles"))
-    SetPlotOptions(stream_particles)
+	SetActivePlots(idx("particles"))
+	SetPlotOptions(stream_particles)
 if gridPoints():
-    SetActivePlots(idx("gridPoints"))
-    SetPlotOptions(stream_gridPoints)
+	SetActivePlots(idx("gridPoints"))
+	SetPlotOptions(stream_gridPoints)
 if velocity():
-    SetActivePlots(idx("vel"))
-    SetPlotOptions(vecotr_atts)
-    cylinder(CoM_x,CoM_y,45, 1)
-    if cutPlot: box(CoM_y, 1)
+	SetActivePlots(idx("vel"))
+	SetPlotOptions(vecotr_atts)
+	cylinder(CoM_x,CoM_y,45, 1)
+	if cutPlot: box(CoM_y, 1)
 
 def rotate(view, nsteps, frame_start, frame_end):
 	print("Rotating")
@@ -327,8 +329,8 @@ def rotate(view, nsteps, frame_start, frame_end):
 		c.focus = CoM
 		c.viewUp = viewUp
 		
-		SetView3D(c)
 		DrawPlots()
+		SetView3D(c)
 		SaveWindow()
 
 #DrawPlots()

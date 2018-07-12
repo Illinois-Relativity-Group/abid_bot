@@ -16,7 +16,7 @@ from os.path import isfile, join
 from fnmatch import fnmatch
 from math import pi, sin, cos
 
-sys.path.append("..") #runModule is in parent directory
+sys.path.append("../../..") #runModule is in parent directory
 from runModule import *
 
 ###############################################################################
@@ -74,7 +74,7 @@ print("stateList: {}".format(stateList))
 #make a copy of viewXML and turn it into numbers by removing "view_" and ".xml"
 def density(): return PlotDens
 def bsq2r(): return PlotBsq2r and not density() #Can't have 2 volume plots
-def bh_formed(): return len(bh3D) > 0 
+def bh_formed(): return len(bh13D) > 0 
 def binary_formed(): return len(bh23D) > 0 
 def merge_formed():	return len(bh33D) > 0 
 def trace1(): return len(trace3D) > 0
@@ -160,9 +160,9 @@ if trace2():
 	OpenDatabase(trace2dir)
 
 if velocity():
-	LoadandDefine(vxdir, vx)
-	LoadandDefine(vydir, vy)
-	LoadandDefine(vzdir, vz)
+	LoadandDefine(vxdir, 'vx')
+	LoadandDefine(vydir, 'vy')
+	LoadandDefine(vzdir, 'vz')
 	DefineVectorExpression("vVec_temp","{vx,vy,vz}")
 	DefineVectorExpression("vVec","if(gt(magnitude(vVec_temp),0.1),vVec_temp,{0,0,0})")#Remove small arrows
 
@@ -276,14 +276,16 @@ LoadAttribute(extrasDir + viewXML[state], myView)
 
 if density():		LoadAttribute(extrasDir + volumeXML[state], vol)
 if bsq2r():			LoadAttribute(bsq2rXML, bsq_atts)
-if velocity():		LoadAttribute(vectorXML, vector_atts))
+if velocity():		LoadAttribute(vectorXML, vector_atts)
 
-if particles():		LoadAttribute(streamXML, stream_particles)
+if particles():
+	LoadAttribute(streamXML, stream_particles)
 	stream_particles.pointList = getSeeds(extrasDir + particlesTXT[state])
 	if gridPoints():
 		stream_particles.singleColor = (0, 255, 0, 255)
 
-if gridPoints():	LoadAttribute(streamXML, stream_gridPoints)
+if gridPoints():
+	LoadAttribute(streamXML, stream_gridPoints)
 	stream_gridPoints.pointList = getSeeds(extrasDir + gridPointsTXT[state])
 
 ### adjust the cm focus ###
@@ -348,11 +350,12 @@ def zoom_fixed_time_and_change_vol(zoomsteps,view_initial,view_final, vol_initia
 	for my_i in range(frame_start, frame_end,1):
 		t = float(my_i) / float(zoomsteps - 1)
 		c = EvalCubicSpline(t, x, cpts)
-		SetView3D(c)
 		for i in range(len(oi)):
 			cr[i] = oi[i] + t*(of[i] - oi[i])
 		v.freeformOpacity = tuple(cr)
 		SetPlotOptions(v)
+		DrawPlots()
+		SetView3D(c)
 		SaveWindow()
 
 

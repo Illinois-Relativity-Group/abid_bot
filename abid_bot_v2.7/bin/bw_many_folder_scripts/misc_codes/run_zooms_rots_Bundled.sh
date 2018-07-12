@@ -10,11 +10,13 @@ rootdir=/u/sciteam/simone1/scratch/BHNS/case5/abid_bot_v2.7		#Update
 savedir=$rootdir/bin/bw_many_folder_scripts/misc_codes/movies_zooms_rots/
 schdir=$rootdir/bin/scheduler
 
+lastFolder=3d_data_201710120940
+lastIdx=5
 ############################# zoom_in
 jobName=zoomIn
 joblistID=0
 h5folder=3d_data_201801160650 #Last #3d_data_201710120940/
-idx=5 #3
+idx=5
 savefolder=$savedir$jobName/
 pyscript=zoom_and_change_vol.py
 view1XML=$rootdir/bin/bw_many_folder_scripts/atts/c10.xml
@@ -69,9 +71,8 @@ fi
 ############################# fly_over
 jobName=flyOver
 joblistID=3
-h5folder=3d_data_201801160650 #3d_data_201802230414  #3d_data_17_05_22_000000/
-idx=5 #7
-# fly_over
+h5folder=lastFolder 
+idx=lastIdx
 savefolder=$savedir$jobName/
 pyscript=fly_over.py
 if [ $fly_over_flag -eq 1 ]
@@ -85,6 +86,8 @@ fi
 ############################# zoom_in_3
 jobName=zoomIn3
 joblistID=4
+h5folder=lastFolder
+idx=lastIdx
 savefolder=$savedir$jobName/
 pyscript=zoom.py
 view1XML=    #leave this blank if you want to use the viewXML from params
@@ -101,8 +104,8 @@ fi
 ############################# fly_around
 jobName=flyAround
 joblistID=5
-h5folder=3d_data_201801160650 #3d_data_201802230414
-idx=5
+h5folder=lastFolder
+idx=lastIdx
 savefolder=$savedir$jobName/
 pyscript=fly_around.py
 if [ $fly_around_flag -eq 1 ]

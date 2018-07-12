@@ -5,13 +5,14 @@ import csv
 import sys
 import time
 
-from os import listdir, rename
+from os import listdir, rename, getcwd
 from os.path import isfile, join
 from fnmatch import fnmatch
 from runModule import *
 ###############################################################################
 #search for all the necessary data (preprocessing)
 ###############################################################################
+print("PWD: {}".format(getcwd()))
 
 PlotDens = 1 # Plot density
 PlotVel  = 0 # Plot velocity arrows
@@ -141,9 +142,9 @@ if trace2():
 	OpenDatabase(trace2dir)
 
 if velocity():
-	LoadandDefine(vxdir, vx)
-	LoadandDefine(vydir, vy)
-	LoadandDefine(vzdir, vz)
+	LoadandDefine(vxdir, 'vx')
+	LoadandDefine(vydir, 'vy')
+	LoadandDefine(vzdir, 'vz')
 	DefineVectorExpression("vVec_temp","{vx,vy,vz}")
 	DefineVectorExpression("vVec","if(gt(magnitude(vVec_temp),0.1),vVec_temp,{0,0,0})")#Remove small arrows
 
@@ -267,7 +268,7 @@ for frame in range(firstFrame,lastFrame):
 
 	if density():		LoadAttribute(extrasDir + volumeXML[state], vol)
 	if bsq2r():			LoadAttribute(bsq2rXML, bsq_atts)
-	if velocity():		LoadAttribute(vectorXML, vector_atts))
+	if velocity():		LoadAttribute(vectorXML, vector_atts)
 
 	if particles():		LoadAttribute(streamXML, stream_particles)
 		stream_particles.pointList = getSeeds(extrasDir + particlesTXT[state])
