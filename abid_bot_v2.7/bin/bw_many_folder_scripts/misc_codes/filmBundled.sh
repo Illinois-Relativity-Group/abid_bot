@@ -21,7 +21,7 @@ cd $cur
 ########run movies variables
 logdir=$misc/logs
 visitScript=$misc/${pyscript}
-totranks=$((totframes/2))
+totranks=$(((totframes+1)/2))
 ranksPerJob=5 # divisor of totranks
 #####end things you have to change
 
@@ -73,7 +73,7 @@ do
 									s,SCH_DIR,'"$schdir"',g;
 									s,JOBLIST,joblist/joblist'"$i"',g;
 									s,JOBNAME,'"$jobName\_$i"',g' > $logfolder/run/run$i
-	echo qsub $logfolder/run/run$i
+	qsub $logfolder/run/run$i
 done
 echo Done!
 

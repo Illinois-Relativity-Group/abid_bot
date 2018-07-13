@@ -354,7 +354,6 @@ def zoom_fixed_time_and_change_vol(zoomsteps,view_initial,view_final, vol_initia
 			cr[i] = oi[i] + t*(of[i] - oi[i])
 		v.freeformOpacity = tuple(cr)
 		SetPlotOptions(v)
-
 		DrawAndSave(c)
 
 

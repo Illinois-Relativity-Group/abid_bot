@@ -17,24 +17,33 @@ from os import listdir, rename
 from os.path import isfile, join
 from fnmatch import fnmatch
 from math import pi, sin, cos
+sys.path.append("../../..")
+from runModule import *
+
 ###############################################################################
 #search for all the necessary data (preprocessing)
 ###############################################################################
 
-print sys.argv
+PlotDens = 1 # Plot density
+PlotVel  = 1 # Plot velocity arrows
+PlotBsq2r= 0 # Plot B squared over 2 rho
+cutPlot  = 0 #only show back half (y>0), needs view like: (0,-x,y)
+Factor = 0.4 #See TODO for more info
+print(sys.argv)
 
 rank = int(sys.argv[6])
 total_ranks = int(sys.argv[7])
-saveFolder=sys.argv[8]
-root_dir = sys.argv[9]
-h5dir = sys.argv[10]
-extrasDir = sys.argv[11] 
-streamXML = sys.argv[12]
-vectorXML = sys.argv[13]
-max_density = sys.argv[14]
-index = int(sys.argv[15])
+tot_frames = int(sys.argv[8])
+saveFolder=sys.argv[9]
+root_dir = sys.argv[10]
+h5dir = sys.argv[11]
+extrasDir = sys.argv[12] 
+streamXML = sys.argv[13]
+vectorXML = sys.argv[14]
+bsq2rXML = sys.argv[15]
+max_density = sys.argv[16]
+index = int(sys.argv[17])
 
-tot_frames = 10
 frame_start = int(round((float(rank)/total_ranks)*tot_frames))
 frame_end = int(round(((rank+1.0)/total_ranks)*tot_frames))
 
@@ -42,135 +51,49 @@ saveFolder = saveFolder + str(rank).zfill(3)+"_"
 
 time.strftime("%Y-%m-%d %H:%M:%S")
 
-#####Velocity_arrows?
-def velocity():
-	return 1
-
-vectorXML=root_dir + "/bin/bw_many_folder_scripts/atts/vel.xml"
 
 #append a '/' if necessary
-if(h5dir[-1] != '/'):
-	h5dir = h5dir + '/'
-if(extrasDir[-1] != '/'):
-	extrasDir = extrasDir + '/'
+if(h5dir[-1] != '/'): h5dir += '/'
+if(extrasDir[-1] != '/'): extrasDir += '/'
 
 #The first line picks out the files that contain "volume_" in the directory, extrasDir
 #The sorting should sort in numerical order
+volumeXML, particlesTXT, gridPointsTXT, viewXML, timeTXT,\
+bh13D, bh23D, bh33D, trace3D, trace23D, stateList = getLists(extrasDir)
+print("stateList: {}".format(stateList))
 
-volumeXML = [ f for f in listdir(extrasDir) if isfile(join(extrasDir,f)) and f.find("volume_")	!= -1 ]
-volumeXML.sort()
-print "volumeXML",volumeXML
-
-particlesTXT = [ f for f in listdir(extrasDir) if isfile(join(extrasDir,f)) and f.find("particle_seeds_") != -1 ]
-particlesTXT.sort()
-
-gridPointsTXT = [ f for f in listdir(extrasDir) if isfile(join(extrasDir,f)) and f.find("grid_seeds_") != -1 ]
-gridPointsTXT.sort()
-
-viewXML = [ f for f in listdir(extrasDir) if isfile(join(extrasDir,f)) and f.find("view_") != -1 ]
-viewXML.sort()
-
-timeTXT = [ f for f in listdir(extrasDir) if isfile(join(extrasDir,f)) and f.find("time_") != -1 ]
-timeTXT.sort()
-
-bh3D = [ f for f in listdir(extrasDir) if isfile(join(extrasDir,f)) and f.find("bh1_") != -1 ]
-bh3D.sort()
-
-bh23D = [ f for f in listdir(extrasDir) if isfile(join(extrasDir,f)) and f.find("bh2_") != -1 ]
-bh23D.sort()
-
-bh33D = [ f for f in listdir(extrasDir) if isfile(join(extrasDir,f)) and f.find("bh3_") != -1 ]
-bh33D.sort()
-
-trace3D = [ f for f in listdir(extrasDir) if isfile(join(extrasDir,f)) and f.find("trace1_") != -1 ]
-trace3D.sort()
-
-trace23D = [ f for f in listdir(extrasDir) if isfile(join(extrasDir,f)) and f.find("trace2_") != -1 ]
-trace23D.sort()
-
-
-#make a copy of viewXML and turn it into numbers by removing "view_" and ".xml"
-stateList = viewXML[:]
-for i in range(len(stateList)):
-	stateList[i] = int(stateList[i][-8:-4])
-
-stateList.sort()
-print "statList ",stateList
-
-def bh_formed():
-	return len(bh3D) > 0 
-
-def binary_formed():
-	return len(bh23D) > 0 
-
-def merge_formed():
-	return len(bh33D) > 0 
-
-def trace1():
-	return len(trace3D) > 0
-
-def trace2():
-	return len(trace23D) > 0
-
-def particles():
-	return len(particlesTXT) > 0
-
-def gridPoints():
-	return len(gridPointsTXT) > 0		
-
-def fields():
-	return particles() or gridPoints()
-
+def density(): return PlotDens
+def bsq2r(): return PlotBsq2r and not density() #Can't have 2 volume plots
+def bh_formed(): return len(bh13D) > 0
+def binary_formed(): return len(bh23D) > 0
+def merge_formed(): return len(bh33D) > 0
+def trace1(): return len(trace3D) > 0
+def trace2(): return len(trace23D) > 0
+def particles(): return len(particlesTXT) > 0
+def gridPoints(): return len(gridPointsTXT) > 0
+def fields(): return particles() or gridPoints()
+def velocity(): return PlotVel
 
 #This adjusts the bh_*.3d files so that the black hole doesn't show up earlier than it's supposed to
 #This will use bh3 data to overwrite the empty bh1 and bh2 files whenever bh1 and bh3 appear together in one folder. 
-def fill_bh(bh_func, stri):
-	if bh_func:
-		for i in stateList:
-			bhFile = extrasDir + 'bh' + stri + '_' + str(i).zfill(6) + '.3d'
-			if stri == '3' and bh_formed() and isfile(bhFile):
-				f = open(bhFile, 'r')
-				g = open( extrasDir + 'bh1_' + str(i).zfill(6) + '.3d', 'w')
-				h = open( extrasDir + 'bh2_' + str(i).zfill(6) + '.3d', 'w')
-				f.readline()
-				g.write("x\ty\tz\tbh1p\n")
-				h.write("x\ty\tz\tbh2p\n")
-				for line in f:
-					g.write(line)
-					h.write(line)
-				f.close()
-				g.close()
-				h.close()
-				rename(bhFile, extrasDir + 'unused3_' + str(i).zfill(6) + '.3d')
-			elif not stri == '3' and not isfile(bhFile):
-				f = open(bhFile, 'w')
-				f.write("x\ty\tz\tbh" + stri + "p\n")
-				f.write("0\t0\t0\t0")
-				f.close()
-
-fill_bh(bh_formed(), '1')
-fill_bh(binary_formed(), '2')
-fill_bh(merge_formed(), '3')
+fill_bh(bh_formed(), '1', extrasDir, stateList)
+fill_bh(binary_formed(), '2', extrasDir, stateList)
+fill_bh(merge_formed(), '3', extrasDir, stateList)
 
 #Checking bh files again ################
-bh3D = [ f for f in listdir(extrasDir) if isfile(join(extrasDir,f)) and f.find("bh1_") != -1 ]
-bh3D.sort()
+bh13D, bh23D, bh33D = recheckBH(extrasDir)
 
-bh23D = [ f for f in listdir(extrasDir) if isfile(join(extrasDir,f)) and f.find("bh2_") != -1 ]
-bh23D.sort()
-
-bh33D = [ f for f in listdir(extrasDir) if isfile(join(extrasDir,f)) and f.find("bh3_") != -1 ]
-bh33D.sort()
-
-
-
-print "bh_formed: ", bh_formed()
-print "fields: ", fields()
-print "particles: ", particles()
-print "gridPoints: ", gridPoints()
-print "trace1: ", trace1()
-print "trace2: ", trace2()
-print "velocity: ", velocity()
+print("density: {}".format(density()))
+print("bsq2r: {}".format(bsq2r()))
+print("fields: {}".format(fields()))
+print("particles: {}".format(particles()))
+print("gridPoints: {}".format(gridPoints()))
+print("trace1: {}".format(trace1()))
+print("trace2: {}".format(trace2()))
+print("velocity: {}".format(velocity()))
+print("BH1: {}".format(bh_formed()))
+print("BH2: {}".format(binary_formed()))
+print("BH3: {}".format(merge_formed()))
 
 ###############################################################################
 #load the databases
@@ -188,424 +111,223 @@ trace2dir = extrasDir + "trace2_*.3d database"
 vxdir = h5dir + "vx.file_* database"
 vydir = h5dir + "vy.file_* database"
 vzdir = h5dir + "vz.file_* database"
+smallb2dir = h5dir + "smallb2.file_* database"
 
+if density():
+	LoadandDefine(rho_bdir, "rho_b")
+	DefineScalarExpression("logrho","log10(<MHD_EVOLVE--rho_b>/" + max_density + ")")
 
-print "Loading rho..."
-OpenDatabase(rho_bdir,0,"CarpetHDF5_2.1")
-print "\tDone"
-DefineScalarExpression("rho_b","conn_cmfe(<" + rho_bdir + "[0]id:MHD_EVOLVE--rho_b>, <Carpet AMR-grid>)")
-DefineScalarExpression("logrha","log10(<MHD_EVOLVE--rho_b>/" + max_density + ")")
+if bsq2r():
+	LoadandDefine(rho_bdir, "rho_b")
+	LoadandDefine(smallb2dir, "smallb2")
+	DefineScalarExpression("logbsq2r","log10(<MHD_EVOLVE--smallb2>/(2*<rho_b>), -200)")
 
 if fields():
-	print "Loading Bx..."
-	OpenDatabase(Bxdir,0,"CarpetHDF5_2.1")
-	print "\tDone"
-
-	print "Loading By..."
-	OpenDatabase(Bydir,0,"CarpetHDF5_2.1")
-	print "\tDone"
-
-	print "Loading Bz..."
-	OpenDatabase(Bzdir,0,"CarpetHDF5_2.1")
-	print "\tDone"
-
-	DefineScalarExpression("Bx","conn_cmfe(<" + Bxdir + "[0]id:MHD_EVOLVE--Bx>, <Carpet AMR-grid>)")
-	DefineScalarExpression("By","conn_cmfe(<" + Bydir + "[0]id:MHD_EVOLVE--By>, <Carpet AMR-grid>)")
-	DefineScalarExpression("Bz","conn_cmfe(<" + Bzdir + "[0]id:MHD_EVOLVE--Bz>, <Carpet AMR-grid>)")
+	LoadandDefine(Bxdir, "Bx")
+	LoadandDefine(Bydir, "By")
+	LoadandDefine(Bzdir, "Bz")
 	DefineVectorExpression("BVec","{Bx,By,Bz}")
 
 if bh_formed():
-	print "Loading bh's..."
+	print("Loading bh1's...")
 	OpenDatabase(bh1dir)
+
 if binary_formed():
-	print "Loading bh's 2..."
+	print("Loading bh2's...")
 	OpenDatabase(bh2dir)
+
 if merge_formed():
-	print "Loading bh's 3..."
+	print("Loading bh3's...")
 	OpenDatabase(bh3dir)
+
 if trace1():
-	print "Loading Particle Tracer..."
+	print("Loading Particle Tracer...")
 	OpenDatabase(trace1dir)
+
 if trace2():
-	print "Loading Particle Tracer 2..."
+	print("Loading Particle Tracer 2...")
 	OpenDatabase(trace2dir)
+
 if velocity():
-	print "Loading vx..."
-	OpenDatabase(vxdir,0,"CarpetHDF5_2.1")
-
-	print "Loading vy..."
-	OpenDatabase(vydir,0,"CarpetHDF5_2.1")
-
-	print "Loading vz..."
-	OpenDatabase(vzdir,0,"CarpetHDF5_2.1")
-	DefineScalarExpression("vx","conn_cmfe(<" + vxdir + "[0]id:MHD_EVOLVE--vx>, <Carpet AMR-grid>)")
-	DefineScalarExpression("vy","conn_cmfe(<" + vydir + "[0]id:MHD_EVOLVE--vy>, <Carpet AMR-grid>)")
-	DefineScalarExpression("vz","conn_cmfe(<" + vzdir + "[0]id:MHD_EVOLVE--vz>, <Carpet AMR-grid>)")
+	LoadandDefine(vxdir, 'vx')
+	LoadandDefine(vydir, 'vy')
+	LoadandDefine(vzdir, 'vz')
 	DefineVectorExpression("vVec_temp","{vx,vy,vz}")
-	#DefineVectorExpression("vVec","vVec_temp")#incase you want to manipulate vVec
-	DefineVectorExpression("vVec","if(gt(magnitude(vVec_temp),0.05),vVec_temp,{0,0,0})")
-print "\tDone"
+	DefineVectorExpression("vVec","if(gt(magnitude(vVec_temp),0.1),vVec_temp,{0,0,0})")#Remove small arrows
 
-dbs = [rho_bdir]
+print("\tDone")
+
+# Put the additional database into dbs list when you add a new database. 
+dbs = []
+plot_idx = []
+###
+if density():
+	dbs += [rho_bdir];				plot_idx += ["density"]
+if bsq2r():
+	dbs += [smallb2dir, rho_bdir];	plot_idx += ["bsq2r"]
+###
 if fields():
 	dbs += [Bxdir, Bydir, Bzdir]
-if bh_formed():
-	dbs += [bh1dir] 
-if binary_formed():
-	dbs += [bh2dir]
-if merge_formed():
-	dbs += [bh3dir] 
-if trace1():
-	dbs += [trace1dir]
-if trace2():
-	dbs += [trace2dir]
-if velocity():
-	dbs += [vxdir, vydir, vzdir]
-print "Database loaded: ", dbs
-
-CreateDatabaseCorrelation("Everything", dbs, 0)
-
-time.strftime("%Y-%m-%d %H:%M:%S")
-###############################################################################
-#load the plots
-###############################################################################
-
-plot_idx = ["density"]
 if particles():
 	plot_idx += ["particles"]
 if gridPoints():
 	plot_idx += ["gridPoints"]
+###
 if bh_formed():
-	plot_idx += ["bh"]
+	dbs += [bh1dir];				plot_idx += ["bh1"]
 if binary_formed():
-	plot_idx += ["bh2"]
+	dbs += [bh2dir];				plot_idx += ["bh2"]
 if merge_formed():
-	plot_idx += ["bh3"]
+	dbs += [bh3dir];				plot_idx += ["bh3"]
+###
 if trace1():
-	plot_idx += ["trace1"]
+	dbs += [trace1dir];				plot_idx += ["trace1"]
 if trace2():
-	plot_idx += ["trace2"]
+	dbs += [trace2dir];				plot_idx += ["trace2"]
+###
 if velocity():
-	plot_idx += ["vel"]
-print "Plotting: ", plot_idx
+	dbs += [vxdir, vydir, vzdir];	plot_idx += ["vel"]
+###
+print("Databases loaded: {}".format(dbs))
+print("Plotting: {}".format(plot_idx))
+
+CreateDatabaseCorrelation("Everything", dbs, 0)
+time.strftime("%Y-%m-%d %H:%M:%S")
 # Use plot_idx.index("plot name") to find its idx
 def idx(name):
 	return plot_idx.index(name)
 
 DeleteAllPlots()
 
-ref = ReflectAttributes()
-ref.reflections = (1,0,0,0,1,0,0,0)
-
 #add Density Volume Plot (0)################
-ActivateDatabase(rho_bdir)
-AddPlot("Volume","logrha")	   #plot 0
-print "Add density volume plot with index = ", idx("density")
-
-vol = VolumeAttributes()
-SetActivePlots(idx("density"))
-
-AddOperator("Reflect")
-SetOperatorOptions(ref)
-
-#add particles-seeded Streamline Plot (1)####################
+if density():
+	vol = PlotVol(rho_bdir, "logrho", idx("density"))
+#add bsq2r Plot ##################
+if bsq2r():
+	bsq_atts = PlotVol(smallb2dir, "logbsq2r", idx("bsq2r"))
+#add particles-seeded Streamline Plot#####
 if particles():
-	ActivateDatabase(Bxdir)
-	AddPlot("Streamline","BVec")	#plot 1
-	print "Add particles-seeded streamline plot with index = ", idx("particles")
-
-	SetActivePlots(idx("particles"))
-
-	AddOperator("Reflect")
-	SetOperatorOptions(ref)
-
-	stream_particles = StreamlineAttributes()
-
-#add gridPoints-seeded Streamline Plot (gridPoints_idx)#######
+	stream_particles = PlotB(Bxdir, idx("particles"))
+#add gridPoints-seeded Streamline Plot####
 if gridPoints():
-	ActivateDatabase(Bxdir)
-	AddPlot("Streamline","BVec")	#plot 1
-	print "Add gridPoints-seeded streamline plot with index = ", idx("gridPoints")
-
-	SetActivePlots(idx("gridPoints"))
-
-	AddOperator("Reflect")
-	SetOperatorOptions(ref)
-
-	stream_gridPoints = StreamlineAttributes()
-
-
-#add bhplots (bh_idx) ########################
+	stream_gridPoints = PlotB(Bxdir, idx("gridPoints"))
+#add bhplots##############################
 if bh_formed():
-	ActivateDatabase(bh1dir)
-	AddPlot("Pseudocolor","bh1p")
-	print "Add bh1 plot with index = ", idx("bh")
-
-	Pseudo = PseudocolorAttributes()
-	SetActivePlots(idx("bh"))
-	AddOperator("Delaunay")
-	AddOperator("Reflect")
-	SetOperatorOptions(ref)
-
-	Pseudo.colorTableName = "gray"
-	Pseudo.legendFlag = 0
-	Pseudo.lightingFlag = 0
-
-	SetPlotOptions(Pseudo)
+	PlotBH(bh1dir, '1', idx("bh1"))
 
 if binary_formed():
-	ActivateDatabase(bh2dir)
-	AddPlot("Pseudocolor","bh2p")
-	print "Add bh2 plot with index = ", idx("bh2")
-
-	Pseudo = PseudocolorAttributes()
-	SetActivePlots(idx("bh2"))
-	AddOperator("Delaunay")
-	AddOperator("Reflect")
-	SetOperatorOptions(ref)
-
-	Pseudo.colorTableName = "gray"
-	Pseudo.legendFlag = 0
-	Pseudo.lightingFlag = 0
-
-	SetPlotOptions(Pseudo)
+	PlotBH(bh2dir, '2', idx("bh2"))
 
 if merge_formed():
-	ActivateDatabase(bh3dir)
-	AddPlot("Pseudocolor","bh3p")
-	print "Add bh3 plot with index = ", idx("bh3")
+	PlotBH(bh3dir, '3', idx("bh3"))
 
-	Pseudo = PseudocolorAttributes()
-	SetActivePlots(idx("bh3"))
-	AddOperator("Delaunay")
-	AddOperator("Reflect")
-	SetOperatorOptions(ref)
-
-	Pseudo.colorTableName = "gray"
-	Pseudo.legendFlag = 0
-	Pseudo.lightingFlag = 0
-
-	SetPlotOptions(Pseudo)
-	
-
-#add particle tracer plots ###############
+#add particle tracer plots################
 if trace1():
-	ActivateDatabase(trace1dir)
-	AddPlot("Pseudocolor", "rho")
-	print "Add trace1 plot with index = ", idx("trace1")
+	PlotTrace(trace1dir, '1', idx("trace1"))
 
-	SetActivePlots(idx("trace1"))
-	pointAtt = PseudocolorAttributes()
-	pointAtt.pointType = pointAtt.Sphere
-	pointAtt.pointSizePixels = 8   #8 or 10 if you use 2 colors 
-	pointAtt.minFlag = 1
-	pointAtt.min = -1
-	pointAtt.maxFlag = 1
-	pointAtt.max = 0
-	pointAtt.legendFlag = 0
-	pointAtt.lightingFlag = 0
-	SetPlotOptions(pointAtt)
-
-#add smaller green particle tracer ########	
 if trace2():
-	ActivateDatabase(trace2dir)
-	AddPlot("Pseudocolor", "rho")
-	print "Add trace2 plot with index = ", idx("trace2")
+	PlotTrace(trace2dir, '2', idx("trace2"))
 
-	SetActivePlots(idx("trace2"))
-	pointAtt = PseudocolorAttributes()
-	pointAtt.pointType = pointAtt.Sphere
-	pointAtt.pointSizePixels = 4
-	pointAtt.colorTableName = "PiYG" #Green at position 1
-	pointAtt.minFlag = 1
-	pointAtt.min = -1
-	pointAtt.maxFlag = 1
-	pointAtt.max = 0
-	pointAtt.legendFlag = 0
-	pointAtt.lightingFlag = 0
-	SetPlotOptions(pointAtt)
-
+#Add velocity arrows #####################
 if velocity():
-	ActivateDatabase(vxdir)
-	AddPlot("Vector","vVec")
-	print "Add velocity plot with index = ", idx("vel")
-
-	SetActivePlots(idx("vel"))
-	AddOperator("Reflect")
-	SetOperatorOptions(ref)
-	AddOperator("Cylinder")
-	CylinderAtts = CylinderAttributes()
-	CylinderAtts.point1 = (-130.488, -158.528, -300)
-	CylinderAtts.point2 = (-130.488, -158.528, 300)
-	CylinderAtts.radius = 150
-	CylinderAtts.inverse = 0
-	SetOperatorOptions(CylinderAtts)
-	vector_atts = VectorAttributes()
-	print LoadAttribute(vectorXML, vector_atts)
+	vector_atts = PlotVelocity(vxdir, "vVec", idx("vel"))
 
 myView = GetView3D()
-DrawPlots()
-###############################################################################
-#set up the annotations
-###############################################################################
-
 #Annotations and View ########################
+txt = setAnnotations()
 
-Ann = AnnotationAttributes()
-Ann.backgroundMode = Ann.Solid
-Ann.backgroundColor = (55,118,255,255) #stu blue
-#Ann.backgroundColor = (0,0,0,255) #black
-#Ann.legendFlag = 0
-Ann.databaseInfoFlag = 0
-Ann.userInfoFlag = 0
-Ann.axes3D.visible = 0
-Ann.axes3D.triadFlag = 0
-Ann.axes3D.bboxFlag = 0
-SetAnnotationAttributes(Ann)
-
-# Clock
-txt = CreateAnnotationObject("Text2D")
-txt.position = (0.75, 0.95) # (x,y), where x and y range from 0 to 1
-txt.useForegroundForTextColor = 0
-txt.textColor = (255, 255, 255, 255)
-txt.fontBold = 1
-txt.fontFamily = txt.Times # Because I think Times looks cooler
-
-print "Annotations set up"
-
-###############################################################################
-#save window settings
-###############################################################################
-
-s = SaveWindowAttributes()
-s.format = s.PNG
-s.fileName = saveFolder
-s.width = 1920 
-s.height = 1080
-s.screenCapture = 0
-s.stereo = 0 #Setting for 3D movie
-s.resConstraint = s.NoConstraint
-SetSaveWindowAttributes(s)
+#Save window settings
+setSave(saveFolder)
 
 ###############################################################################
 #start the movie
 ###############################################################################
 
-print "starting filming"
+print("Starting filming")
 time.strftime("%Y-%m-%d %H:%M:%S")
 
 state = stateList[index]
 
-print "loading state ", state
-SetTimeSliderState(state)
+print("Loading state {}".format(index))
+SetTimeSliderState(index)
 
 tcur = timeTXT[state][5:-4]
-print "t/M = %g" % int(float(tcur))
+print("t/M = %g" % int(float(tcur)))
 txt.text = "t/M = %g" % int(float(tcur))
 
-print extrasDir + volumeXML[state]
+if density(): print(extrasDir + volumeXML[state])
 time.strftime("%Y-%m-%d %H:%M:%S")
 
-print "loading options"
+print("Loading Attributes")
+LoadAttribute(extrasDir + viewXML[state], myView)
 
-print LoadAttribute(extrasDir + volumeXML[state], vol) 
-print LoadAttribute(extrasDir + viewXML[state], myView)
+if density():		LoadAttribute(extrasDir + volumeXML[state], vol)
+if bsq2r():			LoadAttribute(bsq2rXML, bsq_atts)
+if velocity():		LoadAttribute(vectorXML, vector_atts)
+
 if particles():
-	print LoadAttribute(streamXML, stream_particles)
-	### change point particles ###
-	file1 = open(extrasDir + particlesTXT[state],'r')
-	data1 = csv.reader(file1,delimiter='\t')
-	table1 = [row for row in data1]
-	d1 = []
-	for i in range(len(table1)):
-		for j in range(len(table1[i])):
-			d1.append(table1[i][j])
-	d1 = map(float,d1)
-	mytuple1 = tuple(d1)
-	stream_particles.pointList = mytuple1
-	#Change color to green when both grid points and particles appear.
-	if gridPoints():		
-		stream_particles.singleColor = (0, 255, 0, 255)			
-	############################
-		
+	LoadAttribute(streamXML, stream_particles)
+	stream_particles.pointList = getSeeds(extrasDir + particlesTXT[state])
+	if gridPoints():
+		stream_particles.singleColor = (0, 255, 0, 255)
+
 if gridPoints():
-	print LoadAttribute(streamXML, stream_gridPoints)
-	### change point particles ###
-	file1 = open(extrasDir + gridPointsTXT[state],'r')
-	data1 = csv.reader(file1,delimiter='\t')
-	table1 = [row for row in data1]
-	d1 = []
-	for i in range(len(table1)):
-		for j in range(len(table1[i])):
-			d1.append(table1[i][j])
-	d1 = map(float,d1)
-	mytuple1 = tuple(d1)
-	stream_gridPoints.pointList = mytuple1
-	############################
+	LoadAttribute(streamXML, stream_gridPoints)
+	stream_gridPoints.pointList = getSeeds(extrasDir + gridPointsTXT[state])
 
 ### adjust the cm focus ###
-cmfile = open(extrasDir + timeTXT[state], 'r')
-cmarray = cmfile.readline().split()
-x = float(cmarray[0])
-y = float(cmarray[1])
-z = float(cmarray[2])
-CoM = (x,y,z)
+CoM = getCoM(extrasDir + timeTXT[state])
+myView.focus = CoM
+CoM_x, CoM_y, CoM_z = CoM
+
 ###########################Load view
 
 c1 = View3DAttributes()
 LoadAttribute(extrasDir + viewXML[state], c1)
-
+c1.focus = CoM
 
 ######implement loaded plot settings
-print "setting settings"
-print SetActivePlots(idx("density")), SetPlotOptions(vol)
+print("Setting settings")
+if density():
+	SetActivePlots(idx("density"))
+	SetPlotOptions(vol)
+	if cutPlot: box(CoM_y, 1)
+if bsq2r():
+	SetActivePlots(idx("bsq2r"))
+	SetPlotOptions(bsq_atts)
+	if cutPlot: box(CoM_y, 1)
 if particles():
-	print SetActivePlots(idx("particles")), SetPlotOptions(stream_particles)
+	SetActivePlots(idx("particles"))
+	SetPlotOptions(stream_particles)
 if gridPoints():
-	print SetActivePlots(idx("gridPoints")), SetPlotOptions(stream_gridPoints)
+	SetActivePlots(idx("gridPoints"))
+	SetPlotOptions(stream_gridPoints)
 if velocity():
-	print SetActivePlots(idx("vel")), SetPlotOptions(vector_atts)
+	SetActivePlots(idx("vel"))
+	SetPlotOptions(vector_atts)
+	cylinder(CoM_x,CoM_y,45, 1)
+	if cutPlot: box(CoM_y, 1)
 
 def rotate(view, nsteps, frame_start, frame_end):
-	print "Rotating"
+	print("Rotating")
 
 	myViewNormal = view.viewNormal
 	myViewUp = view.viewUp
 
 
-
-	print "frame start: " + str(frame_start) + "\tframe_end: " + str(frame_end)
+	print("frame start: {}\t\tframe end: {}".format(frame_start, frame_end))
 	for i in range(frame_start, frame_end,1):
-		phi = 2*pi*i/(nsteps - 1)
-
+		phi = 2*pi*i/(nsteps)#(n-1) makes last frame same as first
 		viewNormal, viewUp = RM.circle(myViewNormal, myViewUp, phi, 0, 0)
-		
 		c = View3DAttributes()
-		c = view
+		c = c1
 
 		c.viewNormal = viewNormal
-		c.focus = CoM #(-130.488, -158.528, 0) #(-0.072176, 0.1177, 0)
+		c.focus = CoM
 		c.viewUp = viewUp
-		c.viewAngle = c1.viewAngle #30
-		c.parallelScale = c1.parallelScale #1800.73
-		c.nearPlane = c1.nearPlane #-3601.45
-		c.farPlane = c1.farPlane #3601.45
-		c.imagePan = c1.imagePan #(0, 0)
-		c.imageZoom = c1.imageZoom #6.7
-		c.perspective = c1.perspective #1
-		c.eyeAngle = c1.eyeAngle #2
-		c.centerOfRotationSet = 0 #c1.centerOfRotationSet
-		c.centerOfRotation = CoM #(1.16217, 1.16217, 0)
-		c.axis3DScaleFlag = 0
-		c.axis3DScales = (1, 1, 1)
-		c.shear = c1.shear #(0, 0, 1)
+		
+		DrawAndSave(c)
 
-		SetView3D(c)
-		DrawPlots()
-		SaveWindow()
-
-DrawPlots()
-SetView3D(c1)
 rotate(c1, tot_frames, frame_start, frame_end)
 
 
@@ -616,6 +338,6 @@ if(isfile(xmltxt)==0):
 	xt.write(str(vol))
 	xt.write('\n\n\n\nview:\n')
 	xt.write(str(myView))
-	xt.close
+	xt.close()
 
 sys.exit()
