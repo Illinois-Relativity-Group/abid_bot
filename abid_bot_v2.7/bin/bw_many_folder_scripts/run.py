@@ -5,14 +5,13 @@ import csv
 import sys
 import time
 
-from os import listdir, rename, getcwd
+from os import listdir, rename
 from os.path import isfile, join
 from fnmatch import fnmatch
 from runModule import *
 ###############################################################################
 #search for all the necessary data (preprocessing)
 ###############################################################################
-print("PWD: {}".format(getcwd()))
 
 PlotDens = 1 # Plot density
 PlotVel  = 0 # Plot velocity arrows
@@ -147,6 +146,7 @@ if velocity():
 	LoadandDefine(vzdir, 'vz')
 	DefineVectorExpression("vVec_temp","{vx,vy,vz}")
 	DefineVectorExpression("vVec","if(gt(magnitude(vVec_temp),0.1),vVec_temp,{0,0,0})")#Remove small arrows
+	#DefineVectorExpression("vVec","if(gt(logbsq2r,-1),vVec_temp,{0,0,0})") #Only show arrows around jet, need to load smallb2 database 
 
 print("\tDone")
 
@@ -254,13 +254,12 @@ lastFrame = int(round(((rank+1.0)/total_ranks)*tot_frames))
 for frame in range(firstFrame,lastFrame):
 
 	state = stateList[frame] - stateList[0]
-	print("loading state ", state)
+	print("Loading state {}".format(state))
 	SetTimeSliderState(frame) #if statelist is [3,4,5], frame=3(h5data) and state=0(xml list).
 
 	tcur = timeTXT[state][5:-4]
-	print("t/M = %g" % int(float(tcur)))
-	txt.text = "t/M = %g" % int(float(tcur))
-
+	print("t/M = {}".format(int(float(tcur))))
+	txt.text = "t/M = {}".format(int(float(tcur)))
 	if density(): print(extrasDir + volumeXML[state])
 	time.strftime("%Y-%m-%d %H:%M:%S")
 
@@ -308,7 +307,7 @@ for frame in range(firstFrame,lastFrame):
 		SetPlotOptions(stream_gridPoints)
 	if velocity():
 		SetActivePlots(idx("vel"))
-		SetPlotOptions(vecotr_atts)
+		SetPlotOptions(vector_atts)
 		cylinder(CoM_x,CoM_y,45, frame==firstFrame)
 		if cutPlot: box(CoM_y, frame==firstFrame)
 
@@ -318,11 +317,11 @@ for frame in range(firstFrame,lastFrame):
 	xmltxt='/'.join(saveFolder.split('/')[:-1])+'/xml.txt'
 	if(not isfile(xmltxt)):
 		xt=open(xmltxt,'w')
-		if density():
-			xt.write('vol:\n')
-			xt.write(str(vol))
-		xt.write('\n\n\n\nview:\n')
+		xt.write("View:\n")
 		xt.write(str(myView))
+		if density():
+			xt.write('\n\n\nVol:\n')
+			xt.write(str(vol))
 		xt.close()
 
 

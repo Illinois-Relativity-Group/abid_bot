@@ -307,7 +307,7 @@ if gridPoints():
 	SetPlotOptions(stream_gridPoints)
 if velocity():
 	SetActivePlots(idx("vel"))
-	SetPlotOptions(vecotr_atts)
+	SetPlotOptions(vector_atts)
 	cylinder(CoM_x,CoM_y,45, 1)
 	if cutPlot: box(CoM_y, 1)
 
