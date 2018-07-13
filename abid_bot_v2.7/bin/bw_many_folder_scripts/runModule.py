@@ -146,6 +146,16 @@ def recheckBH(extrasDir):
 	bh33D.sort()
 	return bh13D, bh23D, bh33D
 
+def getCoM(CoMfile):
+	cmfile = open(CoMfile, 'r')
+	cmarray = cmfile.readline().split()
+	CoM_x = float(cmarray[0])
+	CoM_y = float(cmarray[1])
+	CoM_z = float(cmarray[2])
+	CoM = (CoM_x,CoM_y,CoM_z)
+	print("CoM: {}".format(CoM))
+	return CoM
+
 ########Plot########
 def PlotBH(database, id, indx):
 	ActivateDatabase(database)

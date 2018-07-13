@@ -6,10 +6,11 @@ root=$1
 misc=$root/bin/bw_many_folder_scripts/misc_codes
 jobName=$2
 h5dir=$root/h5data/$3
-idx=$4
 extrasdir=$root/xml/$3
-picsavedir=$5
-pyscript=$6
+idx=$4
+totframes=$5
+picsavedir=$6
+pyscript=$7
 
 ########set parameters
 
@@ -20,23 +21,23 @@ cd $cur
 ########run movies variables
 logdir=$misc/logs
 visitScript=$misc/${pyscript}
-totranks=50
-ranksPerJob=10 # divisor of totranks
+totranks=$((totframes/2))
+ranksPerJob=5 # divisor of totranks
 #####end things you have to change
 
 #Overwrite the view1XML and view2XML
 #You need to pass $8 and $9 from run_zooms_and_rots.sh
 
-if [ -z "$7" ]
+if [ -z "$8" ]
 then
 	echo Using viewXML from params
-elif [ -z "$8" ]
+elif [ -z "$9" ]
 then
 	echo Warning: Only one view xml is specified. The code will use viewXML from params instead.
 else
-	echo Zooming from $7 to $8 ...
-	view1XML=$7
-	view2XML=$8
+	echo Zooming from $8 to $9 ...
+	view1XML=$8
+	view2XML=$9
 fi
 
 #remove trailing '/'
@@ -57,7 +58,7 @@ cd $logfolder; 	mkdir -p $logfolder/joblist;		mkdir -p $logfolder/run;	mkdir -p 
 for rank in `seq 0 $(( $totranks - 1 ))`
 do
 	jobfile=$logfolder/job/job_$(printf "_%03d" $rank).sh
-	echo visit -forceversion 2.7.3 -cli -nowin -s $visitScript $rank $totranks $picsavefolder $root $h5dir $extrasdir $streamXML $vecXML $maxdensity $idx $view1XML $view2XML > $jobfile
+	echo visit -forceversion 2.7.3 -cli -nowin -s $visitScript $rank $totranks $totframes $picsavefolder $root $h5dir $extrasdir $streamXML $vecXML $bsqXML $maxdensity $idx $view1XML $view2XML > $jobfile
 	echo $logfolder $jobfile >> $logfolder/joblist/joblist$((rank/ranksPerJob))
 done
 

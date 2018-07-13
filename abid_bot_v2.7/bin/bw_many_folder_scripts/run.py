@@ -279,14 +279,9 @@ for frame in range(firstFrame,lastFrame):
 		stream_gridPoints.pointList = getSeeds(extrasDir + gridPointsTXT[state])
 
 	### adjust the cm focus ###
-	cmfile = open(extrasDir + timeTXT[state], 'r')
-	cmarray = cmfile.readline().split()
-	CoM_x = float(cmarray[0])
-	CoM_y = float(cmarray[1])
-	CoM_z = float(cmarray[2])
-	CoM = (CoM_x,CoM_y,CoM_z)
-	print("CoM: {}".format(CoM))
+	CoM = getCoM(extrasDir + timeTXT[state])
 	myView.focus = CoM
+	CoM_x, CoM_y, CoM_z = CoM
 	###########################
 
 	######implement loaded plot settings

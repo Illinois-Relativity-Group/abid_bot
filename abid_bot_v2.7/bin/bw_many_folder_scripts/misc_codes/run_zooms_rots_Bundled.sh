@@ -16,15 +16,16 @@ lastIdx=5
 jobName=zoomIn
 h5folder=3d_data_201801160650 #Last #3d_data_201710120940/
 idx=5
+totframes=100
 savefolder=$savedir$jobName/
-pyscript=zoom_and_change_vol.py
+pyscript=mod_zoom.py
 view1XML=$rootdir/bin/bw_many_folder_scripts/atts/c10.xml
     #leave this blank if you want to use the viewXML from params
 view2XML=$rootdir/bin/bw_many_folder_scripts/atts/c8.xml
 
 if [ $zoom_in_flag -eq 1 ]
 then
-	./filmBundled.sh $rootdir $jobName $h5folder $idx $savefolder $pyscript $view1XML $view2XML
+	./filmBundled.sh $rootdir $jobName $h5folder $idx $totframes $savefolder $pyscript $view1XML $view2XML
 fi
 #############################
 
@@ -34,15 +35,16 @@ fi
 jobName=zoomIn2
 h5folder=3d_data_201601120701/
 idx=0
+totframes=100
 savefolder=$savedir$jobName/
-pyscript=zoom_and_change_vol.py
+pyscript=mod_zoom.py
 view1XML=$rootdir/bin/bw_many_folder_scripts/atts/c10.xml
     #leave this blank if you want to use the viewXML from params
 view2XML=$rootdir/bin/bw_many_folder_scripts/atts/c8.xml
 
 if [ $zoom_in_2_flag -eq 1 ]
 then
-	./filmBundled.sh $rootdir $jobName $h5folder $idx $savefolder $pyscript $view1XML $view2XML
+	./filmBundled.sh $rootdir $jobName $h5folder $idx $totframes $savefolder $pyscript $view1XML $view2XML
 fi
 #############################
 
@@ -52,14 +54,15 @@ fi
 jobName=zoomOut
 h5folder=3d_data_201601120701/
 idx=0
+totframes=100
 savefolder=$savedir$jobName/
-pyscript=zoom.py
+pyscript=mod_zoom.py
 view1XML=    #invert the view1 and view2 from zoom_in to get zoom out.
 view2XML=
 
 if [ $zoom_out_flag -eq 1 ]
 then
-	./filmBundled.sh $rootdir $jobName $h5folder $idx $savefolder $pyscript $view1XML $view2XML
+	./filmBundled.sh $rootdir $jobName $h5folder $idx $totframes $savefolder $pyscript $view1XML $view2XML
 fi
 #############################
 
@@ -67,13 +70,14 @@ fi
 
 ############################# fly_over
 jobName=flyOver
-h5folder=lastFolder 
-idx=lastIdx
+h5folder=$lastFolder 
+idx=$lastIdx
+totframes=100
 savefolder=$savedir$jobName/
-pyscript=fly_over.py
+pyscript=mod_fly_over.py
 if [ $fly_over_flag -eq 1 ]
 then
-	./filmBundled.sh $rootdir $jobName $h5folder $idx $savefolder $pyscript
+	./filmBundled.sh $rootdir $jobName $h5folder $idx $totframes $savefolder $pyscript
 fi
 #############################
 
@@ -81,16 +85,17 @@ fi
 
 ############################# zoom_in_3
 jobName=zoomIn3
-h5folder=lastFolder
-idx=lastIdx
+h5folder=$lastFolder
+idx=$lastIdx
+totframes=100
 savefolder=$savedir$jobName/
-pyscript=zoom.py
+pyscript=mod_zoom.py
 view1XML=    #leave this blank if you want to use the viewXML from params
 view2XML=
 
 if [ $zoom_in_3_flag -eq 1 ]
 then
-	./filmBundled.sh $rootdir $jobName $h5folder $idx $savefolder $pyscript $view1XML $view2XML
+	./filmBundled.sh $rootdir $jobName $h5folder $idx $totframes $savefolder $pyscript $view1XML $view2XML
 fi
 #############################
 
@@ -98,13 +103,14 @@ fi
 
 ############################# fly_around
 jobName=flyAround
-h5folder=lastFolder
-idx=lastIdx
+h5folder=$lastFolder
+idx=$lastIdx
+totframes=100
 savefolder=$savedir$jobName/
-pyscript=fly_around.py
+pyscript=mod_fly_around.py
 if [ $fly_around_flag -eq 1 ]
 then
-	./filmBundled.sh $rootdir $jobName $h5folder $idx $savefolder $pyscript
+	./filmBundled.sh $rootdir $jobName $h5folder $idx $totframes $savefolder $pyscript
 fi
 #############################
 

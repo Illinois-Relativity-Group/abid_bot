@@ -32,19 +32,19 @@ print(sys.argv)
 
 rank = int(sys.argv[6])
 total_ranks = int(sys.argv[7])
-saveFolder=sys.argv[8]
-rootdir = sys.argv[9]
-h5dir = sys.argv[10]
-extrasDir = sys.argv[11] 
-streamXML = sys.argv[12]
-vectorXML = sys.argv[13]
-bsq2rXML = "/u/sciteam/simone1/b2rho.xml"
-max_density = sys.argv[14]
-index = int(sys.argv[15])
+tot_frames = int(sys.argv[8])
+saveFolder=sys.argv[9]
+rootdir = sys.argv[10]
+h5dir = sys.argv[11]
+extrasDir = sys.argv[12] 
+streamXML = sys.argv[13]
+vectorXML = sys.argv[14]
+bsq2rXML = sys.argv[15]
+max_density = sys.argv[16]
+index = int(sys.argv[17])
 
 saveFolder = saveFolder + str(rank).zfill(3)+"_"
 
-tot_frames = 100
 frame_start = int(round((float(rank)/total_ranks)*tot_frames))
 frame_end = int(round(((rank+1.0)/total_ranks)*tot_frames))
 
@@ -52,8 +52,8 @@ time.strftime("%Y-%m-%d %H:%M:%S")
 
 ############XMLs##########
 
-view1 = sys.argv[16]
-view2 = sys.argv[17]
+view1 = sys.argv[18]
+view2 = sys.argv[19]
 beg_volume_xml = rootdir + '/bin/bw_many_folder_scripts/atts/nsns_dim.xml'
 end_volume_xml = rootdir + '/bin/bw_many_folder_scripts/atts/nsns_bright.xml'
 

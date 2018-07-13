@@ -33,17 +33,17 @@ print(sys.argv)
 
 rank = int(sys.argv[6])
 total_ranks = int(sys.argv[7])
-saveFolder=sys.argv[8]
-root_dir = sys.argv[9]
-h5dir = sys.argv[10]
-extrasDir = sys.argv[11] 
-streamXML = sys.argv[12]
-vectorXML = sys.argv[13]
-bsq2rXML = "/u/sciteam/simone1/b2rho.xml"
-max_density = sys.argv[14]
-index = int(sys.argv[15])
+tot_frames = int(sys.argv[8])
+saveFolder=sys.argv[9]
+root_dir = sys.argv[10]
+h5dir = sys.argv[11]
+extrasDir = sys.argv[12] 
+streamXML = sys.argv[13]
+vectorXML = sys.argv[14]
+bsq2rXML = sys.argv[15]
+max_density = sys.argv[16]
+index = int(sys.argv[17])
 
-tot_frames = 10 #TODO
 frame_start = int(round((float(rank)/total_ranks)*tot_frames))
 frame_end = int(round(((rank+1.0)/total_ranks)*tot_frames))
 
@@ -276,13 +276,10 @@ if gridPoints():
 	stream_gridPoints.pointList = getSeeds(extrasDir + gridPointsTXT[state])
 
 ### adjust the cm focus ###
-cmfile = open(extrasDir + timeTXT[state], 'r')
-cmarray = cmfile.readline().split()
-CoM_x = float(cmarray[0])
-CoM_y = float(cmarray[1])
-CoM_z = float(cmarray[2])
-CoM = (CoM_x,CoM_y,CoM_z)
-print("CoM: {}".format(CoM))
+CoM = getCoM(extrasDir + timeTXT[state])
+myView.focus = CoM
+CoM_x, CoM_y, CoM_z = CoM
+
 ###########################Load view
 
 c1 = View3DAttributes()
