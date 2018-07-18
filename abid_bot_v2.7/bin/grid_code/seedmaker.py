@@ -20,24 +20,22 @@ def make_seed_file(r):
 	yc = r[2]
 	zc = r[3]
 	fName = str(int(round(time/dt)))
-	outfile = open(bhseed_dir + fName.zfill(7) + ".txt", 'w')
+	with open(bhseed_dir + fName.zfill(7) + ".txt", 'w') as outfile:
 
 ############################################THING TO CHANGE###################################################
 # Here you have the ability to modify where the ring of points are going to be above and below the black hole. 
 # This section is the only place you should change anything. 
 
-
-	r = 1.0
-	h = r*2.0
-	m_steps = 20
-	for m in range(m_steps):
-		theta = 2*pi*m/m_steps
-		x = xc + r*cos(theta)
-		y = yc + r*sin(theta)
-		z = zc
-		outfile.write(str(x) + "\t" + str(y) + "\t" + str(z+h) + "\n")
-		outfile.write(str(x) + "\t" + str(y) + "\t" + str(z-h) + "\n")
-	outfile.close()
+		r = 1.0
+		h = r*2.0
+		m_steps = 20
+		for m in range(m_steps):
+			theta = 2*pi*m/m_steps
+			x = xc + r*cos(theta)
+			y = yc + r*sin(theta)
+			z = zc
+			outfile.write(str(x) + "\t" + str(y) + "\t" + str(z+h) + "\n")
+			outfile.write(str(x) + "\t" + str(y) + "\t" + str(z-h) + "\n")
 ############################################################################################################
 print("removing old seeds...")
 rmtree(bhseed_dir)
@@ -45,17 +43,16 @@ makedirs(bhseed_dir)
 
 # set up the timeList and cmList arrays from bhcen.txt
 print("creating new seeds...")
-f = open(grid_code_dir + "bhcen" + ahtype + ".txt", 'r')
-coordList = []
-for line in f:
-	data = line.split()
-	t = float(data[0])
-	x = float(data[1])
-	y = float(data[2])
-	z = float(data[3])
+with open(grid_code_dir + "bhcen" + ahtype + ".txt", 'r') as f:
+	coordList = []
+	for line in f:
+		data = line.split()
+		t = float(data[0])
+		x = float(data[1])
+		y = float(data[2])
+		z = float(data[3])
 
-	coordList.append( (t, x, y, z) )
-f.close()
+		coordList.append( (t, x, y, z) )
 
 # write seed files 
 for coord in coordList:
