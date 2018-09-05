@@ -17,7 +17,7 @@ h5prefix=3d_data_
 #run movie variables
 picsavedir=$root/movies
 logdir=$root/log
-visitScript=$root/bin/bw_many_folder_scripts/run.py
+visitScript=$root/bin/bw_many_folder_scripts/run_movie_ranks.py
 totranks=5
 
 #scheduler variables
@@ -32,8 +32,8 @@ fi
 count=1 #nth folder
 jobcount=0 #nth submitted folder
 DATE=$(date +%y%m%d_%H%M); echo $DATE
-picsavefolder=$picsavedir/$DATE; mkdir -p $picsavefolder
-logfolder=$logdir/$DATE;		 mkdir -p $logfolder
+picsavefolder=$picsavedir/"$DATE"_"$jobName"; mkdir -p $picsavefolder
+logfolder=$logdir/"$DATE"_"$jobName";		 mkdir -p $logfolder
 cd $logfolder;	mkdir -p $logfolder/joblist;	mkdir -p $logfolder/run;	mkdir -p $logfolder/job
 echo "Writing jobs to joblist..."
 
@@ -41,7 +41,7 @@ echo "Writing jobs to joblist..."
 ###Consider writing joblist and run files to log directory instead of scheduler directory
 for dir in $(ls -d ${h5dir}"/"$h5prefix* ); do
 	xmldir=$(ls -d -1 $extrasDir/** | sed -n ${count}p) 
-	tosave="$picsavefolder"/movie_$(printf "%03d" $count)_
+	tosave="$picsavefolder"/"$jobName"_$(printf "%03d" $count)_
 	#if [ $((count%20)) -eq 0 ]; then 		#Image every 20th folder
 	if [ $all = true ] || [ $count -ge $firstFolder -a $count -le $lastFolder ]; then
 		#loop over ranks within 3d_data folder
