@@ -1,5 +1,5 @@
 from math import pi, cos, sin
-from os.path import isfile, basename
+from os.path import isfile, isdir, basename
 from os import makedirs
 from shutil import rmtree
 from bisect import bisect_left
@@ -38,7 +38,9 @@ def make_seed_file(r):
 			outfile.write(str(x) + "\t" + str(y) + "\t" + str(z-h) + "\n")
 ############################################################################################################
 print("removing old seeds...")
-rmtree(bhseed_dir)
+if isdir(bhseed_dir):
+	rmtree(bhseed_dir)
+
 makedirs(bhseed_dir)
 
 # set up the timeList and cmList arrays from bhcen.txt
