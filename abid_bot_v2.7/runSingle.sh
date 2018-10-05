@@ -28,15 +28,15 @@ picsavefolder=$( echo $picsavefolder | sed "s,/$,,")
 
 count=1
 DATE=$(date +%y%m%d_%H%M)
-picsavefolder=$picsavedir/$DATE; mkdir -p $picsavefolder
-logfolder=$logdir/$DATE;         mkdir -p $logfolder
+picsavefolder=$picsavedir/"$DATE"_"$jobName"; mkdir -p $picsavefolder
+logfolder=$logdir/"$DATE"_"$jobName";         mkdir -p $logfolder
 
 cd $logfolder
 
 for dir in $(ls -d ${h5dir}"/"$h5prefix* )
 do
     blah=$(ls -d -1 $extrasDir/** | sed -n ${count}p) 
-    tosave="$picsavefolder"/movie_$(printf "%03d" $count)_
+    tosave="$picsavefolder"/"$jobName"_$(printf "%03d" $count)_
 
 if [ $count -eq 1 ]
 then
