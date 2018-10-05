@@ -270,12 +270,14 @@ for frame in range(firstFrame,lastFrame):
 	if bsq2r():			LoadAttribute(bsq2rXML, bsq_atts)
 	if velocity():		LoadAttribute(vectorXML, vector_atts)
 
-	if particles():		LoadAttribute(streamXML, stream_particles)
+	if particles():
+		LoadAttribute(streamXML, stream_particles)
 		stream_particles.pointList = getSeeds(extrasDir + particlesTXT[state])
 		if gridPoints():		
 			stream_particles.singleColor = (0, 255, 0, 255)			
 
-	if gridPoints():	LoadAttribute(streamXML, stream_gridPoints)
+	if gridPoints():
+		LoadAttribute(streamXML, stream_gridPoints)
 		stream_gridPoints.pointList = getSeeds(extrasDir + gridPointsTXT[state])
 
 	### adjust the cm focus ###
