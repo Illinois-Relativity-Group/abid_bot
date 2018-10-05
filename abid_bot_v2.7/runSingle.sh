@@ -13,7 +13,7 @@ h5prefix=3d_data_
 pbsfile=$root/bin/bw_many_folder_scripts/singleRun.pbs
 picsavedir=$root/movies
 logdir=$root/log
-visitScript=$root/bin/bw_many_folder_scripts/run.py
+visitScript=$root/bin/bw_many_folder_scripts/run_movie_ranks.py
 totranks=5
 #####end things you have to change
 
