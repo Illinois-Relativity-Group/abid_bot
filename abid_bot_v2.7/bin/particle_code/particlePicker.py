@@ -69,7 +69,6 @@ def ballLOP(): #Makes ListOfPoints of a ball around a center
 folderDest = root_dir + 'seeds/'
 datFolder = root_dir + 'dat/' 
 sourceFile = datFolder + first_time + '.dat'
-sourceFile2 = datFolder + "00442.78646344000.dat"
 filesOrigin = root_dir + 'filesOrigin.txt'
 reflectZ = 1
 maxParticles = 10
@@ -80,12 +79,11 @@ if not isfile(filesOrigin):
 
 if (ext == 'txt'): #Bfields
 ###################
-	lineNumbers = pPM.findInVolume(sourceFile2, maxParticles, volumeFunction) #line number
-	#lineNumbers += pPM.findInVolume(sourceFile, maxParticles, volumeFunction)
+	lineNumbers = pPM.findInVolume(sourceFile, maxParticles, volumeFunction)
 
-	listOfPoints = ringsLOP() #points
+	#listOfPoints = ringsLOP() #points
 	#listOfPoints = ballLOP()  #points
-	lineNumbers += pPM.nearestNeighbor(sourceFile, listOfPoints)
+	#lineNumbers += pPM.nearestNeighbor(sourceFile, listOfPoints)
 
 	#prev_seed = "/u/sciteam/wongsutt/scratch/SMS_2017_extint/abid_bot_v2.5/bin/particle_code/seeds/012400.000.txt"
 	#listOfPoints = pPM.loadLOP(prev_seed)
