@@ -12,22 +12,23 @@
 
 ########################### USER INPUT ####################################################
 root = "/home/colten1/Desktop/NSNS_high_align/bw_images/"
+kind = "hplus"
 rho_dir = root + "rho_dir/"
-gw_dir = root + "gw_dir/"
-out_dir = root + "merged/"
-num_imgs = 1856
+gw_dir = root + "gw_dir_" + kind +"/"
+out_dir = root + "merged_" + kind + "/"
+num_imgs = 1751
 ###########################################################################################
 
-for i in range(1, num_imgs):
+for i in range(0, num_imgs):
 	rho_img = 'rho_' + str(i).zfill(5) + '.png'
 	gw_img = 'gw_' + str(i).zfill(5) + '.png'
-	out_img = 'merged_' + str(i).zfill(4) + '.png'
+	out_img = kind + '_merged_' + str(i).zfill(4) + '.png'
 	image = pdb.gimp_file_load(gw_dir + gw_img, gw_dir + gw_img)
 	layer = pdb.gimp_file_load_layer(image, rho_dir + rho_img)
 	pdb.gimp_image_add_layer(image, layer, 0)
 	pdb.plug_in_colortoalpha(image, layer, '#3776FF')
 	pdb.plug_in_colortoalpha(image, layer, '#FFFFFF')
-	pdb.gimp_layer_set_opacity(layer, 50)
+	pdb.gimp_layer_set_opacity(layer, 100)
 	final = pdb.gimp_image_flatten(image)
 	pdb.file_png_save_defaults(image, final, out_dir + out_img, out_dir + out_img)
 	pdb.gimp_image_delete(image)

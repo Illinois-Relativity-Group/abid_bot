@@ -16,8 +16,9 @@ from fnmatch import fnmatch
 
 ##### list the folder directory ########################
 root = "/home/colten1/Desktop/NSNS_high_align/bw_images/" 
-src_dir_gw = root+"gw"
-dst_dir_gw = root+"gw_dir"
+kind = "hplus"
+src_dir_gw = root+"gw_offset_" + kind
+dst_dir_gw = root+"gw_dir_" + kind
 src_dir_rho = root+"density"
 dst_dir_rho = root+"rho_dir"
 gw_time_file = root+ "gw_time_list.txt"
@@ -62,7 +63,7 @@ def padding_slow_with_fast(file_A_list, file_B_list, src_dir_A, dst_dir_A, src_d
 	src_dir_B = check_slash(src_dir_B)
 	dst_dir_A = check_slash(dst_dir_A)
 	dst_dir_B = check_slash(dst_dir_B)
-	logs = open("logs.txt","w")
+	logs = open("logs_{}.txt".format(kind),"w")
 	logs.write("# \t "+ A_name+ " name \t" + A_name+ " time \t" + B_name+ " name \t" + B_name+ " time \n")
 	for i in range(len(file_A_list)):
 		time_A = file_A_list[i][1]
@@ -72,8 +73,8 @@ def padding_slow_with_fast(file_A_list, file_B_list, src_dir_A, dst_dir_A, src_d
 			# find the frame for B that is the nearest frame after the target A 
 			B_start += 1 
 			if B_start >= B_length:
-				print B_name+" files are exhausted "
-				print A_name+" files stops at" +str(time_A)
+				print(B_name+" files are exhausted ")
+				print(A_name+" files stops at" +str(time_A))
 				return        
 		index = B_start
 		if B_start >= 1:
@@ -93,23 +94,23 @@ def padding_slow_with_fast(file_A_list, file_B_list, src_dir_A, dst_dir_A, src_d
 	
 #### the main #########################
 
-print "loading GW images ...."
+print("loading GW images ....")
 gw_name = get_name(src_dir_gw)
 gw_time = get_time(gw_time_file)
-file_gw_list = zip(gw_name, gw_time)
-print "\t Done"
+file_gw_list = list(zip(gw_name, gw_time))
+print("\t Done")
 
-print "loading density images ...."
+print("loading density images ....")
 rho_name = get_name(src_dir_rho)
 rho_time = get_time(rho_time_file)
-file_rho_list = zip(rho_name, rho_time)
-print len(file_rho_list)
-print "\t Done"
+file_rho_list = list(zip(rho_name, rho_time))
+print(len(file_rho_list))
+print("\t Done")
 
-print "start copying ...." 	
+print("start copying ....")
 padding_slow_with_fast(file_gw_list, file_rho_list, src_dir_gw, dst_dir_gw, src_dir_rho, dst_dir_rho, "gw_", "rho_")
-print "\t Done"
-print "check logs.txt"
+print("\t Done")
+print("check logs_{}.txt".format(kind))
 
 
 
