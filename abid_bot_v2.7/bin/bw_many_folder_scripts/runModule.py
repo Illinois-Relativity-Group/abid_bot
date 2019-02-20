@@ -26,12 +26,12 @@ def box(y, addOp): #only show back half, reveals inside
 	SetOperatorOptions(BoxAtts, 0)
 	print("Box set")
 
-def cylinder(x, y, r, addOp, z=1000): #for addOp argument, use 'frame==firstFrame'
+def cylinder(x, y, r, addOp, z1, z2=1000): #for addOp argument, use 'frame==firstFrame'
 	if (addOp):
 		AddOperator("Cylinder")
 	CylinderAtts = CylinderAttributes()
-	CylinderAtts.point1 = (x, y, -z)
-	CylinderAtts.point2 = (x, y, z)
+	CylinderAtts.point1 = (x, y, z1)
+	CylinderAtts.point2 = (x, y, z2)
 	CylinderAtts.radius = r
 	CylinderAtts.inverse = 0
 	SetOperatorOptions(CylinderAtts)
@@ -219,7 +219,7 @@ def PlotVelocity(database, expression, indx):
 	AddPlot("Vector", expression)
 	print("Add velocity plot with index = {}".format(indx))
 	SetActivePlots(indx)
-	reflect()
+	#reflect()
 	return VectorAttributes()
 
 
