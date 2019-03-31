@@ -1,11 +1,6 @@
 cur=$PWD
 bin=$root"/bin"
 
-if [[ $(pwd) != $root* || -z "$root" ]]; then
-    echo Set params!
-    return 1
-fi
-
 echo "setting up black hole data..."
 rm -rf $root/bhdata/
 mkdir $root/bhdata/

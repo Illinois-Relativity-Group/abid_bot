@@ -1,10 +1,5 @@
 cur=$PWD
 
-if [[ $(pwd) != $root* || -z "$root" ]]; then
-    echo Set params!
-    return 1
-fi
-
 echo "setting up particles"
 rm -rf $root/seeds/
 mkdir $root/seeds/
