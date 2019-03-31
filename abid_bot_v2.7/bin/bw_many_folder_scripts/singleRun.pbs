@@ -2,11 +2,11 @@
 #PBS -j oe
 #PBS -l nodes=1:ppn=1
 #PBS -q low
-#PBS -l walltime=1:20:00
+#PBS -l walltime=2:00:00
 cd $PBS_O_WORKDIR
 . ${MODULESHOME}/init/bash
 module load visit
 
 #This line calls visit and runs it with a script in nowin mode. It also passes variables for that script to use
-visit -cli -nowin -forceversion 2.7.3 -np 1 -nn 1 -l aprun -s $VISITSCRIPT $H5 $EXTRAS $SAVEFOLDER $RANK $TOTRANKS $STREAMXML $VECXML $BSQXML $MAXDENS
+visit -cli -nowin -forceversion 2.7.3 -np 1 -nn 1 -l aprun -s $VISITSCRIPT $H5 $EXTRAS $SAVEFOLDER $RANK $TOTRANKS $STREAMXML $VECXML $BSQXML $G00_PSEUDOXML $G00_ISOXML $MAXDENS
 

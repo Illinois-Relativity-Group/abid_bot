@@ -10,6 +10,20 @@ def reflect():
 	AddOperator("Reflect")
 	SetOperatorOptions(ref)
 	print("Reflect set")
+
+def threshold(xml):
+	thresh = ThresholdAttributes()
+	LoadAttribute(xml, thresh)
+	AddOperator("Threshold")
+	SetOperatorOptions(thresh)
+	print("Threshold set")
+
+def iso(xml):
+	iso = IsosurfaceAttributes()
+	LoadAttribute(xml, iso)
+	AddOperator("Isosurface")
+	SetOperatorOptions(iso)
+	print("Isosurface set")
 	
 def box(y, addOp): #only show back half, reveals inside
 	if (addOp):#so we don't have multiple box operators
@@ -44,11 +58,15 @@ def LoadandDefine(database, symbol):#loads database, defines variable
 	DefineScalarExpression(symbol, "conn_cmfe(<" + database + "[0]id:MHD_EVOLVE--" + symbol + ">, <Carpet AMR-grid>)")
 	print("...Done")
 
-def setAnnotations():#sets background, sets up text
+def LoadandDefine2(database, prefix, symbol):#loads database, defines variable 
+    OpenDatabase(database,0,"CarpetHDF5_2.1")
+    DefineScalarExpression(symbol, "conn_cmfe(<" + database + "[0]id:" + prefix+"--"+symbol + ">, <Carpet AMR-grid>)")
+
+def setAnnotations(lightlist):#sets background, sets up text
 	Ann = AnnotationAttributes()
 	Ann.backgroundMode = Ann.Solid
-	Ann.backgroundColor = (55,118,255,255) #stu blue
-	#Ann.backgroundColor = (0,0,0,255) #black
+	#Ann.backgroundColor = (55,118,255,255) #stu blue
+	Ann.backgroundColor = (0,0,0,255) #black
 	#Ann.legendFlag = 0
 	Ann.databaseInfoFlag = 0
 	Ann.userInfoFlag = 0
@@ -56,6 +74,28 @@ def setAnnotations():#sets background, sets up text
 	Ann.axes3D.triadFlag = 0
 	Ann.axes3D.bboxFlag = 0
 	SetAnnotationAttributes(Ann)
+
+	# Light
+	for i,lamp in enumerate(lightlist):
+		light = GetLight(i)
+		lighttypes = [light.Ambient, light.Object, light.Camera]
+		light.enabledFlag = 1
+		light.direction = lamp[0]
+		light.brightness = lamp[1]
+		if len(lamp) > 2:
+			light.type = lighttypes[lamp[2]]
+		else:
+			light.type = light.Camera
+		SetLight(i, light)
+
+	# Rendering
+	rend = RenderingAttributes()
+	rend.scalableActivationMode = rend.Always
+	rend.doShadowing = 1
+	rend.shadowStrength = 0.5
+	rend.doDepthCueing = 1
+	rend.depthCueingAutomatic = 1
+	SetRenderingAttributes(rend)
 
 	# Clock
 	txt = CreateAnnotationObject("Text2D")
@@ -213,6 +253,13 @@ def PlotVol(database, expression, indx):
 	SetActivePlots(indx)
 	reflect()
 	return VolumeAttributes()
+
+def PlotPseudo(database, expression, indx):
+	ActivateDatabase(database)
+	AddPlot("Pseudocolor", expression)
+	print("Add {} pseudo plot with index = {}".format(expression, indx))
+	SetActivePlots(indx)
+	return PseudocolorAttributes()
 
 def PlotVelocity(database, expression, indx):
 	ActivateDatabase(database)

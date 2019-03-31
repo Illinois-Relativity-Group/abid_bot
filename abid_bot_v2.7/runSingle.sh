@@ -43,7 +43,7 @@ then
     for rank in `seq 0 $(( $totranks - 1 ))`;
     do
             echo submitting job $count with rank = $rank
-            qsub -N $jobName"_"$count"_"$rank -v VISITSCRIPT=$visitScript,H5=$dir,EXTRAS=$blah,SAVEFOLDER=$tosave$(printf "%03d" $rank)"_",RANK=$rank,TOTRANKS=$totranks,STREAMXML=$streamXML,VECXML=$vecXML,BSQXML=$bsqXML,MAXDENS=$maxdensity $pbsfile
+			qsub -N $jobName"_"$count"_"$rank -v VISITSCRIPT=$visitScript,H5=$dir,EXTRAS=$blah,SAVEFOLDER=$tosave$(printf "%03d" $rank)"_",RANK=$rank,TOTRANKS=$totranks,STREAMXML=$streamXML,VECXML=$vecXML,BSQXML=$bsqXML,G00_PSEUDOXML=$g00_pseudoXML,G00_ISOXML=$g00_isoXML,MAXDENS=$maxdensity $pbsfile
     done
 fi
     count=$((count+1))

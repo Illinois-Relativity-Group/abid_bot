@@ -2,7 +2,7 @@
 #PBS -j oe
 #PBS -N JOBNAME
 #PBS -l nodes=NUMBER_OF_NODES:ppn=2
-#PBS -l walltime=1:30:00
+#PBS -l walltime=2:00:00
 #PBS -q low
 
 cd $PBS_O_WORKDIR

@@ -48,7 +48,7 @@ for dir in $(ls -d ${h5dir}"/"$h5prefix* ); do
 		for rank in `seq 0 $(( $totranks - 1 ))`; do
 			#create job script for folder and rank; add to joblist
 			jobfile=$logfolder/job/job$count"_"$rank.sh
-			echo visit -cli -nowin -forceversion 2.7.3 -s $visitScript $dir $xmldir $tosave$(printf "%03d" $rank)"_" $rank $totranks $streamXML $vecXML $bsqXML $maxdensity > $jobfile
+			echo visit -cli -nowin -forceversion 2.7.3 -s $visitScript $dir $xmldir $tosave$(printf "%03d" $rank)"_" $rank $totranks $streamXML $vecXML $bsqXML $g00_pseudoXML $g00_isoXML $maxdensity > $jobfile
 			echo $logfolder $jobfile >> $logfolder/joblist/joblist$((jobcount/foldersPerRun))
 		done
 		jobcount=$((jobcount+1))
