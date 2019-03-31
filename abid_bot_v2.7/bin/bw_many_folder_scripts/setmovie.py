@@ -22,14 +22,15 @@ dt = float(sys.argv[3])
 M = float(sys.argv[4])
 offset = int(sys.argv[5])
 fields = strtobool(sys.argv[6])
-time_offset = float(sys.argv[7])
-vol_xml = sys.argv[8]
-vol2_xml = sys.argv[9]
-view_xml = sys.argv[10]
-view2_xml = sys.argv[11]
-twoColorsSeeds = strtobool(sys.argv[12])
-tracer = strtobool(sys.argv[13])
-twoColorsTracer = strtobool(sys.argv[14])
+g00=strtobool(sys.argv[7])
+time_offset = float(sys.argv[8])
+vol_xml = sys.argv[9]
+vol2_xml = sys.argv[10]
+view_xml = sys.argv[11]
+view2_xml = sys.argv[12]
+twoColorsSeeds = strtobool(sys.argv[13])
+tracer = strtobool(sys.argv[14])
+twoColorsTracer = strtobool(sys.argv[15])
 
 rootdir = rootdir if rootdir[-1] == '/' else rootdir + '/'
 
