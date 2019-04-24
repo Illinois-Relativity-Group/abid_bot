@@ -6,16 +6,21 @@
 ##(hcross or hplus)
 kind="hcross"
 
+all=false            #Runs all folders if true, if false will run from
+firstVTKFolder=1       #   firstFolder to lastFolder.  Can be changed in
+lastVTKFolder=10      #   the if-statement below
+foldersPerRun=1     
+
 # begin 
 
 jobName=bhbh_disk_GW_"$kind"
 GWdir=$root/gwdata/less_3D
 
 ########run movies variables
-
-pbsfile=$root/bin/gw_code/makeGW_movie.pbs
+pbsfile=$root/bin/gw_code/makeGW_movie_batch.pbs
 picsavedir=$root/movies
 logdir=$root/log
+schdir=$root/bin/scheduler
 visitScript=$root/bin/gw_code/GW_up.py  #2D use GW_up.py 3D use GW_3D.py
 #totranks=60
 frameperrank=5
@@ -37,17 +42,40 @@ echo $picsavefolder
 ###### make log folder
 logfolder=$logdir/$kind'_'$(date +%y%m%d_%H%M)
 mkdir -p $logfolder
-echo $logfolder
+cd $logfolder; 	mkdir -p $logfolder/joblist;	mkdir -p $logfolder/run;	mkdir -p $logfolder/job
 
-cd $logfolder
+count=1
+jobcount=0
 
-#for rank in `seq 0 $(( 2 ))`;
-for rank in `seq 0 $(( $totranks - 1 ))`;
-do
-	tosave="$picsavefolder"/movie_$(printf "%03d" $rank)   #For 3D use this line
-	#tosave="$picsavefolder"/movie                           #For 2D use this line
-	echo submitting job with rank = $rank out of $(( $totranks - 1 ))
-	qsub -N $jobName"_"$rank -v VISITSCRIPT=$visitScript,KIND=$kind,GWDIR=$GWdir,SAVEFOLDER=$tosave"_",RANK=$rank,TOTRANKS=$totranks,STOPTIME=$Stoptime,GWDT=$gw_dt,MASS=$M $pbsfile
+for dir in $(ls -d ${GWdir}"/"*); do
+	tosave="$picsavefolder"/"$jobName"_$(printf -n ${count}p)
+	if [ $all = true ] || [ $count -ge $firstVTKFolder -a $count -le $lastFolder ]; then
+		for rank in `seq 0 $(( $totranks - 1 ))`; do
+			jobfile=$logfolder/job/job$count"_"$rank.sh
+			echo visit -cli -nowin -forceversion 2.7.3 -s $visitScript $kind $GWdir $tosave$(printf "%03d" $rank)"_" $rank $totranks $Stoptime $gw_dt $M > $jobfile
+			echo $logfolder $jobfile >> $logfolder/joblist/joblist$((jobcount/foldersPerRun))
+		done
+		jobcount=$((jobcount+1))
+	fi
+	count=$((count+1))
 done
+
+chmod -R 755 $logfolder/job
+jobcount=$((jobcount-1))
+runcount=$((jobcount/foldersPerRun))
+numjobs=$(((foldersPerRun*totranks+1)))
+numnodes=$(((numjobs+1)/2))
+for i in `seq 0 $runcount`; do
+    cat $schdir/run_template | sed 's,JOBNAME,'"$jobName"'_'"$i"',g;
+                                    s,NUMBER_OF_NODES,'"$numnodes"',g;
+                                    s,TOTAL_JOBS,'"$numjobs"',g;
+                                    s,SCH_DIR,'"$schdir"',g;
+                                    s,LOG_DIR,'"$logfolder"',g;
+                                    s,JOBLIST,joblist/joblist'"$i"',g' > $logfolder/run/run$i
+    #Submit job
+    echo "    Submitting job $i"
+    qsub $logfolder/run/run$i
+done
+echo "    ...Done!"
 
 cd $root
