@@ -1,113 +1,36 @@
-###### VERSION 2.7 ######
-
-The purpose of this package is to automate the steps between obtaining the data and submitting jobs to 
-blue waters.
-
-Automating these steps allows you to focus on other physical tasks like setting up the right colorbar 
-or something. There are some steps that you'll still have to modify. For one, the volume attributes 
-xml file must be changed to fit the system. The default volume attribute is for a NSNS system. 
-The only other thing that you'll have to change is the seed points.
-
-In order to run this package, you must modifiy the params file that is unique to your system. Then
-source it.:
-
-	. params
-
-this sets the proper variables in your shell
-
-Then run 
-	./setup.sh
-and it will take care of the rest.
-
-all the code is in the bin directory, where you can modify and run certain setups separately. just make 
-sure you ran 
-	. params
-before doing so. 
-
-After setup is complete, you can run the movie using 
-	./runMovie.sh
+When you first get abidbot, check that you have the following folders:
+	/h5data/
+	/h5data/horizon/
+	/h5data/horizon/all_horizon/
+	/gwdata/
 
 
-These scripts call on secondary scripts. The ones you should look at before running the above code are
+Inside h5data/ is where you put all of the folders that contain the *.h5 data. Inside this directory there will be a bunch of 3d_data_*/ folders once you copy/link the data over. The all_horizon/ folder will contain all of the *.ah1.gp files (black hole data). The horizon/ folder will by populated with all the black hole data that we actually need for the movie (a subset of the all_horizon files). You will also need the following files in h5data/: bhns.mon, bhns.xon, particles.mon, BH_diagnostics.ah1.gp, and a *.par file (* depends on the case).
 
-	particle_code/particlePicker.py 		(to set up the particle seeds)
-	grid_code/seedmaker.py				(to set up the grid seeds)
-	bw_many_folder_scripts/setmovie.py		(to set up the camera at different events)
-	bw_many_folder_scripts/run_many_ranks.py	(if you want to plot something other than density (e.g. P/rho^{Gamma})
-	
-Finally, you can perform zooms and rotations by going into the bw_many_folder_scripts/misc_codes/ directory.
-A file to start with is "run_zooms_and_rots.sh". That's the main script that will be used to run all the 
-zoom/rotation scripts at once.
+This README will provide instructions on how to run the code to make these movies. While you read, follow these instructions, be sure to look at the code that you are running, as most of the time you will have to edit the files themselves. It's important to know what's going on in the code as well.
 
-Of course, you can customize the system's volume attributes, view attributes, and streamline attributes. These are all located in
-"bw_many_folder_scripts/atts/". Just modify the xml file or replace it entirely (for nsns_stream_0.xml, keep the name the same). 
-You'll have to let "setup.sh" know what xml files you want to use in the parameters section.
+The first step is making sure that we have the latest data in our h5data folder. All the *.h5 files should be in their respective 3d_data_*/ folders. and all h.t*.gp files grabbed from the postdocs should be in the h5data/horizon/all_horizon/ folder. There are two options when copying the data. First is to use the script bin/link_h5data.sh to simply make links to the data that lives in the postdocs folders. Simply edit the location of the folder you want to look through and just run the script. The other option is to copy the data directly into your folder using Globus. For this log onto Globus with your BW login, use the two pane option, navigate to the postdocs folder on one and to your abidbot on the other and then initalize a copy. It is best to do these in chuncks rather than all at once becasue it is kind of slow.
 
-To create gravitational wave movies, first run hplus_hcross.cpp on your local machine. Create a 1D file and a 3D/ folder, and place these in abid_bot/gwdata/. Then simply run 
-	. makeGW.sh 
-then 
-	./runMovie.sh.
-Note that you need an xml folder with valid times in order for these scripts to work. This mostly likely means that you have to run setup.sh first.
-If you don't have an xml folder or wish to supply your own time_list.txt, you can also create your own list. time_list.txt should contain one integer t/M on each line. Make sure the last is not outside the bounds of the data. If you wish for the script to generate a new time_list.txt, you must delete the old one.
+Most of the setup will be taken care of with the setup.sh script however this will walk you through what the script does. 
 
-##### CHANGELOG ######
-2.0:
-Original version of 2nd Abid bot
-Cleaned up structure. Introduced param file and sorted scripts in bin folder
+1. params
+	This sets the parameters of abid_bot to the current shell. Before you do anything you'll need to update these for your current project. The main ones you need to worry about immediately are root, M, it, dt, and maxdensity. You can ask the postdocs for these, or you can find them in the files in your h5data/ folder. The others can be edited later once you know the specifics about your project.
 
-2.1:
-Introduced gravitational wave scripts
-Jobs are now run from log folders so that logs will automatically be stored in the proper location
+2. clean_h5folders.sh and make_h5folders.sh
+	These scripts will delete the old xml/ folder and go through and check if each 3d_data folder has files in it. If there are no files in it, it will move the 3d_data folder to a new folder called bad_data. Then it will make a new empty xml/ folder which will be used later on.
 
-2.2:
-Two colors seeding points implemented
-Change job priority to low
-Optimization for makeparts.awk
-Add the option to output particle data as .3d files in particlePickerModule.py
-<Bug fixes> cm_append.py and SetMovie.sh are now working as intended
-<Bug fixes> Fix the problem that happen when visit load three bh databases when merging.
-<Bug fixes> Fix the problem in setmovie.py when we have gap in data.
+3. setup_bh.sh
+	If there are black hole files, this script will go through and select which black hole files to use because there are typically more black hole files than density time steps. The scripts that this uses are sift_gp.py, center_lister.py, and gpto3d.cpp. sift_gp.py is the one that actually separates the black hole files. center_lister.py does exactly what it says, lists the center of the black hole. gpto3d.cpp takes the .gp files that come from the grad students code to .3d files which visit can use. If there are multiple black holes in the simulation (such as BHNS or BHBH) it will take into account those files too.
 
-2.3:
-Combine all changes from v2.1 and v2.2.
+4. setup_seeds.sh
+	If you have B fields you will be editing particlePicker.py and rerunning this step a lot. This script will take the particles.mon file and split it up into smaller, more manageable files if you have updateParticlemon=True in params, otherwise it'll skip this step. For each particles.mon file, you only need to update it once, so remember to turn off updateParticlemon; otherwise this will waste a lot of time. After that, it will run particlePicker.py. Go to the README inside bin/particle_code for an explanation on how this works or see the tutorial section on Particle Picker. If there are black holes, we don't use particle seeds anymore; we use grid seeds above them to show jets so the code will then replace the particle seeds with black hole seeds it just made. The grid code and seed files can be found in bin/grid_code/. Less common is a tracer movie but it isn't all that different from particle seeds.
 
-2.4:
-Particle tracer function is complete. Please check the newly added particlePicker-tracer.py
-Detailed changelog about this function can be found in changelog.txt in abid_bot_v2.4
+5. setup_cp.sh
+	This script takes the bhns.xon file and tracks the center of mass of the entire system so we know where to center our camera in visit.
 
-2.5:
-Write volume xml and view xml in the movie folder
-Improve and fix zoom in, zoom out, fly around, fly over scripts inside misc codes. 
-Add an option to create xml files from setmovie.py (We can only copy xml files in previous versions)
-Add an option to change view and volume xml while evolving in setmovie.py.
-Write time filename in float
-<Bug fixes> setmovie.py is now working properly when using two or more lines of run command at the end.
-<Bug fixes> correct globalstate in setmovie.py
+6. setup_frames.sh
+	This is the final script to be run. This will take all the black hole files, seed files, and center of mass and split everything up by 3d_data folder so visit can use them when making a movie. The first script run is cray.sh which checks the 3d_data folders to make sure we don't have duplicate time steps. If there are, this scripts creates a file of the duplicates that rmdupes.py uses to ignore those time steps. Next is the setmovie.py script which will actually makes all the .xml files in the xml/ folders. You will have to edit the bottom of this file as it has custom options for which .xml file you want to use for each frame.
 
-2.6:
-DrawPlots() after setup volume attribute. This fix the problem when plotting b^2/2*rho.
-Make the code works when there is only one folder in h5data.
-Move streamXML variable assigning from runMovie.sh to params.
-Correct setmovie.py when the movie does not start from the first frame.
-Correct reflectZ option in gen3dFiles() function in particlePickerModule.py
-Various changes to misc_codes:
-	- Implement two colors field lines option
-	- Combine zoom in and zoom out into one file. Using it with two new arguments, view1XML and view2XML.
-	  You can specify them in run_zooms_and_rots.sh. Otherwise, the code will use the xmls specified in params.
-	- New zoom_in_no_fields.py and zoom_and_change_vol.py. 
-	- <Bug fixes> Fixes rootdir problem in misc_codes/film.sh
+And that's it! That is the full setup of abidbot. Each one of these setps can be run independently of the others but you must ALWAYS run setup_frames.sh at the end otherwise none of your changes will be used in visit.
 
-2.7:
-Jobs are now submitted with scheduler to not clog the queue
-	-Specify jobsPerFolder to balance less jobs and longer wait times
-	-All submission files are written to log folder and won't be overwritten
-Added parameters to zoom_and_change_vol.py for turning on/off Bfield and  Velocity arrows
-	-This should be the only zoom file you need
-	-Removed run_movie_fixed_view() code to call change view; only need to maintain one function now
-Rewrote particlePicker to be easier to use
-	-Can choose points more easily
-		-Can use multiple methods together (NN and Volume)
-Added link_h5data.sh to get updated data folders
-Rewrote run_movie_ranks.py as run.py and runModule.py
-	-Adjusted zooms/rots to also use runModule.py via mod_*.py; testing
-	-Added option to plot B^2/2rho, vel, cut in half...
+Happy Movie Making!
