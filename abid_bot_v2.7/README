@@ -25,7 +25,7 @@ Most of the setup will be taken care of with the setup.sh script however this wi
 4. setup_seeds.sh
 	If you have B fields you will be editing particlePicker.py and rerunning this step a lot. This script will take the particles.mon file and split it up into smaller, more manageable files if you have updateParticlemon=True in params, otherwise it'll skip this step. For each particles.mon file, you only need to update it once, so remember to turn off updateParticlemon; otherwise this will waste a lot of time. After that, it will run particlePicker.py. Go to the README inside bin/particle_code for an explanation on how this works or see the tutorial section on Particle Picker. If there are black holes, we don't use particle seeds anymore; we use grid seeds above them to show jets so the code will then replace the particle seeds with black hole seeds it just made. The grid code and seed files can be found in bin/grid_code/. Less common is a tracer movie but it isn't all that different from particle seeds.
 
-5. setup_cp.sh
+5. setup_cm.sh
 	This script takes the bhns.xon file and tracks the center of mass of the entire system so we know where to center our camera in visit.
 
 6. setup_frames.sh
