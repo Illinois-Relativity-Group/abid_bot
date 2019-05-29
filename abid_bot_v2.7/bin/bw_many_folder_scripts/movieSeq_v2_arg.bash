@@ -53,7 +53,7 @@ do
          i)
              it_inc=$OPTARG
              ;;
-         )
+         r)
              folderroot=$OPTARG
              folderroot=${folderroot%/}/    # No longer need to worry about the trailing "/"!
 	     ;;
