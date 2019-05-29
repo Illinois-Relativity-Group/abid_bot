@@ -48,9 +48,10 @@ then
 	echo "	making particle seeds"
 	cd $particledir
 	python particlePicker.py $dt $firstTime $particledir/ $arg1 $arg2 $arg3 $arg4 txt
-
+	module unload bwpy
 	cp seeds/* $root/seeds/
 	python $bin/rename_seeds.py $root/ $dt
+	module load bwpy
 fi
 
 if $bhForms
