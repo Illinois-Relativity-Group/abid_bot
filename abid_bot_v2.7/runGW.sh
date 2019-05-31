@@ -14,7 +14,7 @@ foldersPerRun=1
 # begin 
 
 jobName=bhbh_disk_GW_"$kind"
-GWdir=$root/gwdata/less_3D
+GWdir=$root/gwdata/3D
 
 ########run movies variables
 pbsfile=$root/bin/gw_code/makeGW_movie_batch.pbs
@@ -27,8 +27,8 @@ frameperrank=5
 Stoptime=$( tail -1 $root/gwdata/time_list.txt )  #the t/m you want to stop the movie
 totframes=$( awk -v stoptime="$Stoptime" 'BEGIN{FS="\n"}{if ($1>= stoptime){exit}}END{print NR}' $root/gwdata/time_list.txt )
 echo "Number of frames: "$totframes
-totranks=$(( $totframes/$frameperrank +1 ))
-
+#totranks=$(( $totframes/$frameperrank +1 ))
+totranks=5
 echo "Number of ranks: "$totranks
 
 ### remove trailing '/'
@@ -52,7 +52,7 @@ for dir in $(ls -d ${GWdir}"/"*); do
 	if [ $all = true ] || [ $count -ge $firstVTKFolder -a $count -le $lastFolder ]; then
 		for rank in `seq 0 $(( $totranks - 1 ))`; do
 			jobfile=$logfolder/job/job$count"_"$rank.sh
-			echo visit -cli -nowin -forceversion 2.7.3 -s $visitScript $kind $GWdir $tosave$(printf "%03d" $rank)"_" $rank $totranks $Stoptime $gw_dt $M > $jobfile
+			echo visit -cli -nowin -forceversion 2.7.3 -s $visitScript $kind $dir $tosave$(printf "%03d" $rank)"_" $rank $totranks $Stoptime $gw_dt $M > $jobfile
 			echo $logfolder $jobfile >> $logfolder/joblist/joblist$((jobcount/foldersPerRun))
 		done
 		jobcount=$((jobcount+1))
