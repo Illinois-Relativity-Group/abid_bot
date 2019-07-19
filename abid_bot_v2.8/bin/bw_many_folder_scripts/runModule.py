@@ -622,7 +622,7 @@ class VisitPlot:
 		### adjust the cm focus ###
 		self.CoM = getCoM(self.extrasDir + self.timeTXT[state])
 		self.myView.focus = self.CoM
-		CoM_x, CoM_y, CoM_z = self.CoM
+		self.CoM_x, self.CoM_y, self.CoM_z = self.CoM
 		
 		if self.density_vol(): print(rho_vol)
 		time.strftime("%Y-%m-%d %H:%M:%S")
@@ -662,26 +662,25 @@ class VisitPlot:
 #############################################
 
 	def PlotFrame(self, frame):
-		CoM_x, CoM_y, CoM_z = self.CoM
 		######implement loaded plot settings
 		print("setting settings")
 		if self.density_vol():
 			SetActivePlots(self.idx("density"))
 			SetPlotOptions(self.vol)
 			print("volume set")
-			if self.cutPlot: box(CoM_y, frame==self.firstFrame)
+			if self.cutPlot: box(self.CoM_y, frame==self.firstFrame)
 		if self.density_iso():
 			SetActivePlots(self.idx("density"))
 			SetPlotOptions(self.rho_atts)
 			iso(self.rho_isoXML)
 			reflect()
 			print("pseudocolor set")
-			if self.cutPlot: box(CoM_y, frame==self.firstFrame)
+			if self.cutPlot: box(self.CoM_y, frame==self.firstFrame)
 		if self.bsq2r():
 			SetActivePlots(self.idx("bsq2r"))
 			SetPlotOptions(self.bsq_atts)
 			print("bsq2r set")
-			if self.cutPlot: box(CoM_y, frame==self.firstFrame)
+			if self.cutPlot: box(self.CoM_y, frame==self.firstFrame)
 		if self.particles():
 			for i in range(self.numBfieldPlots):
 				SetActivePlots(self.idx("particles{}".format(i)))
@@ -693,9 +692,9 @@ class VisitPlot:
 		if self.velocity():
 			SetActivePlots(self.idx("vel"))
 			SetPlotOptions(self.vector_atts)
-			cylinder(CoM_x,CoM_y, 45, frame==self.firstFrame, 10, z2=100)
+			cylinder(self.CoM_x,self.CoM_y, 45, frame==self.firstFrame, 10, z2=100)
 			print("velocities set")
-			if self.cutPlot: box(CoM_y, frame==self.firstFrame)
+			if self.cutPlot: box(self.CoM_y, frame==self.firstFrame)
 		if self.g00():
 			SetActivePlots(self.idx("g00"))
 			SetPlotOptions(self.g00_atts)
