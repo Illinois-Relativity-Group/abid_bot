@@ -136,7 +136,7 @@ then
 	
 	echo "	making particle tracer"
 	cd $particledir
-	python particlePicker.py $dt $firstTime $particledir/ $arg1 $arg2 $arg3 $arg4 3d
+	python particlePicker.py $dt $firstTime $particledir/ $arg1 $arg2 $arg3 $arg4 3d $numBfieldPlots
 
 	cp $tracefolder/* $root/$tracefolder/
 	python $bin/rename_seeds.py $root/ $dt $tracefolder/

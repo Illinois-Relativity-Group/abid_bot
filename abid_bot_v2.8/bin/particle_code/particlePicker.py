@@ -107,5 +107,5 @@ if (ext == '3d'): #Particles
 	#listOfPoints = pPM.loadLOP(prev_seed)
 	#lineNumbers = pPM.findNearestNeighbor(sourceFile, listOfPoints)
 
-	pPM.genFiles(lineNumbers, filesOrigin, folderDest,reflectZ, '3d')
+	pPM.genFiles(lineNumbers, filesOrigin, root_dir + 'trace1/',reflectZ, '3d')
 
