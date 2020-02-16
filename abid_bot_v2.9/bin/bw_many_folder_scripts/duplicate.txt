@@ -1,0 +1,2 @@
+# List of folderpaths which are duplicated by other data
+# These folders won't be used for filming

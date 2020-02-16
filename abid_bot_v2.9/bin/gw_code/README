@@ -1,0 +1,5 @@
+Use gw_rho_merger.py and prpare_2.py to combine density and gw images into a single image.
+
+Move both of these scripts into the folder where you have both folders of images (you can store the images in different folders however it is recommended to keep a folder of rho images and a folder of gw images at the same level. Follow the instructions in each script to make the combined images.
+
+gw_rho_merger.py can't be run in a terminal. You must open gimp, click on filters, go down to python-fu and click console. Then copy the code inside the script into the console and hit ENTER twice.
