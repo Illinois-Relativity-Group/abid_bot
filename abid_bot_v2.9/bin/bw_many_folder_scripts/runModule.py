@@ -270,6 +270,7 @@ def PlotB(database, indx, ref=1):
 		reflect()
 	
 	pseudoAtt = PseudocolorAttributes()
+	pseudoAtt.colorTableName = 'streamlines'
 	pseudoAtt.legendFlag = 0
 	pseudoAtt.lightingFlag = 1
 	SetPlotOptions(pseudoAtt)
