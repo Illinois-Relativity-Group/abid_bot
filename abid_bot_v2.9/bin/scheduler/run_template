@@ -1,13 +1,16 @@
-#!/bin/sh
+#PBS -S /bin/csh
 #PBS -j oe
 #PBS -N JOBNAME
-#PBS -l nodes=NUMBER_OF_NODES:ppn=2
+#PBS -l select=32:ncpus=8:mpiprocs=8:model=san
 #PBS -l walltime=2:00:00
 #PBS -q low
 
 cd $PBS_O_WORKDIR
-. ${MODULESHOME}/init/bash
+module load comp-intel/2018.3.222
+module load mpi-sgi/mpt
 module unload bwpy
-module load visit
+setenv MPI_SHEPHERD true
+module load visit/2.13.0
+module load python
 
-aprun -n TOTAL_JOBS -S 2 SCH_DIR/scheduler.x LOG_DIR/JOBLIST /bin/bash > LOG_DIR/out/out_NUM.log
+mpiexec -n TOTAL_JOBS SCH_DIR/scheduler.x LOG_DIR/JOBLIST /bin/csh > LOG_DIR/out/out_NUM.log
