@@ -1,16 +1,16 @@
 #PBS -S /bin/csh
 #PBS -j oe
 #PBS -N JOBNAME
-#PBS -l select=32:ncpus=8:mpiprocs=8:model=san
+#PBS -l select=NUMBER_OF_NODES:ncpus=8:model=san
 #PBS -l walltime=2:00:00
 #PBS -q low
 
 cd $PBS_O_WORKDIR
 module load comp-intel/2018.3.222
 module load mpi-sgi/mpt
-module unload bwpy
 setenv MPI_SHEPHERD true
-module load visit/2.13.0
-module load python
-
+module load visit/3.0.0
+module load hdf5/1.8.18_serial
+#module load python
+#setenv PYTHONHOME /nasa/pkgsrc/sles12/2018Q3/views/python/2.7.15/lib/python2.7/site-packages
 mpiexec -n TOTAL_JOBS SCH_DIR/scheduler.x LOG_DIR/JOBLIST /bin/csh > LOG_DIR/out/out_NUM.log

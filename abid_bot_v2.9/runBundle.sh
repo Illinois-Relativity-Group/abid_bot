@@ -1,10 +1,10 @@
 . params
 
 #option to reduce number of folders images
-all=true 			#Runs all folders if true, if false will run from
+all=false 			#Runs all folders if true, if false will run from
 firstFolder=1		#	firstFolder to lastFolder.  Can be changed in
-lastFolder=100		#	the if-statement below
-foldersPerRun=2		#Larger numbers take longer to launch but are preferred by BW
+lastFolder=1		#	the if-statement below
+foldersPerRun=1		#Larger numbers take longer to launch but are preferred by BW
 					#Set to 1 for fastest queue times, ~10 is a good amount
 #foldersPerRun=$(ls -d h5data/3d_data_* | wc -l) # Submits all folders in one job.  Long time in queue
 
@@ -67,7 +67,7 @@ for dir in $(ls -d ${h5dir}"/"$h5prefix* ); do
 		for rank in `seq 0 $(( $totranks - 1 ))`; do
 			#create job script for folder and rank; add to joblist
 			jobfile=$logfolder/job/job$count"_"$rank.sh
-			echo visit -cli -nowin -forceversion 2.13.0 -l mpiexec -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $xmldir $tosave$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $maxdensity $rho_pseudoXML $rho_isoXML $g00_pseudoXML $g00_isoXML > $jobfile
+			echo visit -cli -nowin -forceversion 3.0.0 -l mpiexec -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $xmldir $tosave$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $maxdensity $rho_pseudoXML $rho_isoXML $g00_pseudoXML $g00_isoXML > $jobfile
 			echo $logfolder $jobfile >> $logfolder/joblist/joblist$((jobcount/foldersPerRun))
 		done
 		jobcount=$((jobcount+1))
@@ -94,6 +94,8 @@ for i in `seq 0 $runcount`; do
 	qsub $logfolder/run/run$i
 done
 echo "$runcount"
+echo "$numjobs"
+echo "$numnodes"
 echo "    ...Done!"
 
 cd $root
