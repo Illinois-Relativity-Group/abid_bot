@@ -13,12 +13,18 @@ x2c = float(argv[6])
 y2c = float(argv[7])
 ext = argv[8] #"txt" or "3d"
 numPlots = int(argv[9])
-
+twoColor = argv[10]
 def sphere(x,y,z):
-	rad = 1
+	rad = .4
 	center = [0, 0, 0]
 	r = dist([x, y, z],center)
 	return (r < rad)
+def sphere2(x,y,z):
+	rad = 1
+	rad2 = .4
+	center = [0, 0, 0]
+	r = dist([x, y, z],center)
+	return (rad2 < r < rad)
 
 def two_sphere(x,y,z):
 	rad1 = 1
@@ -30,7 +36,7 @@ def two_sphere(x,y,z):
 
 def cyl(x,y,z):
 	rad = 1
-	center = [3, 3]
+	center = [0, 0]
 	r = dist([x, y], center)
 	return (r < rad)
 
@@ -72,8 +78,9 @@ datFolder = root_dir + 'dat/'
 sourceFile = datFolder + first_time + '.dat'
 filesOrigin = root_dir + 'filesOrigin.txt'
 reflectZ = 1
-maxParticles = 10
-volumeFunction = cyl
+maxParticles = 100
+volumeFunction = sphere
+volumeFunction2 = sphere2
 
 if not isfile(filesOrigin):
 	pPM.genFilesOrigin(bigTimeStep,datFolder, float(first_time))
@@ -96,7 +103,13 @@ if (ext == 'txt'): #Bfields
 
 
 if (ext == '3d'): #Particles
-	lineNumbers = pPM.findInVolume(sourceFile, maxParticles, volumeFunction) #line number
+	if twoColor == 'false':
+		lineNumbers = pPM.findInVolume(sourceFile, maxParticles, volumeFunction) #line number
+		pPM.genFiles(lineNumbers, filesOrigin, root_dir + 'trace1/',reflectZ, '3d')
+	else:
+		lineNumbers = pPM.findInVolume(sourceFile, maxParticles, volumeFunction2) #line number
+		pPM.genFiles(lineNumbers, filesOrigin, root_dir + 'trace2/',reflectZ, '3d')
+	
 	#lineNumbers += pPM.findInVolume(sourceFile, maxParticles, volumeFunction)
 
 	#listOfPoints = ringsLOP() #points
@@ -107,5 +120,5 @@ if (ext == '3d'): #Particles
 	#listOfPoints = pPM.loadLOP(prev_seed)
 	#lineNumbers = pPM.findNearestNeighbor(sourceFile, listOfPoints)
 
-	pPM.genFiles(lineNumbers, filesOrigin, root_dir + 'trace1/',reflectZ, '3d')
+	#pPM.genFiles(lineNumbers, filesOrigin, root_dir + 'trace1/',reflectZ, '3d')
 

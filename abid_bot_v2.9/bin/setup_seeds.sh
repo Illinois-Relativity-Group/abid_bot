@@ -5,7 +5,9 @@ rm -rf $root/seeds/
 mkdir $root/seeds/
 
 tracefolder=trace1/
+tracefolder2=trace2/
 rm -rf $root/$tracefolder/
+rm -rf $root/$tracefolder2/
 
 if $particleSeeds
 then
@@ -47,7 +49,7 @@ then
 	
 	echo "	making particle seeds"
 	cd $particledir
-	python particlePicker.py $dt $firstTime $particledir/ $arg1 $arg2 $arg3 $arg4 txt $numBfieldPlots
+	python particlePicker.py $dt $firstTime $particledir/ $arg1 $arg2 $arg3 $arg4 txt $numBfieldPlots false
 	
 	cp seeds/* $root/seeds/
 	python $bin/rename_seeds.py $root/ $dt
@@ -105,6 +107,12 @@ then
 	mkdir $root/$tracefolder/
 	rm -rf $particledir/$tracefolder/
 	mkdir $particledir/$tracefolder/
+	if $twoColorsTracer
+	then
+		mkdir $root/$tracefolder2/
+		rm -rf $particledir/$tracefolder2/
+		mkdir $particledir/$tracefolder2/
+	fi	
 
 	if $updateParticleMon
 	then
@@ -136,10 +144,19 @@ then
 	
 	echo "	making particle tracer"
 	cd $particledir
-	python particlePicker.py $dt $firstTime $particledir/ $arg1 $arg2 $arg3 $arg4 3d $numBfieldPlots
+	python particlePicker.py $dt $firstTime $particledir/ $arg1 $arg2 $arg3 $arg4 3d $numBfieldPlots false
 
 	cp $tracefolder/* $root/$tracefolder/
 	python $bin/rename_seeds.py $root/ $dt $tracefolder/
+	if $twoColorsTracer
+	then
+		cd $particledir
+		python particlePicker.py $dt $firstTime $particledir/ $arg1 $arg2 $arg3 $arg4 3d $numBfieldPlots true
+
+		cp $tracefolder2/* $root/$tracefolder2/
+		python $bin/rename_seeds.py $root/ $dt $tracefolder2/
+	fi
+		
 fi
 
 

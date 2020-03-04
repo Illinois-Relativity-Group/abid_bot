@@ -254,9 +254,10 @@ def PlotTrace(database, idx, indx):
 	pointAtt.lightingFlag = 0
 	if (idx=='1'):
 		pointAtt.pointSizePixels = 8   #8 or 10 if you use 2 colors 
+		pointAtt.colorTableName = "blueParticles" #blue particles
 	if (idx=='2'):
-		pointAtt.pointSizePixels = 4
-		pointAtt.colorTableName = "PiYG" #Green at position 1
+		pointAtt.pointSizePixels = 8
+		pointAtt.colorTableName = "redParticles" #red particles
 
 	SetPlotOptions(pointAtt)
 
@@ -270,9 +271,10 @@ def PlotB(database, indx, ref=1):
 		reflect()
 	
 	pseudoAtt = PseudocolorAttributes()
-	pseudoAtt.colorTableName = 'streamlines'
 	pseudoAtt.legendFlag = 0
 	pseudoAtt.lightingFlag = 1
+	pseudoAtt.colorTableName = 'streamlines'
+	pseudoAtt.lineWidth = 3
 	SetPlotOptions(pseudoAtt)
 	
         AddOperator("IntegralCurve")
@@ -492,13 +494,13 @@ class VisitPlot:
 	
 		if self.trace1():
 			print("Loading Particle Tracer...")
-			OpenDatabase(self.trace1dir)
+			OpenDatabase(self.trace1dir, 0, "Point3D_1.0")
 			dbs += [self.trace1dir]
 			plot_idx += ["trace1"]
 	
 		if self.trace2():
 			print("Loading Particle Tracer 2...")
-			OpenDatabase(self.trace2dir)
+			OpenDatabase(self.trace2dir, 0, "Point3D_1.0")
 			dbs += [self.trace2dir]
 			plot_idx += ["trace2"]
 	
@@ -674,6 +676,7 @@ class VisitPlot:
 		print("setting settings")
 		if self.density_vol():
 			SetActivePlots(self.idx("density"))
+			self.vol.samplesPerRay = 70
 			SetPlotOptions(self.vol)
 			print("volume set")
 			if self.cutPlot: box(self.CoM_y, frame==self.firstFrame)
