@@ -18,7 +18,7 @@ h5prefix=3d_data_
 picsavedir=$root/movies
 logdir=$root/log
 visitScript=$root/bin/bw_many_folder_scripts/run.py
-totranks=5
+totranks=2
 
 #plotting varibles
 PlotDensAsVol=1 # Plot density in a volume plot
@@ -67,8 +67,8 @@ for dir in $(ls -d ${h5dir}"/"$h5prefix* ); do
 		for rank in `seq 0 $(( $totranks - 1 ))`; do
 			#create job script for folder and rank; add to joblist
 			jobfile=$logfolder/job/job$count"_"$rank.sh
-			echo visit -cli -nowin -forceversion 3.0.0 -l mpiexec -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $xmldir $tosave$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $maxdensity $rho_pseudoXML $rho_isoXML $g00_pseudoXML $g00_isoXML > $jobfile
-			echo $logfolder $jobfile >> $logfolder/joblist/joblist$((jobcount/foldersPerRun))
+			echo visit -cli -nowin -forceversion 3.0.0 -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $xmldir $tosave$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $maxdensity $rho_pseudoXML $rho_isoXML $g00_pseudoXML $g00_isoXML > $jobfile
+			echo $jobfile >> $logfolder/joblist/joblist$((jobcount/foldersPerRun))
 		done
 		jobcount=$((jobcount+1))
 	fi
@@ -76,18 +76,26 @@ for dir in $(ls -d ${h5dir}"/"$h5prefix* ); do
 done
 
 #finish job setup; create run script
-chmod -R 755 $logfolder/job
+chmod -R 777 $logfolder/job
 jobcount=$((jobcount-1))
 runcount=$((jobcount/foldersPerRun))
 numjobs=$(((foldersPerRun*totranks+1)))
 numnodes=$(((numjobs+1)/2))
 for i in `seq 0 $runcount`; do
+	touch $logfolder/joblist/looper$i.sh
+	loopfile=$logfolder/joblist/looper$i.sh
+	cat $schdir/job_template | sed 's, LOG_DIR, '"$logfolder"',g;
+					s,JOBLIST,joblist/joblist'"$i"',g'> $loopfile
+	chmod 777 $loopfile
+	chmod 777 $logfolder/joblist/joblist$i
+	loopfile2=$logfolder/joblist/looper$i.sh
 	cat $schdir/run_template | sed 's,JOBNAME,'"$jobName"'_'"$i"',g;
 									s,NUMBER_OF_NODES,'"$numnodes"',g;
 									s,TOTAL_JOBS,'"$numjobs"',g;
 									s,SCH_DIR,'"$schdir"',g;
 									s,LOG_DIR,'"$logfolder"',g;
 									s,JOBLIST,joblist/joblist'"$i"',g;
+									s,LOOPER,'"$loopfile2"',g;
 									s,NUM,'"$i"',g' > $logfolder/run/run$i
 	#Submit job
 	echo "    Submitting job $i"
