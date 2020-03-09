@@ -7,16 +7,19 @@ module load mpi-sgi/mpt
 module load visit/3.0.0
 module load hdf5/1.8.18_serial
 #module load python
-filename= LOG_DIR/JOBLIST
-counter=0
-cat $filename | while read line
+counter=1
+echo "loop initiated"
+while IFS= read -r line
 do 
-if [$1-gt $counter];
+echo "looped"
+if [ $1 -gt $counter ];
 then 
-$counter =  $counter+1
-elif [$1==$counter];
+echo "iterated"
+counter=$(($counter+1))
+elif [ $1 == $counter ];
 then
+	echo "executing"
 	eval "$line"
-	$counter=$counter+1
+	counter=$(($counter+1))
 fi
-done
+done < LOG_DIR/JOBLIST
