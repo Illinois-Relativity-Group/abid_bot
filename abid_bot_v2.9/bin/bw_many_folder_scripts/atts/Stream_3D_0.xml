@@ -16,7 +16,7 @@
     <Field name="sampleDensity1" type="int">2</Field>
     <Field name="sampleDensity2" type="int">2</Field>
     <Field name="integrationDirection" type="string">Both</Field>
-    <Field name="maxSteps" type="int">50000</Field>
+    <Field name="maxSteps" type="int">10000</Field>
     <Field name="terminateByDistance" type="bool">false</Field>
     <Field name="termDistance" type="double">2000</Field>
     <Field name="terminateByTime" type="bool">false</Field>
@@ -24,10 +24,10 @@
     <Field name="maxStepLength" type="double">300</Field>
     <Field name="limitMaximumTimestep" type="bool">false</Field>
     <Field name="maxTimeStep" type="double">0.1</Field>
-    <Field name="relTol" type="double">5e-10</Field>
+    <Field name="relTol" type="double">5e-15</Field>
     <Field name="absTolSizeType" type="string">FractionOfBBox</Field>
-    <Field name="absTolAbsolute" type="double">5e-10</Field>
-    <Field name="absTolBBox" type="double">5e-10</Field>
+    <Field name="absTolAbsolute" type="double">5e-15</Field>
+    <Field name="absTolBBox" type="double">5e-15</Field>
     <Field name="fieldType" type="string">Default</Field>
     <Field name="fieldConstant" type="double">1</Field>
     <Field name="velocitySource" type="doubleArray" length="3">0 0 0 </Field>
