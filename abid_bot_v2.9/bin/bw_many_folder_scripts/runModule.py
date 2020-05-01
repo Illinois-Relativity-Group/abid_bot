@@ -676,7 +676,6 @@ class VisitPlot:
 		print("setting settings")
 		if self.density_vol():
 			SetActivePlots(self.idx("density"))
-			self.vol.samplesPerRay = 70
 			SetPlotOptions(self.vol)
 			print("volume set")
 			if self.cutPlot: box(self.CoM_y, frame==self.firstFrame)
