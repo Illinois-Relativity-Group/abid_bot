@@ -55,10 +55,10 @@ for dir in $(ls -d ${h5dir}"/"$h5prefix* ); do
 
 	if [ $count -eq $foldernum ]; then
 		for rank in `seq 0 $(( $totranks - 1 ))`; do
-				#if [ $rank -eq $ranknum ]; then
+				if [ $rank -eq $ranknum ]; then
 		        	echo submitting job $count with rank = $rank
 					qsub -N $jobName"_"$count"_"$rank -v VISITSCRIPT=$visitScript,PDAS=$PlotDensAsVol,PDAI=$PlotDensAsIso,PDL=$PlotDensLinear,PV=$PlotVel,PBSQ2R=$PlotBsq2r,PG00=$Plotg00,REFPLOT=$refPlot,CUTPLOT=$cutPlot,PE=$PlotEvolve,PZ=$PlotZoom,PFO=$PlotFlyOver,PFA=$PlotFlyAround,H5=$dir,EXTRAS=$blah,SAVEFOLDER=$tosave$(printf "%03d" $rank)"_",RANK=$rank,TOTRANKS=$totranks,NUMBFIELDPLOTS=$numBfieldPlots,VECXML=$vecXML,BSQXML=$bsqXML,G00_PSEUDOXML=$g00_pseudoXML,G00_ISOXML=$g00_isoXML,MAXDENS=$maxdensity,RHO_PSEUDOXML=$rho_pseudoXML,RHO_ISOXML=$rho_isoXML $pbsfile
-				#fi
+				fi
 		done
 	fi
     count=$((count+1))
