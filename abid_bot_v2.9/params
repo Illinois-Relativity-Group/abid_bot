@@ -23,8 +23,7 @@ dt="2.85714"
 #			that time exactly into "firstTime" but not using scientific notation.
 #			If your first time is zero and you use particle seed, check "particle.mon" 
 #			and look at the first line. If the time here is not zero, use this time instead.
-#firstTime="00000.00000000000"
-firstTime="00000.71428571429"
+firstTime="00000.00000000000"
 
 # M: 			The ADM mass
 M=".1345"
@@ -44,7 +43,6 @@ numStars=1
 #			variable is used in "run_many_movie_rankes.py" when defining the logrho 
 #			variable: 
 #			DefineScalarExpression("logrha","log10(<MHD_EVOLVE--rho_b>/"+max_density+")")
-#maxdensity="5.664774413840759E-007"
 maxdensity="1.0822293452E-001"
 
 # time_offset:		This parameter is rarely nonzero. time_offset is described by the following 
