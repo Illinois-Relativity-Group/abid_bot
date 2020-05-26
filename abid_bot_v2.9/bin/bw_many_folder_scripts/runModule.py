@@ -775,15 +775,128 @@ class VisitPlot:
 	
 	def PlotFlyOver(self, zoomopts):
 		frame, num_frames, view_xml, vol_xml = zoomopts
+		from math import pi, sin, cos, tan, atan2, sqrt
+
+		def cross(a,b):
+			x=a[1]*b[2]-a[2]*b[1]
+			y=a[2]*b[0]-a[0]*b[2]
+			z=a[0]*b[1]-a[1]*b[0]
+			return (x,y,z)
+
+		def newton(x,f,y):#	adjust initial theta to match new theta not theta0, newtons method on eqn
+			#				x+f*sin(2x)-y=0
+			for i in range (0,10):
+				x=x-(x+f*sin(2*x)-y)/(1+2*f*cos(2*x))
+			return x
+		
+		frame_i = int(round((self.rank*1.0)/self.total_ranks*num_frames))
+		frame_f = int(round((self.rank+1.0)/self.total_ranks*num_frames))
+		print("frame start: " + str(frame_i) + "\nframe_end: " + str(frame_f))
+		
+		myVol = VolumeAttributes(); LoadAttribute(vol_xml, myVol)
+
+		myView = View3DAttributes(); LoadAttribute(view_xml, myView)
+		myViewNormal = myView.viewNormal
+		myViewUp = myView.viewUp
+		
+		for i in range(frame_i, framef):
+			factor = 0.4
+			#factor slows down rotation when looking into jet,
+			#			higher value slows down more.  0<factor<0.5
+			#			factor=0: spins at constant rate
+			#			factor=0.5: comes to instantaeneous stop at top & bottom
+			
+			theta = 2*pi*i/(nsteps)#(n-1) makes last frame same as first
+
+			xhat=myViewNormal[0]
+			yhat=myViewNormal[1]
+			zhat=myViewNormal[2]
+
+			rhat=sqrt(xhat*xhat+yhat*yhat)
+			theta0=atan2(zhat,rhat)
+			theta0=newton(theta0,factor,theta0)
+
+			theta_temp=theta0+theta
+			theta_new=theta_temp+factor*sin(2*theta_temp)
+		
+
+			z_new=sin(theta_new)
+			y_new=cos(theta_new)*(yhat/rhat)
+			x_new=cos(theta_new)*(xhat/rhat)
+			viewNormal = (x_new, y_new, z_new)
+			print("Normal ", viewNormal)
+			perp=cross((xhat,yhat,0),(0,0,zhat))
+			print("perp ", perp)
+			viewUp=cross(perp,viewNormal)
+			print("up: ", viewUp)
+
+			newView = myView
+			newView.viewNormal = viewNormal
+			newView.viewUp = viewUp
+
+			movie_attributes = [newView, myVol, self.rho_pseudoXML, self.bsq2rXML, self.vectorXML, self.g00_pseudoXML, '','']
+			self.SetAtts(frame, movie_attributes)
+			self.PlotFrame(frame)
+			
 
 #############################################
 	
 	def PlotFlyAround(self, zoomopts):
 		frame, num_frames, view_xml, vol_xml = zoomopts
+		from math import cos, sin, pi, sqrt
 
+		frame_i = int(round((self.rank*1.0)/self.total_ranks*num_frames))
+		frame_f = int(round((self.rank+1.0)/self.total_ranks*num_frames))
+		print("frame start: " + str(frame_i) + "\nframe_end: " + str(frame_f))
 
+		def trans(a):
+			b=[[a[i][j] for i in xrange(len(a))] for j in xrange(len(a[0]))]
+			return b
 
+		def circle(vN,vU,theta,M=0,R=0):
+			theta=-theta
 
+			IE=trans(vstack([list(vN)],[list(vU)]))
+
+			if (R==0 or R=="Z" or R=="z"):
+				RM=[[cos(theta),-sin(theta),0],[sin(theta),cos(theta),0],[0,0,1]]
+			elif (R==1 or R=="Y" or R=="y"):
+				RM=[[cos(theta),0,sin(theta)],[0,1,0],[-sin(theta),0,cos(theta)]]
+			elif (R==2 or R=="X" or R=="x"):
+				RM=[[1,0,0],[0,cos(theta),-sin(theta)],[0,sin(theta),cos(theta)]]
+			else:
+				print("Error! Wrong choice of axis for 'R'!")
+				return vN,vU
+
+			if (M == 0): # Intrinsic
+				m=trans(mult(RM,IE))
+			elif (M == 1): # extrinsic
+				m=trans(mult(IE,RM))
+			else:
+				print("Error! Wrong choice of mode for 'M'!")
+				return vN,vU
+
+			return tuple(m[0]),tuple(m[2])
+		
+		myVol = VolumeAttributes(); LoadAttribute(vol_xml, myVol)
+
+		myView = View3DAttributes(); LoadAttribute(view_xml, myView)
+		myViewNormal = myView.viewNormal
+		myViewUp = myView.viewUp
+
+		for i in range(frame_i, frame_f):
+			phi = 2*pi*i/(nsteps)#(n-1) makes last frame same as first
+			viewNormal, viewUp = circle(myViewNormal, myViewUp, phi, 0, 0)
+
+			newView = myView
+			newView.viewNormal = viewNormal
+			newView.viewUp = viewUp
+
+			movie_attributes = [newView, myVol, self.rho_pseudoXML, self.bsq2rXML, self.vectorXML, self.g00_pseudoXML, '','']
+			self.SetAtts(frame, movie_attributes)
+			self.PlotFrame(frame)
+
+###################END#######################
 
 
 
