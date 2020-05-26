@@ -4,6 +4,7 @@ bin=$root"/bin"
 echo "setting up black hole data..."
 rm -rf $root/bhdata/
 mkdir $root/bhdata/
+chmod 770 $root/bhdata/
 
 echo "		sifting *.gp files'"
 python $bin/sift_gp.py $root/h5data/horizon/ $it 1

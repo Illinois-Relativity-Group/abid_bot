@@ -3,6 +3,7 @@ cur=$PWD
 echo "setting up particles"
 rm -rf $root/seeds/
 mkdir $root/seeds/
+chmod 770 $root/seeds/
 
 tracefolder=trace1/
 tracefolder2=trace2/
@@ -14,6 +15,7 @@ then
 	particledir=$bin/particle_code
 	rm -rf $particledir/seeds/
 	mkdir $particledir/seeds/
+	chmod 770 $particledir/seeds/
 
 	if $updateParticleMon
 	then
@@ -27,6 +29,7 @@ then
 
 		rm -rf $particledir/misc/dat_shortened/
 		mkdir $particledir/misc/dat_shortened/
+		chmod 770 $particledir/misc/dat_shortened/
 		python dat_cut.py $root/ $firstTime $dt
 		rm -rf $particledir/misc/dat/
 		mv $particledir/misc/dat_shortened/ $particledir/misc/dat/
@@ -64,6 +67,7 @@ then
 	if $twoColorsSeeds
 	then
 		mkdir $root/seeds/gridseeds/
+		chmod 770 $root/seeds/gridseeds/
 		targetdir=$root/seeds/gridseeds/
 	fi
 
@@ -105,13 +109,17 @@ if $particleTracer
 then
 	particledir=$bin/particle_code
 	mkdir $root/$tracefolder/
+	chmod 770 $root/$tracefolder/
 	rm -rf $particledir/$tracefolder/
 	mkdir $particledir/$tracefolder/
+	chmod 770 $particledir/$tracefolder/
 	if $twoColorsTracer
 	then
 		mkdir $root/$tracefolder2/
+		chmod 770 $root/$tracefolder2/
 		rm -rf $particledir/$tracefolder2/
 		mkdir $particledir/$tracefolder2/
+		chmod 770 $particledir/$tracefolder2/
 	fi	
 
 	if $updateParticleMon
@@ -124,6 +132,7 @@ then
 
 		rm -rf $particledir/misc/dat_shortened/
 		mkdir $particledir/misc/dat_shortened/
+		chmod 770 $particledir/misc/dat_shortened/
 		python dat_cut.py $root/ $firstTime $dt
 		rm -rf $particledir/misc/dat/
 		mv $particledir/misc/dat_shortened/ $particledir/misc/dat/

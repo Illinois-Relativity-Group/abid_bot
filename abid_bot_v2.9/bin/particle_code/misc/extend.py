@@ -3,6 +3,7 @@
 #com.txt is a file containing the center of mass of the sytem at all times.
 from os import makedirs
 from os.path import basename, isdir
+import os
 from shutil import rmtree
 import numpy as np
 from sys import argv
@@ -14,6 +15,7 @@ dst = misc_dir + "extended/"
 if isdir(dst):
 	rmtree(dst)
 makedirs(dst)
+os.system('chmod 770 {}'.format(dst))
 	
 cmFile = open(root + "h5data/bhns.xon", 'r')
 cmFile.readline()

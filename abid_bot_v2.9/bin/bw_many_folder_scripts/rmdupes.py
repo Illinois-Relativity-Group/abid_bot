@@ -3,7 +3,8 @@ from os import unlink
 from sys import argv
 
 root = argv[1]
-f = open(root + "bin/bw_many_folder_scripts/duplicate.txt", 'r')
+duplicate_txt = root + "bin/bw_many_folder_scripts/duplicate.txt"
+f = open(duplicate_txt, 'r')
 f.readline()
 f.readline()
 for line in f:

@@ -161,6 +161,7 @@ for dir in $( ls -dr $foldername*/ ); do
 	tmp_frame=$(( ( tmp_end - tmp_start ) / it_inc + 1 ));
 	echo "$tmp_start $tmp_end $tmp_frame $dir" >> $list_tmp;
 done
+chmod 770 $list_tmp
 #End new way
 
 
@@ -170,11 +171,13 @@ echo "# List of folderpaths where gap occurs" > $gap_txt;
 echo "# two lines of folder_paths where gap occurs" >> $gap_txt;
 echo "# iteration_end folder_path_1" >> $gap_txt;
 echo "# iteration_begin folder_path_2" >> $gap_txt;
+chmod 770 $gap_txt
 
 duplicate_txt="duplicate.txt";
 rm -f $duplicate_txt;
 echo "# List of folderpaths which are duplicated by other data" > $duplicate_txt;
 echo "# These folders won't be used for filming" >> $duplicate_txt;
+chmod 770 $duplicate_txt
 
 overlap_txt="overlap.txt";
 rm -f $overlap_txt;
@@ -183,10 +186,12 @@ echo "# List the overlaps with next data (skipping last few frames)" >> $overlap
 echo "# negative number means there's gap between current and next folder" >> $overlap_txt;
 echo "# will only use latest dataset for duplicated data" >> $overlap_txt;
 echo "# frames_overlaps total_frames_w/_overlaps folder_path" >> $overlap_txt;
+chmod 770 $overlap_txt
 
 
 list_sorted="list_sorted.txt";
 sort -n -k1 -k2 $list_tmp > $list_sorted
+chmod 770 $list_sorted
 first_path=$(head -n1 $list_sorted | awk '{print $4}');
 last_path=$(tail -n1 $list_sorted | awk '{print $4}');
 
