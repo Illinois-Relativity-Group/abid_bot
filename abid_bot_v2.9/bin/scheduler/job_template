@@ -1,5 +1,6 @@
 #!/bin/bash
 #cd $PBS_O_WORKDIR
+source /usr/local/lib/global.kshrc
 module load comp-intel/2018.3.222
 module load mpi-sgi/mpt
 #setenv MPI_SHEPHERD true
