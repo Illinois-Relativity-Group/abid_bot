@@ -602,7 +602,7 @@ class VisitPlot:
 		if self.trace1():	      PlotTrace(self.trace1dir, '1', self.idx("trace1"))
 		if self.trace2():	      PlotTrace(self.trace2dir, '2', self.idx("trace2"))
 		if self.velocity():	      self.vector_atts = PlotVelocity(self.vxdir, "vVec", self.idx("vel"))
-		if self.g00():		      self.g00_atts = PlotPseudo(self.psidir, "g00", self.idx("g00"), self.refPlot)
+		if self.g00():		      self.g00_atts = PlotPseudo(self.g00dir, "g00", self.idx("g00"), self.refPlot)
 
 #############################################
 
