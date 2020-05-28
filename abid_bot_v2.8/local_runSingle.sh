@@ -46,7 +46,7 @@ count=1
 DATE=$(date +%y%m%d_%H%M)
 picsavefolder=$picsavedir/"$DATE"_"$jobName"; mkdir -p $picsavefolder
 logfolder=$logdir/"$DATE"_"$jobName";         mkdir -p $logfolder
-logfile=$logfolder/visit_out_log.py
+logfile=$logfolder/output_runModule.txt
 
 cd $logfolder
 
