@@ -1,9 +1,9 @@
-. params
+. local_params
 #Use this if you are submitting very few folders (~1-5)
 #Otherwise use runBundle.sh
 #####begin things you have to change TODO
 
-jobName=runSingle
+jobName=test_frame
 h5dir=$root/h5data
 extrasDir=$root/xml
 h5prefix=3d_data_
@@ -15,7 +15,7 @@ ranknum=0 #0 indexed, frame you want to image
 pbsfile=$root/bin/bw_many_folder_scripts/singleRun.pbs
 picsavedir=$root/movies
 logdir=$root/log
-visitScript=$root/bin/bw_many_folder_scripts/run.py
+visitScript=$root/bin/bw_many_folder_scripts/local_run.py
 totranks=5 #total number of frames
 #####end things you have to change
 
@@ -58,7 +58,7 @@ for dir in $(ls -d ${h5dir}"/"$h5prefix* ); do
 		for rank in `seq 0 $(( $totranks - 1 ))`; do
 				if [ $rank -eq $ranknum ]; then
 		        		echo running folder $count frame $rank
-					visit -nowin -cli -forceversion 2.9.2 -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $blah $tosave$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $g00_pseudoXML $g00_isoXML $maxdensity $rho_pseudoXML $rho_isoXML >> $logfile
+					visit -cli -nowin -forceversion 2.9.2 -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $blah $tosave$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $maxdensity $rho_pseudoXML $rho_isoXML $g00_pseudoXML $g00_isoXML >> $logfile
 					echo "done :)"
 				fi
 		done
