@@ -9,13 +9,13 @@ extrasDir=$root/xml
 h5prefix=3d_data_
 foldernum=1 #1 indexed
 ranknum=0 #0 indexed, frame you want to image
-
+visitversion="2.9.2"
 ########run movies variables
 
 pbsfile=$root/bin/bw_many_folder_scripts/singleRun.pbs
 picsavedir=$root/movies
 logdir=$root/log
-visitScript=$root/bin/bw_many_folder_scripts/local_run.py
+visitScript=$root/bin/bw_many_folder_scripts/local_run_$visitversion.py
 totranks=5 #total number of frames
 #####end things you have to change
 
@@ -58,7 +58,7 @@ for dir in $(ls -d ${h5dir}"/"$h5prefix* ); do
 		for rank in `seq 0 $(( $totranks - 1 ))`; do
 				if [ $rank -eq $ranknum ]; then
 		        		echo running folder $count frame $rank
-					visit -cli -nowin -forceversion 2.9.2 -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $blah $tosave$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $maxdensity $rho_pseudoXML $rho_isoXML $g00_pseudoXML $g00_isoXML >> $logfile
+					visit -cli -nowin -forceversion $visitversion -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $blah $tosave$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $maxdensity $rho_pseudoXML $rho_isoXML $g00_pseudoXML $g00_isoXML >> $logfile
 					echo "done :)"
 				fi
 		done
