@@ -27,7 +27,7 @@
 
 # Remember to run params, then bin/link_h5data.sh to set up your data folders
 
-. params
+. local_params
 
 . $bin/clean_h5folders.sh
 . $bin/make_h5folders.sh 
