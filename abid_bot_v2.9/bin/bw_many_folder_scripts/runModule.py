@@ -112,6 +112,7 @@ def setAnnotations(lightlist=[]):#sets background, sets up text
 def setSave(saveFolder): #sets saveattributes
 	s = SaveWindowAttributes()
 	s.format = s.PNG
+	s.outputToCurrentDirectory = 1
 	s.fileName = saveFolder
 	s.width = 1920
 	s.height = 1080
