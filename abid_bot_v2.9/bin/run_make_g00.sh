@@ -5,7 +5,7 @@ jobName=make_g00
 h5dir=$root/h5data
 h5prefix=3d_data_
 
-pbsfile=$root/bin/bw_many_folder_scripts/g00Run.pbs
+pbsfile=$root/bin/bw_many_folder_scripts/g00Run_nasa.pbs
 python_file=$root/bin/make_g00_bw.py
 logdir=$root/log
 
