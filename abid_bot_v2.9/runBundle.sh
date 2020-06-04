@@ -29,6 +29,7 @@ PlotBsq2r=0 # Plot B squared over 2 rho
 Plotg00=0 # Plot g00 from metric
 refPlot=1 # Reflect plot over xy plane
 cutPlot=0 # only show back half (y>0), needs view like: (0,-x,y)
+bgcolor="blue" #background color
 
 PlotEvolve=1
 PlotZoom=0
@@ -67,7 +68,7 @@ for dir in $(ls -d ${h5dir}"/"$h5prefix* ); do
 		for rank in `seq 0 $(( $totranks - 1 ))`; do
 			#create job script for folder and rank; add to joblist
 			jobfile=$logfolder/job/job$count"_"$rank.sh
-			echo visit -cli -nowin -forceversion 3.0.0 -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $xmldir $tosave$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $maxdensity $rho_pseudoXML $rho_isoXML $g00_pseudoXML $g00_isoXML > $jobfile
+			echo visit -cli -nowin -forceversion 3.0.0 -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $xmldir $tosave$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $maxdensity $rho_pseudoXML $rho_isoXML $g00_pseudoXML $g00_isoXML > $jobfile
 			echo $jobfile >> $logfolder/joblist/joblist$((jobcount/foldersPerRun))
 		done
 		jobcount=$((jobcount+1))

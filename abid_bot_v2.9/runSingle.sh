@@ -32,6 +32,7 @@ PlotBsq2r=0 # Plot B squared over 2 rho
 Plotg00=0 # Plot g00 from metric
 refPlot=1 # Reflect plot over xy plane
 cutPlot=0 # only show back half (y>0), needs view like: (0,-x,y)
+bgcolor="blue" #background color
 
 PlotEvolve=1
 PlotZoom=0
@@ -57,7 +58,7 @@ for dir in $(ls -d ${h5dir}"/"$h5prefix* ); do
 		for rank in `seq 0 $(( $totranks - 1 ))`; do
 				if [ $rank -eq $ranknum ]; then
 		        	echo submitting job $count with rank = $rank
-					qsub -N $jobName"_"$count"_"$rank -v VISITSCRIPT=$visitScript,PDAS=$PlotDensAsVol,PDAI=$PlotDensAsIso,PDL=$PlotDensLinear,PV=$PlotVel,PBSQ2R=$PlotBsq2r,PG00=$Plotg00,REFPLOT=$refPlot,CUTPLOT=$cutPlot,PE=$PlotEvolve,PZ=$PlotZoom,PFO=$PlotFlyOver,PFA=$PlotFlyAround,H5=$dir,EXTRAS=$blah,SAVEFOLDER=$tosave$(printf "%03d" $rank)"_",RANK=$rank,TOTRANKS=$totranks,NUMBFIELDPLOTS=$numBfieldPlots,VECXML=$vecXML,BSQXML=$bsqXML,G00_PSEUDOXML=$g00_pseudoXML,G00_ISOXML=$g00_isoXML,MAXDENS=$maxdensity,RHO_PSEUDOXML=$rho_pseudoXML,RHO_ISOXML=$rho_isoXML $pbsfile
+					qsub -N $jobName"_"$count"_"$rank -v VISITSCRIPT=$visitScript,PDAS=$PlotDensAsVol,PDAI=$PlotDensAsIso,PDL=$PlotDensLinear,PV=$PlotVel,PBSQ2R=$PlotBsq2r,PG00=$Plotg00,REFPLOT=$refPlot,CUTPLOT=$cutPlot,BGCOLOR=$bgcolor,PE=$PlotEvolve,PZ=$PlotZoom,PFO=$PlotFlyOver,PFA=$PlotFlyAround,H5=$dir,EXTRAS=$blah,SAVEFOLDER=$tosave$(printf "%03d" $rank)"_",RANK=$rank,TOTRANKS=$totranks,NUMBFIELDPLOTS=$numBfieldPlots,VECXML=$vecXML,BSQXML=$bsqXML,G00_PSEUDOXML=$g00_pseudoXML,G00_ISOXML=$g00_isoXML,MAXDENS=$maxdensity,RHO_PSEUDOXML=$rho_pseudoXML,RHO_ISOXML=$rho_isoXML $pbsfile
 				fi
 		done
 	fi

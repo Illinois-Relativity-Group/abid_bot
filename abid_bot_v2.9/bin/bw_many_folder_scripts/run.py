@@ -25,12 +25,13 @@ PlotBsq2r		= sys.argv[5] ==  '1' # Plot B squared over 2 rho
 Plotg00  		= sys.argv[6] ==  '1' # Plot g00 from metric
 refPlot			= sys.argv[7] ==  '1' # Reflect plot over xy plane
 cutPlot  		= sys.argv[8] ==  '1' # only show back half (y>0), needs view like: (0,-x,y)
+bgcolor			= sys.argv[9] #Background color
 
 ########## EXPERIMENTAL ##########
-PlotEvolve 		= sys.argv[9] ==  '1'
-PlotZoom 		= sys.argv[10] ==  '1'
-PlotFlyOver 	= sys.argv[11] ==  '1'
-PlotFlyAround 	= sys.argv[12] ==  '1'
+PlotEvolve 		= sys.argv[10] ==  '1'
+PlotZoom 		= sys.argv[11] ==  '1'
+PlotFlyOver 	= sys.argv[12] ==  '1'
+PlotFlyAround 	= sys.argv[13] ==  '1'
 ##################################
 
 combos = [PlotEvolve and PlotZoom, PlotEvolve and PlotFlyOver, PlotEvolve and PlotFlyAround, PlotZoom and PlotFlyOver, PlotZoom and PlotFlyAround, PlotFlyOver and PlotFlyAround]
@@ -40,23 +41,23 @@ for combo in combos:
 		sys.exit()
 
 print(sys.argv)
-h5dir 			= sys.argv[13]
-extrasDir 		= sys.argv[14]
-saveFolder 		= sys.argv[15]
-rank 			= int(sys.argv[16])
-total_ranks 	= int(sys.argv[17])
-numBfieldPlots	= int(sys.argv[18])
-vectorXML 		= sys.argv[19]
-bsq2rXML 		= sys.argv[20]
-max_density 	= sys.argv[21]
-rho_pseudoXML 	= sys.argv[22]
-rho_isoXML 		= sys.argv[23]
-g00_pseudoXML 	= sys.argv[24]
-g00_isoXML 		= sys.argv[25]
+h5dir 			= sys.argv[14]
+extrasDir 		= sys.argv[15]
+saveFolder 		= sys.argv[16]
+rank 			= int(sys.argv[17])
+total_ranks 	= int(sys.argv[18])
+numBfieldPlots	= int(sys.argv[19])
+vectorXML 		= sys.argv[20]
+bsq2rXML 		= sys.argv[21]
+max_density 	= sys.argv[22]
+rho_pseudoXML 	= sys.argv[23]
+rho_isoXML 		= sys.argv[24]
+g00_pseudoXML 	= sys.argv[25]
+g00_isoXML 		= sys.argv[26]
 
 		
 PlotOpts = [ PlotDensAsVol, PlotDensAsIso, PlotDensLinear, PlotVel, PlotBsq2r, Plotg00, refPlot,\
-			 cutPlot ]
+			 cutPlot, bgcolor ]
 ArgList  = [ h5dir, extrasDir, saveFolder, rank, total_ranks, numBfieldPlots, vectorXML,\
 			 bsq2rXML, max_density, rho_pseudoXML, rho_isoXML, g00_pseudoXML, g00_isoXML ]
 

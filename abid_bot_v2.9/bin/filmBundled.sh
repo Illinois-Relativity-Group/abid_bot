@@ -18,16 +18,17 @@ PlotBsq2r=${12} # Plot B squared over 2 rho
 Plotg00=${13} # Plot g00 from metric
 refPlot=${14} # Reflect plot over xy plane
 cutPlot=${15} # only show back half (y>0), needs view like: (0,-x,y)
-PlotZoom=${16}
-PlotFlyOver=${17}
-PlotFlyAround=${18}
+bgcolor=${16} #background color
+PlotZoom=${17}
+PlotFlyOver=${18}
+PlotFlyAround=${19}
 
 PlotEvolve=0
 
-view1XML=${19} #Overwrite view1XML, vol1XMl, view2XML, vol2XML
-vol1XML=${20}
-view2XML=${21}
-vol2XML=${22}
+view1XML=${20} #Overwrite view1XML, vol1XMl, view2XML, vol2XML
+vol1XML=${21}
+view2XML=${22}
+vol2XML=${23}
 
 ########run movies variables
 logdir=$root/log
@@ -57,7 +58,7 @@ echo "Writing jobs to joblist..."
 
 for rank in `seq 0 $(( $totranks - 1 ))`; do
 	jobfile=$logfolder/job/job_$(printf "%03d" $rank).sh
-	echo visit -forceversion 2.7.3 -cli -nowin -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $xmldir $picsavefolder$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $maxdensity $rho_pseudoXML $rho_isoXML $g00_pseudoXML $g00_isoXML $idx $totframes $view1XML $vol1XML $view2XML $vol2XML> $jobfile
+	echo visit -forceversion 2.7.3 -cli -nowin -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $xmldir $picsavefolder$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $maxdensity $rho_pseudoXML $rho_isoXML $g00_pseudoXML $g00_isoXML $idx $totframes $view1XML $vol1XML $view2XML $vol2XML> $jobfile
 	echo $logfolder $jobfile >> $logfolder/joblist/joblist$((rank/ranksPerJob))
 done
 

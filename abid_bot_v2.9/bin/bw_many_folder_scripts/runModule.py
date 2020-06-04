@@ -337,7 +337,8 @@ class VisitPlot:
 		self.PlotBsq2r,			# Plot B squared over 2 rho
 		self.Plotg00,			# Plot g00 from metric
 		self.refPlot,			# Reflect plot over xy plane
-		self.cutPlot			# Only show back half (y>0), needs view like: (0,-x,y)
+		self.cutPlot,			# Only show back half (y>0), needs view like: (0,-x,y)
+		self.bgcolor
 		) = self.plot_opts
 		
 		self.arg_list = arg_list
@@ -379,7 +380,7 @@ class VisitPlot:
 		self.lastFrame	= int(round(((self.rank+1.0)/self.total_ranks)*self.tot_frames))
 		
 		self.dbs, self.plot_idx = self.LoadDatabases()
-		self.txt = self.SetAnnotations()
+		self.txt = self.SetAnnotations(self.bgcolor)
 		print('\tSet up complete! VisitPlot created')
 
 	def __repr__(self):
@@ -550,6 +551,10 @@ class VisitPlot:
 			Ann.backgroundColor = (55,118,255,255) #stu blue
 		elif bgcolor=='black':
 			Ann.backgroundColor = (0,0,0,255) #black
+		elif bgcolor=='grey' or bgcolor=='gray':
+			Ann.backgroundColor = (50,50,50,255)
+		else:
+			Ann.backgroundColor = (55,118,255,255) #stu blue default
 		#Ann.legendFlag = 0
 		Ann.databaseInfoFlag = 0
 		Ann.userInfoFlag = 0
