@@ -20,7 +20,7 @@ cd $dir$folder;
 
 echo $(pwd);
 
-awk -F " " '{if (/#/) {} else {print > $1".dat"; close($1".dat")}}' $dir$file_original
+awk -F " " '{if (/#/) {} else {print > $1".dat"}}' $dir$file_original
 
 ls > $dir"part.txt"; for i in `cat $dir"part.txt"`;do mv $i $(echo $i | sed s/".dat"// | awk '{printf "%017.11f\n", $1}')".dat";done;    
 #"%017.11f" has 11 digits for decimal parts, 5 digits for interger part with 0 padding (used for sorting files in the correct order", 1 digit for "."
