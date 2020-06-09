@@ -40,7 +40,7 @@ fi
 
 if $fields || $particleTracer
 then
-	. $bin/setup_seeds.sh
+	. $bin/local_setup_seeds.sh
 fi
 
 . $bin/setup_cm.sh
