@@ -1,6 +1,7 @@
 import particlePickerModule as pPM
 from particlePickerModule import dist
 from os.path import isfile
+import os
 from sys import argv
 from math import pi, sin, cos
 
@@ -82,8 +83,10 @@ maxParticles = 100
 volumeFunction = sphere
 volumeFunction2 = sphere2
 
-if not isfile(filesOrigin):
-	pPM.genFilesOrigin(bigTimeStep,datFolder, float(first_time))
+if isfile(filesOrigin):
+	os.remove(filesOrigin)
+
+pPM.genFilesOrigin(bigTimeStep,datFolder, float(first_time))
 
 if (ext == 'txt'): #Bfields
 ###################
