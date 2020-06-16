@@ -306,15 +306,15 @@ def PlotVelocity(database, expression, indx, ref=1):
 	SetActivePlots(indx)
 
 	##### EXPERIMENTAL MESH USAGE #####
-        silr = SILRestriction() #refinement level object
-        level_category = silr.Categories()[0] 
-        sets = silr.SetsInCategory(level_category) #list of refinement levels
-        sets_to_turn_off = sets[0:3] #refinement levels to turn off. 0 is outermost refinement level
-        print("Turning off velocity refinement levels: {}".format(sets_to_turn_off))
-        for set in sets_to_turn_off:
-                silr.TurnOffSet(set) #Turn off refinement levels
-        SetPlotSILRestriction(silr) #Set refinement level object
-        ##### END EXPERIMENTAL #####
+	silr = SILRestriction() #refinement level object
+	level_category = silr.Categories()[0] 
+	sets = silr.SetsInCategory(level_category) #list of refinement levels
+	sets_to_turn_off = sets[0:3] #refinement levels to turn off. 0 is outermost refinement level
+	print("Turning off velocity refinement levels: {}".format(sets_to_turn_off))
+	for myset in sets_to_turn_off:
+		silr.TurnOffSet(myset) #Turn off refinement levels
+	SetPlotSILRestriction(silr) #Set refinement level object
+	##### END EXPERIMENTAL #####
 
 	if ref:
 		reflect()
