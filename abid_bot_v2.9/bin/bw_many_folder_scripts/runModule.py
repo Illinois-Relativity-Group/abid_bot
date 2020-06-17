@@ -58,10 +58,10 @@ def cylinder(x, y, r, addOp, z1, z2=1000): #for addOp argument, use 'frame==firs
 
 ########Setup########
 def LoadandDefine(database, symbol, prefix="MHD_EVOLVE"):#loads database, defines variable 
-    OpenDatabase(database,0,"CarpetHDF5_2.1")
-    DefineScalarExpression(symbol, "conn_cmfe(<"+database+"[0]id:"+prefix+"--"+symbol+">, <Carpet AMR-grid>)")
-    print("{} Loaded".format(symbol))
-    
+	OpenDatabase(database,0,"CarpetHDF5_2.1")
+	DefineScalarExpression(symbol, "conn_cmfe(<"+database+"[0]id:"+prefix+"--"+symbol+">, <Carpet AMR-grid>)")
+	print("{} Loaded".format(symbol))
+	
 def setAnnotations(lightlist=[]):#sets background, sets up text
 	Ann = AnnotationAttributes()
 	Ann.backgroundMode = Ann.Solid
@@ -278,7 +278,7 @@ def PlotB(database, indx, ref=1):
 	pseudoAtt.lineWidth = 3
 	SetPlotOptions(pseudoAtt)
 	
-        AddOperator("IntegralCurve")
+		AddOperator("IntegralCurve")
 	return IntegralCurveAttributes()
 
 def PlotVol(database, expression, indx, ref=1):
@@ -286,6 +286,20 @@ def PlotVol(database, expression, indx, ref=1):
 	AddPlot("Volume", expression)
 	print("Add {} volume plot with index = {}".format(expression, indx))
 	SetActivePlots(indx)
+
+	limit_levels = 0
+	##### EXPERIMENTAL MESH USAGE #####
+	if limit_levels:
+		silr = SILRestriction() #refinement level object
+		level_category = silr.Categories()[0]
+		sets = silr.SetsInCategory(level_category) #list of refinement levels
+		sets_to_turn_off = sets[0:4] #refinement levels to turn off. 0 is outermost refinement level. THIS IS WHAT YOU NEED TO CHANGE
+		print("Turning off density refinement levels: {}".format(sets_to_turn_off))
+		for myset in sets_to_turn_off:
+			silr.TurnOffSet(myset) #Turn off refinement levels
+		SetPlotSILRestriction(silr) #Set refinement level object
+	##### END EXPERIMENTAL #####
+
 	if ref:
 		reflect()
 	return VolumeAttributes()
@@ -309,7 +323,7 @@ def PlotVelocity(database, expression, indx, ref=1):
 	silr = SILRestriction() #refinement level object
 	level_category = silr.Categories()[0] 
 	sets = silr.SetsInCategory(level_category) #list of refinement levels
-	sets_to_turn_off = sets[0:3] #refinement levels to turn off. 0 is outermost refinement level
+	sets_to_turn_off = sets[0:3] #refinement levels to turn off. 0 is outermost refinement level. THIS IS WHAT YOU NEED TO CHANGE
 	print("Turning off velocity refinement levels: {}".format(sets_to_turn_off))
 	for myset in sets_to_turn_off:
 		silr.TurnOffSet(myset) #Turn off refinement levels
@@ -446,17 +460,17 @@ class VisitPlot:
 		#Checking bh files again ################
 		self.bh13D, self.bh23D, self.bh33D = recheckBH(self.extrasDir)
 
-		print("density:     {}".format(self.density_vol() or self.density_iso()))
-		print("bsq2r:	    {}".format(self.bsq2r()))
-		print("fields:	    {}".format(self.fields()))
-		print("particles:   {}".format(self.particles()))
-		print("gridPoints:  {}".format(self.gridPoints()))
-		print("trace1:	    {}".format(self.trace1()))
-		print("trace2:	    {}".format(self.trace2()))
-		print("velocity:    {}".format(self.velocity()))
-		print("BH1:	    {}".format(self.bh_formed()))
-		print("BH2:	    {}".format(self.binary_formed()))
-		print("BH3:	    {}".format(self.merge_formed()))
+		print("density:		{}".format(self.density_vol() or self.density_iso()))
+		print("bsq2r:		{}".format(self.bsq2r()))
+		print("fields:		{}".format(self.fields()))
+		print("particles:	{}".format(self.particles()))
+		print("gridPoints:	{}".format(self.gridPoints()))
+		print("trace1:		{}".format(self.trace1()))
+		print("trace2:		{}".format(self.trace2()))
+		print("velocity:	{}".format(self.velocity()))
+		print("BH1:		{}".format(self.bh_formed()))
+		print("BH2:		{}".format(self.binary_formed()))
+		print("BH3:		{}".format(self.merge_formed()))
 
 #############################################
 
@@ -617,20 +631,20 @@ class VisitPlot:
 		if self.density_iso():
 			if self.density_linear(): self.rho_atts = PlotPseudo(self.rho_bdir, "rho_b", self.idx("density"), self.refPlot)
 			else:			  self.rho_atts = PlotPseudo(self.rho_bdir, "logrho",self.idx("density"), self.refPlot)
-		if self.bsq2r():	      self.bsq_atts = PlotVol(self.smallb2dir, "logbsq2r", self.idx("bsq2r"), self.refPlot)
+		if self.bsq2r():		  self.bsq_atts = PlotVol(self.smallb2dir, "logbsq2r", self.idx("bsq2r"), self.refPlot)
 		if self.particles():
 			self.stream_particles_dict = {}
 			for i in range(self.numBfieldPlots):
 				self.stream_particles_dict["stream_particles_{}".format(i)] = PlotB(self.Bxdir, self.idx("particles{}".format(i)), ref=self.refPlot)
 		
-		if self.gridPoints():	      self.stream_gridPoints = PlotB(self.Bxdir, self.idx("gridPoints"), ref=self.refPlot)
-		if self.bh_formed():	      PlotBH(self.bh1dir, '1', self.idx("bh1"), self.refPlot)
-		if self.binary_formed():      PlotBH(self.bh2dir, '2', self.idx("bh2"), self.refPlot)
-		if self.merge_formed():       PlotBH(self.bh3dir, '3', self.idx("bh3"), self.refPlot)
-		if self.trace1():	      PlotTrace(self.trace1dir, '1', self.idx("trace1"))
-		if self.trace2():	      PlotTrace(self.trace2dir, '2', self.idx("trace2"))
-		if self.velocity():	      self.vector_atts = PlotVelocity(self.vxdir, "vVec", self.idx("vel"))
-		if self.g00():		      self.g00_atts = PlotPseudo(self.g00dir, "g00", self.idx("g00"), self.refPlot)
+		if self.gridPoints():		  self.stream_gridPoints = PlotB(self.Bxdir, self.idx("gridPoints"), ref=self.refPlot)
+		if self.bh_formed():		  PlotBH(self.bh1dir, '1', self.idx("bh1"), self.refPlot)
+		if self.binary_formed():	  PlotBH(self.bh2dir, '2', self.idx("bh2"), self.refPlot)
+		if self.merge_formed():		  PlotBH(self.bh3dir, '3', self.idx("bh3"), self.refPlot)
+		if self.trace1():		  PlotTrace(self.trace1dir, '1', self.idx("trace1"))
+		if self.trace2():		  PlotTrace(self.trace2dir, '2', self.idx("trace2"))
+		if self.velocity():		  self.vector_atts = PlotVelocity(self.vxdir, "vVec", self.idx("vel"))
+		if self.g00():			  self.g00_atts = PlotPseudo(self.g00dir, "g00", self.idx("g00"), self.refPlot)
 
 #############################################
 
@@ -666,7 +680,7 @@ class VisitPlot:
 			else:
 				print('Using Stream_0.xml for Streamline plot')
 				LoadAttribute(self.StreamDict["Stream_0"],\
-			      self.stream_particles_dict["stream_particles_0"])
+				  self.stream_particles_dict["stream_particles_0"])
 			self.stream_particles_dict["stream_particles_0"].pointList = getSeeds(seedfile)
 		elif self.particles():
 			for i in range(self.numBfieldPlots):
