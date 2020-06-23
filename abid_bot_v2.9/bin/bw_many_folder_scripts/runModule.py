@@ -278,7 +278,7 @@ def PlotB(database, indx, ref=1):
 	pseudoAtt.lineWidth = 3
 	SetPlotOptions(pseudoAtt)
 	
-		AddOperator("IntegralCurve")
+	AddOperator("IntegralCurve")
 	return IntegralCurveAttributes()
 
 def PlotVol(database, expression, indx, ref=1):
