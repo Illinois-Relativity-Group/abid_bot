@@ -42,7 +42,7 @@ PlotFlyAround=0
 ##########This section submits the rest of the files.
 # default is first frame
 foldernum=1
-ranknum=1
+ranknum=0
 count=1
 DATE=$(date +%y%m%d_%H%M)
 picsavefolder=$picsavedir/"$DATE"_"$jobName"; mkdir -p $picsavefolder
