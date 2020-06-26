@@ -205,7 +205,7 @@ def run_mov_change_attribute(first_frame, last_frame, view_initial, view_final, 
 			if(indexstep >= len(filelist_part)):
 				indexstep = len(filelist_part) - 1
 			src_list = sorted(glob.glob(particleseedpath + "{:0>7d}*".format(state)))
-			stream_src_list = sorted(glob.glob(attsdir + "Stream_*"))
+			stream_src_list = sorted(glob.glob(attsdir + "Stream_?.xml"))
 			for src,stream_src in zip(src_list,stream_src_list):
 				append_str = "_" + src[-5]
 				dst = saveFolder + "particle_seeds_" + str(index).zfill(4) + append_str + ".txt"
