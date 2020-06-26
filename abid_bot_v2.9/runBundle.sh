@@ -68,8 +68,9 @@ for dir in $(ls -d ${h5dir}"/"$h5prefix* ); do
 		for rank in `seq 0 $(( $totranks - 1 ))`; do
 			#create job script for folder and rank; add to joblist
 			jobfile=$logfolder/job/job$count"_"$rank.sh
+			outfile=$logfolder/out/out$count"_"$rank
 			echo visit -cli -nowin -forceversion 3.0.0 -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $xmldir $tosave$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $maxdensity $rho_pseudoXML $rho_isoXML $g00_pseudoXML $g00_isoXML > $jobfile
-			echo $jobfile >> $logfolder/joblist/joblist$((jobcount/foldersPerRun))
+			echo "$jobfile >> $outfile" >> $logfolder/joblist/joblist$((jobcount/foldersPerRun))
 		done
 		jobcount=$((jobcount+1))
 	fi
