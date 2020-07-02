@@ -559,6 +559,11 @@ class VisitPlot:
 			dbs += [self.g00dir]
 			plot_idx += ["g00"]
 
+		#if we have velocity plot and not bsq2r plot, then the bsq2r plot_idx must be at the end or else indexing will be thrown off
+		if self.velocity() and not self.bsq2r():
+			bsq2r_idx = plot_idx.index("bsq2r")
+			plot_idx = plot_idx[:bsq2r_idx] + plot_idx[bsq2r_idx+1:] + ["bsq2r"]
+
 		print("\tDone")
 		print("Databases loaded: {}\n".format(dbs))
 		print("Plotting: {}".format(plot_idx))
@@ -734,7 +739,7 @@ class VisitPlot:
 		if self.velocity():
 			SetActivePlots(self.idx("vel"))
 			SetPlotOptions(self.vector_atts)
-			cylinder(self.CoM_x,self.CoM_y, 45, frame==self.firstFrame, 10, z2=100)
+			cylinder(self.CoM_x,self.CoM_y, 45, frame==self.firstFrame, -100, z2=100)
 			print("velocities set")
 			if self.cutPlot: box(self.CoM_y, frame==self.firstFrame)
 		if self.g00():
