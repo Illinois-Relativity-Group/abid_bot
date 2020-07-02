@@ -27,5 +27,5 @@ def cylinder(x, z, r, zmax=100000):
         """r = radius. zmax (optional) = distance above and below xy plane. May need to increase default zmax for large distance scales"""
         return(x <= r and abs(z) <=zmax)
 
-def all():
+def allspace():
 	return True

@@ -11,7 +11,7 @@ from mass_functions import *
 M = 0.5528972241940432
 CoM_x = 0*M
 CoM_z = 0*M
-region_func = outflower
+region_func = allspace
 print(f"Mass is calculated inside the region of '{region_func.__name__}'")
 def region(x,z): return region_func(x, z, 40, 4, M)
 dim = sys.argv[1]
