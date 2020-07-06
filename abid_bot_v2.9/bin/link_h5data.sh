@@ -7,16 +7,26 @@ beta="$origin/beta100"
 h5dest=$rootlink/h5data/
 bhdest=$rootlink/horizon/all_horizon/
 
-if [ ! -f $h5dest/particles.mon ]; then
+if [ ! -f $h5dest/particles.mon ] && [ -f $beta/bhns-particles.mon ]; then
         ln -s $origin/bhns-particles.mon $h5dest/particles.mon
 fi
 
-cp $origin/bhns.mon $h5dest
-cp $origin/bhns.xon $h5dest
+if [ -f $origin/bhns.mon ]; then
+	cp $origin/bhns.mon $h5dest
+fi
+if [ -f $origin/bhns.xon ]; then
+    cp $origin/bhns.xon $h5dest
+fi
 cp $origin/*.par $h5dest
 
 if [ -f $beta/BH_diagnostics.ah1.gp ] && [ ! -f $h5dest/BH_diagnostics.ah1.gp ]; then
         cp $beta/BH_diagnostics.ah1.gp $h5dest
+fi
+if [ -f $beta/BH_diagnostics.ah2.gp ] && [ ! -f $h5dest/BH_diagnostics.ah2.gp ]; then
+        cp $beta/BH_diagnostics.ah2.gp $h5dest
+fi
+if [ -f $beta/BH_diagnostics.ah3.gp ] && [ ! -f $h5dest/BH_diagnostics.ah3.gp ]; then
+        cp $beta/BH_diagnostics.ah3.gp $h5dest
 fi
 
 for i in $(ls -d $beta/3d* | xargs -n 1 basename); do #just file name no path
