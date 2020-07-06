@@ -62,7 +62,7 @@ if $bhForms
 then
 	echo "	making grid seeds"
 	cd $root/bin/grid_code/
-	python seedmaker.py $root/ $dt 1
+	python seedmaker.py $root/ $dt 1 $numBfieldPlots
 	targetdir=$root/seeds/
 	if $twoColorsSeeds
 	then
@@ -85,7 +85,7 @@ then
 	if $binary
 	then
 		cd $root/bin/grid_code/
-		python seedmaker.py $root/ $dt 2
+		python seedmaker.py $root/ $dt 2 $numBfieldPlots
 		cd bhseeds/
 		for i in *
 		do
@@ -96,7 +96,7 @@ then
 	if $merged
 	then
 		cd $root/bin/grid_code/
-		python seedmaker.py $root/ $dt 3
+		python seedmaker.py $root/ $dt 3 $numBfieldPlots
 		cd bhseeds/
 		for i in *
 		do

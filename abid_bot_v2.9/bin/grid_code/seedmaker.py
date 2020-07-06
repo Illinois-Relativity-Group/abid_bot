@@ -9,33 +9,35 @@ from sys import argv
 root_dir = argv[1]
 dt = float(argv[2])
 ahtype = argv[3]
+numBfieldPlots = int(argv[4])
 
 grid_code_dir = root_dir + "bin/grid_code/"
 bhseed_dir = grid_code_dir + "bhseeds/" 
 
-def make_seed_file(r):
+def make_seed_file(coord):
 
-	time = r[0]
-	xc = r[1]
-	yc = r[2]
-	zc = r[3]
+	time = coord[0]
+	xc = coord[1]
+	yc = coord[2]
+	zc = coord[3]
 	fName = str(int(round(time/dt)))
-	with open(bhseed_dir + fName.zfill(7) + ".txt", 'w') as outfile:
+	for i in range(numBfieldPlots):
+		with open(bhseed_dir + fName.zfill(7) + "_{}.txt".format(i), 'w') as outfile:
 
 ############################################THING TO CHANGE###################################################
 # Here you have the ability to modify where the ring of points are going to be above and below the black hole. 
 # This section is the only place you should change anything. 
 
-		r = 1.0
-		h = r*2.0
-		m_steps = 20
-		for m in range(m_steps):
-			theta = 2*pi*m/m_steps
-			x = xc + r*cos(theta)
-			y = yc + r*sin(theta)
-			z = zc
-			outfile.write(str(x) + "\t" + str(y) + "\t" + str(z+h) + "\n")
-			outfile.write(str(x) + "\t" + str(y) + "\t" + str(z-h) + "\n")
+			r = 1.0
+			h = r*2.0
+			m_steps = 20
+			for m in range(m_steps):
+				theta = 2*pi*m/m_steps
+				x = xc + r*cos(theta)
+				y = yc + r*sin(theta)
+				z = zc
+				outfile.write(str(x) + "\t" + str(y) + "\t" + str(z+h) + "\n")
+				outfile.write(str(x) + "\t" + str(y) + "\t" + str(z-h) + "\n")
 ############################################################################################################
 print("removing old seeds...")
 if isdir(bhseed_dir):
