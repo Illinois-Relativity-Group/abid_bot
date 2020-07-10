@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <Object name="View3DAttributes">
-    <Field name="viewNormal" type="doubleArray" length="3">0 -1 0 </Field>
+    <Field name="viewNormal" type="doubleArray" length="3">0 -1 0.3 </Field>
     <Field name="focus" type="doubleArray" length="3">0 0 0 </Field>
     <Field name="viewUp" type="doubleArray" length="3">0 0 1</Field>
     <Field name="viewAngle" type="double">30</Field>
