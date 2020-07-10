@@ -154,8 +154,8 @@ rm -f $list_tmp # removes previous output file
 
 #New way uses first file in folder, works if data is still transferring
 for dir in $( ls -dr $foldername*/ ); do
-	fil=$(ls $dir | head -n 1);
-	sort_h5 $dir$fil;
+	fil=$(ls $dir/*.h5 | head -n 1);
+	sort_h5 $fil;
 	tmp_start=$sort_min;
 	tmp_end=$sort_max;
 	tmp_frame=$(( ( tmp_end - tmp_start ) / it_inc + 1 ));
