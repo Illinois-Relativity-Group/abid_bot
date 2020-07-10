@@ -66,14 +66,14 @@ time.strftime("%Y-%m-%d %H:%M:%S")
 
 ########## EXPERIMENTAL ##########
 if PlotZoom or PlotFlyOver or PlotFlyAround:
-	idx = int(sys.argv[31])
-	num_frames = int(sys.argv[32])
-	view_initial = sys.argv[33]
-	vol_initial = sys.argv[34]
+	idx = int(sys.argv[27])
+	num_frames = int(sys.argv[28])
+	view_initial = sys.argv[29]
+	vol_initial = sys.argv[30]
 	miscatts = [idx, num_frames, view_initial, vol_initial]
 	if PlotZoom:
-		view_final = sys.argv[35]
-		vol_final = sys.argv[36]
+		view_final = sys.argv[31]
+		vol_final = sys.argv[32]
 		miscatts += [view_final, vol_final]
 
 ##################################

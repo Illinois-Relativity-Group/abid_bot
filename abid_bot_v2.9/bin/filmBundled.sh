@@ -58,20 +58,29 @@ echo "Writing jobs to joblist..."
 
 for rank in `seq 0 $(( $totranks - 1 ))`; do
 	jobfile=$logfolder/job/job_$(printf "%03d" $rank).sh
-	echo visit -forceversion 2.7.3 -cli -nowin -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $xmldir $picsavefolder$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $maxdensity $rho_pseudoXML $rho_isoXML $g00_pseudoXML $g00_isoXML $idx $totframes $view1XML $vol1XML $view2XML $vol2XML> $jobfile
-	echo $logfolder $jobfile >> $logfolder/joblist/joblist$((rank/ranksPerJob))
+	outfile=$logfolder/out/out_$(printf "%03d" $rank).txt
+	echo visit -forceversion 3.0.0 -cli -nowin -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $xmldir $picsavefolder$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $maxdensity $rho_pseudoXML $rho_isoXML $g00_pseudoXML $g00_isoXML $idx $totframes $view1XML $vol1XML $view2XML $vol2XML> $jobfile
+	echo "$jobfile >> $outfile" >> $logfolder/joblist/joblist$((rank/ranksPerJob))
 done
 
 chmod -R 755 $logfolder/job
 tasksPerJob=$((ranksPerJob+1))
 nodesPerJob=$(((tasksPerJob+1)/2))
 for i in `seq 0 $((totranks/ranksPerJob-1))`; do
+	touch $logfolder/joblist/looper$i.sh
+    loopfile=$logfolder/joblist/looper$i.sh
+    cat $schdir/job_template | sed 's, LOG_DIR, '"$logfolder"',g;
+                    s,JOBLIST,joblist/joblist'"$i"',g'> $loopfile
+    chmod 777 $loopfile
+    chmod 777 $logfolder/joblist/joblist$i
+    loopfile2=$logfolder/joblist/looper$i.sh
 	cat $schdir/run_template | sed 's,JOBNAME,'"$jobName"'_'"$i"',g;
 									s,NUMBER_OF_NODES,'"$nodesPerJob"',g;
 									s,TOTAL_JOBS,'"$tasksPerJob"',g;
 									s,SCH_DIR,'"$schdir"',g;
 									s,LOG_DIR,'"$logfolder"',g;
 									s,JOBLIST,joblist/joblist'"$i"',g;
+									s,LOOPER,'"$loopfile2"',g;
 									s,NUM,'"$i"',g' > $logfolder/run/run$i
 	qsub $logfolder/run/run$i
 done
