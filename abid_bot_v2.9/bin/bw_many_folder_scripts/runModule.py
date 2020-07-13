@@ -798,7 +798,7 @@ class VisitPlot:
 		x = [0,1]
 		for my_i in range(frame_i, frame_f):
 			t = float(my_i) / float(zoomsteps - 1)
-			c = EvalCubicSpline(t, x, cpts)
+			c = EvalCubicSpline(t, x, cpts) # Old visit function. You won't find it in the new docs. Go here instead: http://visit.ilight.com/svn/visit/trunk/releases/2.10.0/VisItPythonManual.pdf
 			for i in range(len(oi)):
 				cr[i] = oi[i] + t*(of[i] - oi[i])
 			ar = ai + t*(af - ai)
