@@ -894,6 +894,15 @@ class VisitPlot:
 			b=[[a[i][j] for i in xrange(len(a))] for j in xrange(len(a[0]))]
 			return b
 
+		def mult(a,b):
+			m=[[0 for i in xrange(len(b[0]))] for j in xrange(len(a))]
+			for i in xrange(len(a)):
+				for j in xrange(len(b[0])):
+					for k in xrange(len(a[0])):
+						m[i][j]+=a[i][k]*b[k][j]
+			return m
+
+
 		def circle(vN,vU,theta,M=0,R=0):
 			theta=-theta
 
