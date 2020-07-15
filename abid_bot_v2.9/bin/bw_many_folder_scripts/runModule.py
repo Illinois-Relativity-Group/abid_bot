@@ -886,6 +886,10 @@ class VisitPlot:
 		frame_f = int(round((self.rank+1.0)/self.total_ranks*num_frames))
 		print("frame start: " + str(frame_i) + "\nframe_end: " + str(frame_f))
 
+		def vstack(v,u):
+			w=[u[0][1]*v[0][2]-u[0][2]*v[0][1],u[0][2]*v[0][0]-u[0][0]*v[0][2],u[0][0]*v[0][1]-u[0][1]*v[0][0]]
+			return [v[0],w,u[0]]
+
 		def trans(a):
 			b=[[a[i][j] for i in xrange(len(a))] for j in xrange(len(a[0]))]
 			return b
@@ -922,7 +926,7 @@ class VisitPlot:
 		myViewUp = myView.viewUp
 
 		for i in range(frame_i, frame_f):
-			phi = 2*pi*i/(nsteps)#(n-1) makes last frame same as first
+			phi = 2*pi*i/(num_frames)#(n-1) makes last frame same as first
 			viewNormal, viewUp = circle(myViewNormal, myViewUp, phi, 0, 0)
 
 			newView = myView
