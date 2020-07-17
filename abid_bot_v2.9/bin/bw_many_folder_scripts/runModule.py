@@ -32,6 +32,7 @@ def iso(xml):
 	
 def box(y, addOp): #only show back half, reveals inside
 	if (addOp):#so we don't have multiple box operators
+		print("Adding Box operator")
 		AddOperator("Box", 0)
 	BoxAtts = BoxAttributes()
 	BoxAtts.amount = BoxAtts.Some  # Some, All
