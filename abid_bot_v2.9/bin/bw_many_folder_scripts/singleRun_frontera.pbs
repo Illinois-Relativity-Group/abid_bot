@@ -1,0 +1,20 @@
+#!/bin/bash
+#SBATCH --output="bringleout.txt"
+#SBATCH -p normal
+#SBATCH -N 1
+#SBATCH -n 1
+#SBATCH --export=ALL
+#SBATCH -t 02:00:00
+
+cd $PBS_O_WORKDIR
+. ${MODULESHOME}/init/bash
+
+module load hdf5
+module load python
+#module load intel/18.0.5
+#module load impi/18.0.5
+#module load mvapich2-x/2.3
+module use /work/01197/semeraro/frontera/rpminstall/intel19/impi19_0/modulefiles
+module load visit/3.1.2
+
+visit -cli -nowin -forceversion 3.1.2 -s $VISITSCRIPT $PDAS $PDAI $PDL $PV $PBSQ2R $PG00 $REFPLOT $CUTPLOT $BGCOLOR $PE $PZ $PFO $PFA $H5 $EXTRAS $SAVEFOLDER $RANK $TOTRANKS $NUMBFIELDPLOTS $VECXML $BSQXML $MAXDENS $RHO_PSEUDOXML $RHO_ISOXML $G00_PSEUDOXML $G00_ISOXML
