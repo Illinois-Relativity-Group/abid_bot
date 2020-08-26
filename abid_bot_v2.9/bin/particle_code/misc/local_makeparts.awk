@@ -14,6 +14,8 @@ dir=$1;
 
 file_original="particles.mon";
 
+prev=""
+
 mkdir $dir$folder;
 
 cd $dir$folder;
