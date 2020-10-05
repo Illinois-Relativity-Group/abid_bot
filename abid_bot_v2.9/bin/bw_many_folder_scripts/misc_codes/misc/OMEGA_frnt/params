@@ -1,0 +1,14 @@
+#!/bin/bash
+#Params
+vxfile=/scratch1/02588/ruizm/NSNS_py/irHe2.5_SLy_130_M2.7/beta100/vx.xy.asc
+vyfile=/scratch1/02588/ruizm/NSNS_py/irHe2.5_SLy_130_M2.7/beta100/vy.xy.asc
+delta_r=0.075 #will collect omega data for multiples of this r value, should be around size of grid refinement
+M=2.707 #ADM Mass of system
+dt=0.0375 #time per iteration
+comp_omega_mode=2 #mode in computing omega
+ini_omega=1.24e-4 #self-define initial omega if comp_omega_mode=2
+ini_time=0.0 #initial time of the data, needed to be set when regridding
+start_time=0  #start time that you split the data(unit is M). 
+
+plotting_mode=3
+
