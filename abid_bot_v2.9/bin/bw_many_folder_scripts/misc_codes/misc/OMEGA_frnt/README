@@ -1,0 +1,21 @@
+These scripts are used for plotting the radial distribution of angular velocity in a star (omega(r)). We average the omega data over rings at discrete radii and over time periods. The radial interval is determined by dt; the time interval is determined by calculating 2Pi/omega(at some early time, and at r ~ 0).
+
+Change your params first. Recall that dt is not the dt you use in runbundle- it should be the time per code iteration.
+
+For the first two steps, you will want an interactive job run like
+idev -p normal -N 1 -n 1 -m 1440 
+for a full day job
+
+To use the scripts,
+1. run split.sh. This will split the huge .asc data to files that contain only data at a certain time. This will take ~half a day, so do it as an iteractive job using qsub -I -l nodes=1:ppn=1:xe -l walltime=10:00:00
+
+2. run vel_to_omega.sh. This will calculate and average the omega over rings. Sometimes bad data could be given because they restarted the simulation at some point. If that happens then some vx and vy file won't have the same number of lines. We just get rid of those times. The annotation output here for the time at each step is incorrect- it lists the number for iteration but says it is units of time. This is not important.
+
+
+3. run iter_to_time. This just rename the files.
+
+
+4. run time_ave.sh. This will calculate the period and average the data over each period. Usually you need to play around with what time to start with in order to get a decent plot. (Just move some beginning w_data to other folder). You will also need to change the scripts itself (new_time_ave.py) to adjust the cutoffs
+
+
+5. run plot.sh. There are a lot of things you can play with, so talk to post docs what kind of plot they want.  There are many things in here that you will have to change, so ask someone for help once you get here. plot_3.py should be the current script.
