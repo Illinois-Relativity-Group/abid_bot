@@ -297,7 +297,7 @@ def getTotalNumberOfFrames():
 
 	for line in f_overlap:
 		line_str=line.split()
-		col1 = max(int(line_str[0]),0)
+		col1 = int(line_str[0])		#update tag: f210314a
 		col2 = int(line_str[1])
 		tot_number_of_frames += col2 - col1
 

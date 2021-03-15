@@ -20,7 +20,7 @@ def make_seed_file(r):
 	yc = r[2]
 	zc = r[3]
 	fName = str(int(round(time/dt)))
-	with open(bhseed_dir + fName.zfill(7) + ".txt", 'w') as outfile:
+	with open(bhseed_dir + fName.zfill(7) + "_0.txt", 'w') as outfile:	#update tag: f210314a
 
 ############################################THING TO CHANGE###################################################
 # Here you have the ability to modify where the ring of points are going to be above and below the black hole. 
