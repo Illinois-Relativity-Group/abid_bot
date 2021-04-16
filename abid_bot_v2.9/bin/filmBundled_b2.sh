@@ -59,7 +59,7 @@ echo "Writing jobs to joblist..."
 for rank in `seq 0 $(( $totranks - 1 ))`; do
 	jobfile=$logfolder/job/job_$(printf "%03d" $rank).sh
 	outfile=$logfolder/out/out_$(printf "%03d" $rank).txt
-	echo visit -forceversion 3.0.0 -cli -nowin -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $xmldir $picsavefolder$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $maxdensity $rho_pseudoXML $rho_isoXML $g00_pseudoXML $g00_isoXML $idx $totframes $view1XML $vol1XML $view2XML $vol2XML> $jobfile
+	echo visit -forceversion 3.1.2 -cli -nowin -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $xmldir $picsavefolder$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $maxdensity $rho_pseudoXML $rho_isoXML $g00_pseudoXML $g00_isoXML $idx $totframes $view1XML $vol1XML $view2XML $vol2XML> $jobfile
 	echo "$jobfile >> $outfile" >> $logfolder/joblist/joblist$((rank/ranksPerJob))
 done
 
@@ -82,7 +82,7 @@ for i in `seq 0 $((totranks/ranksPerJob-1))`; do
 									s,JOBLIST,joblist/joblist'"$i"',g;
 									s,LOOPER,'"$loopfile2"',g;
 									s,NUM,'"$i"',g' > $logfolder/run/run$i
-	qsub $logfolder/run/run$i
+	sbatch $logfolder/run/run$i
 done
 echo Done!
 
