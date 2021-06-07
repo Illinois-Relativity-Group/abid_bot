@@ -28,9 +28,9 @@ def make_seed_file(coord):
 # Here you have the ability to modify where the ring of points are going to be above and below the black hole. 
 # This section is the only place you should change anything. 
 
-			r = 1.0
+			r = 1.0 #0.008 for bhdisk?
 			h = r*2.0
-			m_steps = 20
+			m_steps = 20 #10 for bhdisk?
 			for m in range(m_steps):
 				theta = 2*pi*m/m_steps
 				x = xc + r*cos(theta)
