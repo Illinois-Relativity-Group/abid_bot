@@ -1,0 +1,10 @@
+update 2021.6.22
+-runsingle now can run multiple frames&ranks with one submission.
+-runsingle no longer need to set totranks. It is auto-detected.
+-the new runsingle requires to remove the output log name setting in pbs file, or else log files will conflict.
+-updated pbs file for frontera. singlerun now uses small queue.
+-added latest nsns xml for visit 3.x.x, named nsns_vol_frontera.xml
+
+-fixed typo in runGW
+
+by Jing

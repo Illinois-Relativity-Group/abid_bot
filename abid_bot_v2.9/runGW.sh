@@ -48,7 +48,7 @@ count=1
 jobcount=0
 
 for dir in $(ls -d ${GWdir}"/"*); do
-	tosave="$picsavefolder"/"$jobName"_$(printf "%04" ${count})_
+	tosave="$picsavefolder"/"$jobName"_$(printf "%04d" ${count})_
 	if [ $all = true ] || [ $count -ge $firstVTKFolder -a $count -le $lastVTKFolder ]; then
 		for rank in `seq 0 $(( $totranks - 1 ))`; do
 			jobfile=$logfolder/job/job$count"_"$rank.sh

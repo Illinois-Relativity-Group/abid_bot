@@ -1,5 +1,4 @@
 #!/bin/bash
-#SBATCH --output="bringleout.txt"
 #SBATCH -p small
 #SBATCH -N 1
 #SBATCH -n 1
