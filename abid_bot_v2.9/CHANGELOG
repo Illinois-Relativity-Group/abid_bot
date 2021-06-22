@@ -4,6 +4,7 @@ update 2021.6.22
 -the new runsingle requires to remove the output log name setting in pbs file, or else log files will conflict.
 -updated pbs file for frontera. singlerun now uses small queue.
 -added latest nsns xml for visit 3.x.x, named nsns_vol_frontera.xml
+-added bsq2r plotting tool
 
 -fixed typo in runGW
 

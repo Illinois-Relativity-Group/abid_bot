@@ -14,13 +14,13 @@ How to use:
    rl: refinement level range.
    MPI: numbers of small files the h5 data splits into. For example, if you have smallb2_file_0 to smallb2_file_127, MPI=128.
    savefolder: where to save the result.
-   You will also want to change the path in job_submit_frontera.pbs
+   You will also want to change the path in job_submit_frontera.pbs. If you are not on Frontera, you also need to change the submission part.
 4. . runjobs.sh <startframe> <lastframe>
    This will automatically split your job into small jobs.
    I suggest to put less than 200 frames in one job. (I use 100)
    Startframe and lastframe should be line numbers from iters.txt
 
-   Output of this file, the avgb2rho.txt files, have each line of the form
+   Output of this file, the avgb2rho*.txt files, have each line of the form
    iteration \t time \t average b2rho
    keep this in mind if you want to build your own plotting tools. 
    It is unclear atm what the time is, as it is an artifact of the old code. 
@@ -38,3 +38,11 @@ env_frontera is a quick script for setting up environment in idev on frontera.
 print_density_test is used to check the density along z axis and decide where to put the box.
 
 5th Oct., 2020
+
+
+
+Python Plotter:
+Use bsq2r_plot_python.sh to call python plotter. Remember to set the M_ADM in bin/plot_bsq2r.py
+This version of data generater seems to use the old data format, so let oldversion=1.
+
+1st May., 2021
