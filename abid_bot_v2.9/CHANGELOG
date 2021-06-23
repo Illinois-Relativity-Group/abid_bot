@@ -1,6 +1,7 @@
 
 update 2021.6.23
 -added GW code compatible with frontera, runGW_frontera.sh and GW_up_frontera.py
+-added gridseed code for tilted BH.
 
 by Jing
 
