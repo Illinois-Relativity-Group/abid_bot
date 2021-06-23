@@ -1,3 +1,9 @@
+
+update 2021.6.23
+-added GW code compatible with frontera, runGW_frontera.sh and GW_up_frontera.py
+
+by Jing
+
 update 2021.6.22
 -runsingle now can run multiple frames&ranks with one submission.
 -runsingle no longer need to set totranks. It is auto-detected.
