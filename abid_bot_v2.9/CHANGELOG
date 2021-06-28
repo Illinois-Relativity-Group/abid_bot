@@ -1,3 +1,10 @@
+update 2021.6.28
+-added a tool scripy whichfolernum.sh to quickly convert foldernum and foldername. can be integrated into other script if you want.
+-fixed seed angle randomness between frames in seedmaker
+-fixed seedmaker shiftvec normalization error. now can generate ring correctly
+-fixed GW code rendering bug on frontera
+
+by Jing
 
 update 2021.6.23
 -added GW code compatible with frontera, runGW_frontera.sh and GW_up_frontera.py

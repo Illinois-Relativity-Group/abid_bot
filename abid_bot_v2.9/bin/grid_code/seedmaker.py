@@ -67,13 +67,13 @@ def make_seed_file(coord):
 				normvec=spindata[idx,1:]
 				normvec /= np.linalg.norm(normvec)
 				cenvec=[xc,yc,zc]
-				pointvec=np.random.randn(3)
-				pointvec -= pointvec.dot(normvec) * normvec
+				pointvec=[29,16,33]	#should not be parallel to spinvec
+				pointvec -= np.dot(pointvec, normvec) * normvec
 				pointvec /= np.linalg.norm(pointvec)
 
-				steplen=2*pi*r/m_steps
+				steplen=2*pi/(m_steps-1)	#approx step
 
-				for m in range(m_steps+1):
+				for m in range(m_steps):
 					p1=cenvec+pointvec*r+normvec*h
 					p2=cenvec+pointvec*r-normvec*h
 					outfile.write(str(p1[0]) + "\t" + str(p1[1]) + "\t" + str(p1[2]) + "\n")

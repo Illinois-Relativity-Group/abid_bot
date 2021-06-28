@@ -139,7 +139,7 @@ vol.colorVarMin = -0.0046 #-0.005055 #-0.00001875
 vol.useColorVarMax = 1
 vol.colorVarMax = 0.0046 #0.005055 #0.00001875
 vol.samplesPerRay = 350
-vol.rendererType = 2 # Splatting, Texture3D, RayCasting, RayCastingIntegration, SLIVR, Tuvok
+#vol.rendererType = 2 # Splatting, Texture3D, RayCasting, RayCastingIntegration, SLIVR, Tuvok	#different in visit 3.x.x
  
 SetPlotOptions(vol)
 SetActivePlots(0)
