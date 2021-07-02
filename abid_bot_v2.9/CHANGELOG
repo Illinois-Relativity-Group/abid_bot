@@ -1,3 +1,6 @@
+update 2021.7.2
+-added nsns_vol_bright_frontera.xml, originally nsns_vol_brtest.
+
 update 2021.6.28
 -added a tool scripy whichfolernum.sh to quickly convert foldernum and foldername. can be integrated into other script if you want.
 -fixed seed angle randomness between frames in seedmaker
