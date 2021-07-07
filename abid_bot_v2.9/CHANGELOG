@@ -4,6 +4,7 @@ update 2021.7.6
  This is an EXPERIMENTAL feature (I added the code on my local machine and not tested). Report if you encountered any bug.
 -fixed PlotFlyOver bug in runModule
 -fixed rmdupes bug with symlinks.
+-fixed filmbundled totranks error. Changed default ranksperjob in runMisc.
 
 by Jing
 

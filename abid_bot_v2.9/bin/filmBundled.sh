@@ -33,7 +33,7 @@ vol2XML=${23}
 ########run movies variables
 logdir=$root/log
 visitScript=$root/bin/bw_many_folder_scripts/${pyscript}
-totranks=$(((totframes+1)/2))
+totranks=$((totframes))
 #####end things you have to change
 
 #remove trailing '/'
@@ -65,7 +65,7 @@ done
 
 chmod -R 755 $logfolder/job
 tasksPerJob=$((ranksPerJob+1))
-nodesPerJob=$(((tasksPerJob+1)/4))	#changed from /2 to /4 to use less nodes
+nodesPerJob=$(((tasksPerJob+1)/4))	#if want faster run, change /4 to /2 to use more nodes.
 for i in `seq 0 $((totranks/ranksPerJob-1))`; do
 	touch $logfolder/joblist/looper$i.sh
     loopfile=$logfolder/joblist/looper$i.sh

@@ -40,7 +40,7 @@ view2XML=$attsdir/nsns_view_topdown.xml
 vol1XML=$attsdir/nsns_vol_dim.xml
 vol2XML=$attsdir/nsns_vol_dim.xml
 
-ranksPerJob=20 # divisor of int(totframes+1)
+ranksPerJob=20 # divisor of totframes
 
 if [[ $zoom_flag -eq 1 ]]; then
 	. bin/filmBundled.sh $jobName $h5folder $idx $totframes $ranksPerJob $savedir $pyscript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor $zoom_flag 0 0 $view1XML $vol1XML $view2XML $vol2XML
@@ -62,7 +62,7 @@ view2XML=$attsdir/_.xml
 vol1XML=$attsdir/_.xml
 vol2XML=$attsdir/_.xml
 
-ranksPerJob=20 # divisor of int((totframes+1)/2)
+ranksPerJob=20 # divisor of totframes
 
 if [[ $zoom2_flag -eq 1 ]]; then
 	. bin/filmBundled.sh $jobName $h5folder $idx $totframes $ranksPerJob $savedir $pyscript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor $zoom2_flag 0 0 $view1XML $vol1XML $view2XML $vol2XML
@@ -84,7 +84,7 @@ view2XML=$attsdir/_.xml
 vol1XML=$attsdir/_.xml
 vol2XML=$attsdir/_.xml
 
-ranksPerJob=20 # divisor of int((totframes+1)/2)
+ranksPerJob=20 # divisor of totframes
 
 if [[ $zoom3_flag -eq 1 ]]; then
 	. bin/filmBundled.sh $jobName $h5folder $idx $totframes $ranksPerJob $savedir $pyscript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor $zoom3_flag 0 0 $view1XML $vol1XML $view2XML $vol2XML
@@ -104,7 +104,7 @@ pyscript=run.py
 view1XML=$attsdir/nsns_view_zoom_out.xml
 vol1XML=$attsdir/nsns_vol_bright.xml
 
-ranksPerJob=20 # divisor of int((totframes+1)/2)
+ranksPerJob=20 # divisor of totframes
 
 if [[ $fly_over_flag -eq 1 ]]; then
 	. bin/filmBundled.sh $jobName $h5folder $idx $totframes $ranksPerJob $savedir $pyscript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor 0 $fly_over_flag 0 $view1XML $vol1XML
@@ -123,7 +123,7 @@ pyscript=run.py
 view1XML=$attsdir/nsns_view_zoom_out.xml
 vol1XML=$attsdir/nsns_vol_bright.xml
 
-ranksPerJob=20 # divisor of int((totframes+1)/2)
+ranksPerJob=20 # divisor of totframes
 if [[ $fly_around_flag -eq 1 ]]; then
 	. bin/filmBundled.sh $jobName $h5folder $idx $totframes $ranksPerJob $savedir $pyscript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor 0 0 $fly_around_flag $view1XML $vol1XML
 fi

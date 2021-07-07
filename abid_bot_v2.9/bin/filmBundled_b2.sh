@@ -33,7 +33,7 @@ vol2XML=${23}
 ########run movies variables
 logdir=$root/log
 visitScript=$root/bin/bw_many_folder_scripts/${pyscript}
-totranks=$(((totframes+1)/2))
+totranks=$((totframes))
 #####end things you have to change
 
 #remove trailing '/'
