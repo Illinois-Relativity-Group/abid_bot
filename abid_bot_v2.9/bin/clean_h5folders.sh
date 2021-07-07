@@ -1,6 +1,6 @@
 echo "cleaning h5 and xml folders"
 cur=$PWD
-rm -rf $root/xml/
+rm -rf $root/xml$1/
 cd $root/h5data/
 bad_data=$root/h5data/bad_data
 

@@ -65,7 +65,7 @@ done
 
 chmod -R 755 $logfolder/job
 tasksPerJob=$((ranksPerJob+1))
-nodesPerJob=$(((tasksPerJob+1)/2))
+nodesPerJob=$(((tasksPerJob+1)/4))	#changed from /2 to /4 to use less nodes
 for i in `seq 0 $((totranks/ranksPerJob-1))`; do
 	touch $logfolder/joblist/looper$i.sh
     loopfile=$logfolder/joblist/looper$i.sh

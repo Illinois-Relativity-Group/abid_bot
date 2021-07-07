@@ -5,7 +5,7 @@
 
 jobName=runsingle
 h5dir=$root/h5data
-extrasDir=$root/xml
+extrasDir=$root/xml$1
 h5prefix=3d_data_
 
 ########run movies variables

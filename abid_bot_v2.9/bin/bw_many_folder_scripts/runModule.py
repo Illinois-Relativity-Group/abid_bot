@@ -837,14 +837,14 @@ class VisitPlot:
 		myViewNormal = myView.viewNormal
 		myViewUp = myView.viewUp
 		
-		for i in range(frame_i, framef):
+		for i in range(frame_i, frame_f):
 			factor = 0.4
 			#factor slows down rotation when looking into jet,
 			#			higher value slows down more.  0<factor<0.5
 			#			factor=0: spins at constant rate
 			#			factor=0.5: comes to instantaeneous stop at top & bottom
 			
-			theta = 2*pi*i/(nsteps)#(n-1) makes last frame same as first
+			theta = 2*pi*i/(num_frames)#(n-1) makes last frame same as first
 
 			xhat=myViewNormal[0]
 			yhat=myViewNormal[1]

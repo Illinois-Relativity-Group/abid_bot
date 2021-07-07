@@ -33,6 +33,7 @@ view2_xml = sys.argv[13]
 twoColorsSeeds = strtobool(sys.argv[14])
 tracer = strtobool(sys.argv[15])
 twoColorsTracer = strtobool(sys.argv[16])
+xmldir = sys.argv[17]
 
 rootdir = rootdir if rootdir[-1] == '/' else rootdir + '/'
 
@@ -42,7 +43,7 @@ particleseedpath = rootdir + "seeds/"
 gridseedpath = rootdir + "seeds/gridseeds/"
 trace1path = rootdir + "trace1/"
 trace2path = rootdir + "trace2/"
-xmldir = rootdir + "xml/"
+#xmldir = rootdir + "xml/"
 cm_file = rootdir + "cm.txt"
 attsdir = rootdir + "bin/bw_many_folder_scripts/atts/"
 

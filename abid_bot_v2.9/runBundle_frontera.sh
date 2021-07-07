@@ -12,7 +12,7 @@ foldersPerRun=1		#Larger numbers take longer to launch but are preferred by BW
 #job name and directory info
 jobName=batchtest
 h5dir=$root/h5data
-extrasDir=$root/xml
+extrasDir=$root/xml$1
 h5prefix=3d_data_
 #run movie variables
 picsavedir=$root/movies

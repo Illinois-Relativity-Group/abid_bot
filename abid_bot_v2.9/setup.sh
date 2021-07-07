@@ -29,8 +29,14 @@
 
 . params
 
-. $bin/clean_h5folders.sh
-. $bin/make_h5folders.sh 
+setN=""
+
+if [[ $# > 0 ]]; then
+	setN=$1
+fi
+
+. $bin/clean_h5folders.sh $setN
+. $bin/make_h5folders.sh $setN
 
 
 if $bhForms
@@ -45,6 +51,6 @@ fi
 
 . $bin/setup_cm.sh
 
-. $bin/setup_frames.sh
+. $bin/setup_frames.sh $setN
 
 echo "setup complete!"

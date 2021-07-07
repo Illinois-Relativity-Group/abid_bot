@@ -4,6 +4,6 @@ cur=$PWD
 cd $root/bin/bw_many_folder_scripts/
 ./cray.sh $it $root/h5data
 python rmdupes.py $root/
-. SetMovie.sh 
+. SetMovie.sh $1
 cd $cur
 echo "done"

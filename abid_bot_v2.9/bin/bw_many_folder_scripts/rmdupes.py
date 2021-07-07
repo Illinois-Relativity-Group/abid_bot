@@ -8,7 +8,9 @@ f = open(duplicate_txt, 'r')
 f.readline()
 f.readline()
 for line in f:
-	move(line[:-1],line[:-22] + "bad_data/" + line[-22:-1])
+	print("rmdupes: ",line,line[-22:-1])
+	try: move(line[:-1],line[:-22] + "bad_data/" + line[-22:-1])
+        except: move(line[:-2],line[:-22] + "bad_data/" + line[-22:-2])
 
 	#try: rmtree(line[:-1])		#for actual files
 	#except: unlink(line[:-1])	#for symlinks
