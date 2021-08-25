@@ -1,3 +1,10 @@
+update 2021.8.25
+-fixed rmdupes.py indentation error
+-fixed rmdupes.py error with different folder name length
+-fixed plotting_tool/bin/ittxt.py undeleted test output error
+
+by Jing
+
 update 2021.7.6
 -added support for multiple sets of xml. Use with  ". setup.sh <set of xml num>". Compatible with old scripts (. setup.sh simply uses xml/). 
  Running script runSingle and runBundle_frontera now supports this feature, simply run with ". runSingle <set of xml num>". If not specified, it uses xml/.

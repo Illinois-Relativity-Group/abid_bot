@@ -10,7 +10,7 @@ for filename in os.listdir(root):
 	if filename.startswith("3d_data_") and os.path.isdir(root+"/"+filename):
 		#print("here")
 		#guy=root+"/"+filename+"By.file_0.h5"
-		print(guy)
+		#print(guy)
 		f=h5py.File(root+"/"+filename+"/By.file_0.h5")
 		for chunk in list(f.keys()):
 			#print(chunk)
