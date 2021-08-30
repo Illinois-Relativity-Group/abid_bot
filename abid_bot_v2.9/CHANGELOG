@@ -1,3 +1,8 @@
+update 2021.8.30
+-fixed rmdupes.py indentation error again
+-added plot_particles.py in bin/particle_code to plot the particles at the first frame
+-added rename3d.sh in h5data to add 3d_data_ prefix to all the folders
+
 update 2021.8.25
 -fixed rmdupes.py indentation error
 -fixed rmdupes.py error with different folder name length

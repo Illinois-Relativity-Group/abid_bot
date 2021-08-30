@@ -10,7 +10,7 @@ f.readline()
 for line in f:
 	headerlen=line[:-2].rfind('/')	#root/h5data
 	headerlen2=line[:headerlen].rfind('/')	#root
-        print("rmdupes: ",line,line[:headerlen],line[headerlen:-1])
+	print("rmdupes: ",line,line[:headerlen],line[headerlen:-1])
 	
 	try: move(line[:-1],line[:headerlen] + "/bad_data" + line[headerlen:-1])
 	except: move(line[:-2],line[:headerlen] + "/bad_data" + line[headerlen:-2])	#for symlinks
