@@ -1,3 +1,7 @@
+update 2021.9.15-1
+-added particle tracer code
+-fixed movieseq problem with empty/bad folder
+
 update 2021.8.30
 -fixed rmdupes.py indentation error again
 -added plot_particles.py in bin/particle_code to plot the particles at the first frame
