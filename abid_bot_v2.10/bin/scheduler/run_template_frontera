@@ -1,0 +1,24 @@
+#!/bin/bash
+#SBATCH --output="bringleout_NUM.txt"
+#SBATCH -p normal
+#SBATCH -N NUMBER_OF_NODES
+#SBATCH -n TOTAL_JOBS
+#SBATCH -t 02:00:00
+
+
+module load intel/19.0.5
+module load impi/19.0.5
+#module use /work/01197/semeraro/frontera/rpminstall/intel19/impi19_0/modulefiles
+module load visit/3.1.2
+module load hdf5
+#module load python3	
+module load launcher
+#module load python
+#setenv PYTHONHOME /nasa/pkgsrc/sles12/2018Q3/views/python/2.7.15/lib/python2.7/site-packages
+#mpiexec -n TOTAL_JOBS SCH_DIR/scheduler.x LOG_DIR/JOBLIST /bin/csh > LOG_DIR/out/out_NUM.log
+#seq TOTAL_JOBS | parallel -j 1 -u --sshloginfile $PBS_NODEFILE \
+#". LOOPER {}"
+export LAUNCHER_WORKDIR=$SLURM_SUBMIT_DIR
+export LAUNCHER_JOB_FILE=LOG_DIR/JOBLIST
+export LD_LIBRARY_PATH=/opt/apps/gcc/6.3.0/lib64:/lib64:$LD_LIBRARY_PATH
+$LAUNCHER_DIR/paramrun

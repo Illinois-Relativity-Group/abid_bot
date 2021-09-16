@@ -1,0 +1,11 @@
+#!/bin/bash
+#SBATCH -n 1
+#SBATCH -t 12:00:00
+#SBATCH -N 1
+#SBATCH --output="log_out.txt"
+#SBATCH -p small
+cd $PBS_O_WORKDIR
+
+module load phdf5
+echo $ptctrcroot
+python3 $ptctrcroot/ptctracer.py

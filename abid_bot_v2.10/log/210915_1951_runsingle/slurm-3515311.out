@@ -1,0 +1,76 @@
+Lmod has detected the following error: The following module(s) are unknown:
+"python"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore_cache load "python"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+
+
+Running: cli3.1.2 -nowin -forceversion 3.1.2 -s /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/run.py 0 0 0 0 0 0 1 0 blue 1 0 0 0 /scratch1/07525/tg868241/spin_code_test_bot/h5data/3d_data_21_03_11_180414 /scratch1/07525/tg868241/spin_code_test_bot/xml/3d_data_21_03_11_180414 /scratch1/07525/tg868241/spin_code_test_bot/movies/210915_1951_runsingle/runsingle_001_000_ 0 8 1 /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/Vec.xml /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/bsq2r.xml 1.0822293452E-003 /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/rho_pseudo.xml /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/rho_iso.xml /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/g00_pseudo.xml /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/g00_iso.xml 1 /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/Vec_big.xml
+Running: viewer3.1.2 -nowin -forceversion 3.1.2 -noint 0 0 0 0 0 0 1 0 blue 1 0 0 0 /scratch1/07525/tg868241/spin_code_test_bot/h5data/3d_data_21_03_11_180414 /scratch1/07525/tg868241/spin_code_test_bot/xml/3d_data_21_03_11_180414 /scratch1/07525/tg868241/spin_code_test_bot/movies/210915_1951_runsingle/runsingle_001_000_ 0 8 1 /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/Vec.xml /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/bsq2r.xml 1.0822293452E-003 /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/rho_pseudo.xml /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/rho_iso.xml /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/g00_pseudo.xml /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/g00_iso.xml 1 /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/Vec_big.xml -host 127.0.0.1 -port 5600
+Running: mdserver3.1.2 -forceversion 3.1.2 0 0 0 0 0 0 1 0 blue 1 0 0 0 /scratch1/07525/tg868241/spin_code_test_bot/h5data/3d_data_21_03_11_180414 /scratch1/07525/tg868241/spin_code_test_bot/xml/3d_data_21_03_11_180414 /scratch1/07525/tg868241/spin_code_test_bot/movies/210915_1951_runsingle/runsingle_001_000_ 0 8 1 /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/Vec.xml /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/bsq2r.xml 1.0822293452E-003 /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/rho_pseudo.xml /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/rho_iso.xml /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/g00_pseudo.xml /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/g00_iso.xml 1 /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/Vec_big.xml -host 127.0.0.1 -port 5600
+Running: engine_ser3.1.2 -forceversion 3.1.2 -dir /work/01197/semeraro/frontera/rpminstall/intel19/impi19_0/visit/3.1.2 -idle-timeout 480 0 0 0 0 0 0 1 0 blue 1 0 0 0 /scratch1/07525/tg868241/spin_code_test_bot/h5data/3d_data_21_03_11_180414 /scratch1/07525/tg868241/spin_code_test_bot/xml/3d_data_21_03_11_180414 /scratch1/07525/tg868241/spin_code_test_bot/movies/210915_1951_runsingle/runsingle_001_000_ 0 8 1 /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/Vec.xml /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/bsq2r.xml 1.0822293452E-003 /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/rho_pseudo.xml /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/rho_iso.xml /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/g00_pseudo.xml /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/g00_iso.xml 1 /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/Vec_big.xml -host 127.0.0.1 -port 5600
+['/scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/run.py', '0', '0', '0', '0', '0', '0', '1', '0', 'blue', '1', '0', '0', '0', '/scratch1/07525/tg868241/spin_code_test_bot/h5data/3d_data_21_03_11_180414', '/scratch1/07525/tg868241/spin_code_test_bot/xml/3d_data_21_03_11_180414', '/scratch1/07525/tg868241/spin_code_test_bot/movies/210915_1951_runsingle/runsingle_001_000_', '0', '8', '1', '/scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/Vec.xml', '/scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/bsq2r.xml', '1.0822293452E-003', '/scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/rho_pseudo.xml', '/scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/rho_iso.xml', '/scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/g00_pseudo.xml', '/scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/g00_iso.xml', '1', '/scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/Vec_big.xml']
+[['volume_0000.xml', 'volume_0001.xml', 'volume_0002.xml', 'volume_0003.xml', 'volume_0004.xml', 'volume_0005.xml', 'volume_0006.xml', 'volume_0007.xml'], [], ['view_0000.xml', 'view_0001.xml', 'view_0002.xml', 'view_0003.xml', 'view_0004.xml', 'view_0005.xml', 'view_0006.xml', 'view_0007.xml'], ['time_0000.00.txt', 'time_0021.24.txt', 'time_0042.49.txt', 'time_0063.73.txt', 'time_0084.97.txt', 'time_0106.21.txt', 'time_0127.46.txt', 'time_0148.70.txt'], ['bh1_000000.3d', 'bh1_000001.3d', 'bh1_000002.3d', 'bh1_000003.3d', 'bh1_000004.3d', 'bh1_000005.3d', 'bh1_000006.3d', 'bh1_000007.3d'], [], [], [], [], ['spin_0000.vtk', 'spin_0001.vtk', 'spin_0002.vtk', 'spin_0003.vtk', 'spin_0004.vtk', 'spin_0005.vtk', 'spin_0006.vtk', 'spin_0007.vtk'], {'particle_seeds_0': ['particle_seeds_0000_0.txt', 'particle_seeds_0001_0.txt', 'particle_seeds_0002_0.txt', 'particle_seeds_0003_0.txt', 'particle_seeds_0004_0.txt', 'particle_seeds_0005_0.txt', 'particle_seeds_0006_0.txt', 'particle_seeds_0007_0.txt']}, {'Stream_0': ['Stream_0000_0.xml', 'Stream_0001_0.xml', 'Stream_0002_0.xml', 'Stream_0003_0.xml', 'Stream_0004_0.xml', 'Stream_0005_0.xml', 'Stream_0006_0.xml', 'Stream_0007_0.xml']}, [0, 1, 2, 3, 4, 5, 6, 7]]
+13
+density:		False
+bsq2r:		False
+fields:		True
+particles:	True
+gridPoints:	False
+trace1:		False
+trace2:		False
+velocity:	False
+BH1:		True
+BH2:		False
+BH3:		False
+Bx Loaded
+By Loaded
+Bz Loaded
+Loading bh1's...
+	Done
+Databases loaded: ['/scratch1/07525/tg868241/spin_code_test_bot/h5data/3d_data_21_03_11_180414/Bx.file_* database', '/scratch1/07525/tg868241/spin_code_test_bot/h5data/3d_data_21_03_11_180414/By.file_* database', '/scratch1/07525/tg868241/spin_code_test_bot/h5data/3d_data_21_03_11_180414/Bz.file_* database', '/scratch1/07525/tg868241/spin_code_test_bot/xml/3d_data_21_03_11_180414/bh1_*.3d database', '/scratch1/07525/tg868241/spin_code_test_bot/xml/3d_data_21_03_11_180414/spin_*.vtk database']
+
+Plotting: ['particles0', 'bh1', 'spin']
+Annotations set up
+	Set up complete! VisitPlot created
+PlotDensAsVol  = False
+PlotDensAsIso  = False
+PlotDensLinear = False
+PlotVel        = False
+PlotSpinVec    = True
+PlotBsq2r      = False
+Plotg00        = False
+refPlot        = True
+cutPlot        = False
+
+h5dir          = /scratch1/07525/tg868241/spin_code_test_bot/h5data/3d_data_21_03_11_180414
+extrasDir      = /scratch1/07525/tg868241/spin_code_test_bot/xml/3d_data_21_03_11_180414
+saveFolder     = /scratch1/07525/tg868241/spin_code_test_bot/movies/210915_1951_runsingle/runsingle_001_000_
+rank           = 0
+total ranks    = 8
+numBfieldPlots = 1
+vectorXML      = /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/Vec.xml
+spinvecXML     = /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/Vec_big.xml
+bsq2rXML       = /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/bsq2r.xml
+max_density    = 1.0822293452E-003
+rho_pseudoXML  = /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/rho_pseudo.xml
+rho_isoXML     = /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/rho_iso.xml
+g00_pseudoXML  = /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/g00_pseudo.xml
+g00_isoXML     = /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/g00_iso.xml
+
+Add streamline plot with index = 0
+Reflect set
+Add bh1 plot with index = 1
+Reflect set
+Traceback (most recent call last):
+  File "/scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/run.py", line 88, in <module>
+    myPlot.SetPlots()
+  File "/scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/runModule.py", line 732, in SetPlots
+    if self.spinvec():		  self.spinvec_atts = PlotVelocity(self.vtkfile, "spinvec", self.idx("spin"))
+AttributeError: VisitPlot instance has no attribute 'vtkfile'
+>>> 

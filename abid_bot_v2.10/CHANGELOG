@@ -1,0 +1,65 @@
+update 2021.9.15-2
+ABID_BOT_v2.10/abid_bot_v2.10: spinvec ver
+-Added support for plotting spinvector in setup, setup_spinvtk.py, runsingle, runbundle_frontera, singlerun_frontera*.pbs, run.py, runmodule.py. NOT COMPATIBLE WITH OLD VERSION.
+-Added relevant XMLs
+-Movie script only updated runsingle(tested) and runbundle_frontera(NOT tested). Please don't use other movie scripts for now.
+-changed runsingle default queue to flex.
+-fixed runmodule bug for gridseed xmls.
+
+Jing
+
+
+update 2021.9.15-1
+-added particle tracer code
+-fixed movieseq problem with empty/bad folder
+
+update 2021.8.30
+-fixed rmdupes.py indentation error again
+-added plot_particles.py in bin/particle_code to plot the particles at the first frame
+-added rename3d.sh in h5data to add 3d_data_ prefix to all the folders
+
+update 2021.8.25
+-fixed rmdupes.py indentation error
+-fixed rmdupes.py error with different folder name length
+-fixed plotting_tool/bin/ittxt.py undeleted test output error
+
+by Jing
+
+update 2021.7.6
+-added support for multiple sets of xml. Use with  ". setup.sh <set of xml num>". Compatible with old scripts (. setup.sh simply uses xml/). 
+ Running script runSingle and runBundle_frontera now supports this feature, simply run with ". runSingle <set of xml num>". If not specified, it uses xml/.
+ This is an EXPERIMENTAL feature (I added the code on my local machine and not tested). Report if you encountered any bug.
+-fixed PlotFlyOver bug in runModule
+-fixed rmdupes bug with symlinks.
+-fixed filmbundled totranks error. Changed default ranksperjob in runMisc.
+
+by Jing
+
+update 2021.7.2
+-added nsns_vol_bright_frontera.xml, originally nsns_vol_brtest.
+
+update 2021.6.28
+-added a tool scripy whichfolernum.sh to quickly convert foldernum and foldername. can be integrated into other script if you want.
+-fixed seed angle randomness between frames in seedmaker
+-fixed seedmaker shiftvec normalization error. now can generate ring correctly
+-fixed GW code rendering bug on frontera
+
+by Jing
+
+update 2021.6.23
+-added GW code compatible with frontera, runGW_frontera.sh and GW_up_frontera.py
+-added gridseed code for tilted BH.
+
+by Jing
+
+update 2021.6.22
+-runsingle now can run multiple frames&ranks with one submission.
+-runsingle no longer need to set totranks. It is auto-detected.
+-the new runsingle requires to remove the output log name setting in pbs file, or else log files will conflict.
+-updated pbs file for frontera. singlerun now uses small queue.
+-added latest nsns xml for visit 3.x.x, named nsns_vol_frontera.xml
+-added bsq2r plotting tool
+
+-fixed typo in runGW
+
+by Jing
