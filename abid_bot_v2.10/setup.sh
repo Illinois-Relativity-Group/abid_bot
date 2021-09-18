@@ -27,12 +27,14 @@
 
 # Remember to run params, then bin/link_h5data.sh to set up your data folders
 
-. params
+setN=$1
 
-setN=""
-
-if [[ $# > 0 ]]; then
-	setN=$1
+if [[ -f "params$setN" ]];then
+	echo "using params$setN"
+	. params$setN
+else
+	echo "params$setN not found. using params"
+	. params
 fi
 
 . $bin/clean_h5folders.sh $setN

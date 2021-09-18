@@ -1,4 +1,10 @@
-. params
+if [[ -f "params$1" ]];then
+        echo "using params$1"
+        . params$1
+else
+        echo "params$1 not found. using params"
+        . params
+fi
 
 #option to reduce number of folders images
 all=false 			#Runs all folders if true, if false will run from

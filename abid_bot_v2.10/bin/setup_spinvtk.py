@@ -33,7 +33,7 @@ if len(argv)<=2 or len(argv)>=5:
 	
 root=argv[1]
 M=float(argv[2])
-setupid=-1
+setupid=""
 if len(argv)==4:
 	setupid=argv[3]
 
@@ -46,10 +46,7 @@ if len(argv)==4:
 filelist=[]
 
 spinfile=root+'/h5data/bhns_BHspin.mon'
-xmlfolder=root+"xml"
-if setupid>=0:
-	xmlfolder=xmlfolder+str(setupid)
-xmlfolder=xmlfolder+'/'
+xmlfolder=root+"/xml"+setupid+"/"
 
 spindata=np.loadtxt(spinfile,comments=['#'])
 xmltimelist=spindata[:,0]/M

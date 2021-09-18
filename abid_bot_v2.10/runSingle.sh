@@ -1,4 +1,11 @@
-. params
+if [[ -f "params$1" ]];then
+        echo "using params$1"
+        . params$1
+else
+        echo "params$1 not found. using params"
+        . params
+fi
+
 #Use this if you are submitting very few folders (~1-5)
 #Otherwise use runBundle.sh
 #####begin things you have to change TODO

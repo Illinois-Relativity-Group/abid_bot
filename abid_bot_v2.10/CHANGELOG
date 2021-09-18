@@ -1,3 +1,10 @@
+update 2021.9.17
+-fixed setup_spinvtk missing / in path and parameter error
+-added support for multiple params file when using multiple set of xmls. Running script support only added for runSingle and runBundle_frontera.
+-Added Stream xml option in params
+-Added volume xml for bhdisk, in case interested.
+-*currently colorbar is by default on in runModule. Turn off in SetAnnotation if you want.
+
 update 2021.9.15-2
 ABID_BOT_v2.10/abid_bot_v2.10: spinvec ver
 -Added support for plotting spinvector in setup, setup_spinvtk.py, runsingle, runbundle_frontera, singlerun_frontera*.pbs, run.py, runmodule.py. NOT COMPATIBLE WITH OLD VERSION.

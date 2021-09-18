@@ -34,6 +34,7 @@ twoColorsSeeds = strtobool(sys.argv[14])
 tracer = strtobool(sys.argv[15])
 twoColorsTracer = strtobool(sys.argv[16])
 xmldir = sys.argv[17]
+streamXML = sys.argv[18]
 
 rootdir = rootdir if rootdir[-1] == '/' else rootdir + '/'
 
@@ -206,7 +207,7 @@ def run_mov_change_attribute(first_frame, last_frame, view_initial, view_final, 
 			if(indexstep >= len(filelist_part)):
 				indexstep = len(filelist_part) - 1
 			src_list = sorted(glob.glob(particleseedpath + "{:0>7d}*".format(state)))
-			stream_src_list = sorted(glob.glob(attsdir + "Stream_?.xml"))
+			stream_src_list = sorted(glob.glob(streamXML))
 			for src,stream_src in zip(src_list,stream_src_list):
 				append_str = "_" + src[-5]
 				dst = saveFolder + "particle_seeds_" + str(index).zfill(4) + append_str + ".txt"
