@@ -68,7 +68,7 @@ rho_isoXML=$root/bin/bw_many_folder_scripts/atts/rho_iso.xml
 
 # view1XML:		The full path to the view attribute xml file. This is usually placed in 
 # view2XML:		"bin/bw_many_folder_scripts/atts/".
-view1XML=$root/bin/bw_many_folder_scripts/atts/bhdisk_view_30deg_adjusted.xml
+view1XML=$root/bin/bw_many_folder_scripts/atts/bhdisk_view_30deg.xml
 view2XML=$root/bin/bw_many_folder_scripts/atts/_.xml
 #####################################################################
 
