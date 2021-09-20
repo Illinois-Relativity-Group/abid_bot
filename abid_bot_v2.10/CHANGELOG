@@ -1,6 +1,7 @@
 update 2021.9.19
 -fixed setmovie.py error when not starting at t=0
 -added support for spin setup with offset. It is automatically detected. If spin data is not sorted, uncomment the sort function in setup_spinvtk.py.
+-fixed setmovie.py twoColorsSeeds fileformat and overlap file reading error
 
 update 2021.9.18
 -fixed params default file not existing problem

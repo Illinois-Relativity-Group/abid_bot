@@ -223,7 +223,7 @@ def run_mov_change_attribute(first_frame, last_frame, view_initial, view_final, 
 					shutil.copy2(stream_src,stream_dst)
 		
 			if twoColorsSeeds:
-				src = gridseedpath + "{:0>7d}.txt".format(state)
+				src = gridseedpath + "{:0>7d}_0.txt".format(state)
 				#src = gridseedpath + filelist_part[indexstep]
 				dst = saveFolder + "grid_seeds_" + str(index).zfill(4) + ".txt"
 				if isfile(src):
@@ -299,7 +299,8 @@ def getTotalNumberOfFrames():
 
 	for line in f_overlap:
 		line_str=line.split()
-		col1 = max(int(line_str[0]),0)
+		#col1 = max(int(line_str[0]),0)
+		col1 = int(line_str[0])
 		col2 = int(line_str[1])
 		tot_number_of_frames += col2 - col1
 
