@@ -1,3 +1,6 @@
+update 2021.9.19
+-fixed setmovie.py error when not starting at t=0
+
 update 2021.9.18
 -fixed params default file not existing problem
 -added running with depencency script to avoid extremely high IO.

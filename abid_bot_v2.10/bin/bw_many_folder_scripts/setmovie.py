@@ -184,7 +184,7 @@ def run_mov_change_attribute(first_frame, last_frame, view_initial, view_final, 
 
 	for state in range(first_step,last_step,1):
 		
-		gotFolder,index = getFolder(state)
+		gotFolder,index = getFolder(state - offset)
 		if gotFolder == -1:
 			continue
 		print("Folder: {}".format(gotFolder))
