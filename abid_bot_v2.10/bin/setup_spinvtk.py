@@ -1,3 +1,5 @@
+# params: root M <setupID>
+
 import numpy as np
 from sys import argv
 import os
@@ -37,18 +39,14 @@ setupid=""
 if len(argv)==4:
 	setupid=argv[3]
 
-#dt=0
-#it=512
-#dtp32?it=dt/it*32?    #gap in spin.mon
-#xmldt=dt/M          #gap in xml folders
-#print(dtp32it,xmldt)
-
 filelist=[]
 
 spinfile=root+'/h5data/bhns_BHspin.mon'
 xmlfolder=root+"/xml"+setupid+"/"
 
+#load spin data
 spindata=np.loadtxt(spinfile,comments=['#'])
+#spindata=spindata.sort(key=lambda x:x[0])	#Assume sorted. If not, sort first.
 xmltimelist=spindata[:,0]/M
 print(xmltimelist[:10])
 print(xmltimelist[-10:])
@@ -56,6 +54,14 @@ print(xmltimelist[-10:])
 #print(spindata[0,0])
 
 xmlfollist=[file for file in os.listdir(xmlfolder) if file.startswith("3d_")]
+
+#detect offset
+minxml=min(xmlfollist)
+timelist=[file for file in os.listdir(xmlfolder+minxml) if file.startswith("time_")]
+mintime=min(timelist)
+fnlen=len(mintime)
+firstTdt=float(mintime[5:fnlen-4])-xmltimelist[0]	#Automatically detects firstTime offset. Should be same as in params
+print("time offset: %f" % firstTdt)
 
 #print(xmlfollist)
 
@@ -65,7 +71,7 @@ for xmlfol in xmlfollist:
     #print(timelist)
     for i in range(0,len(timelist)):
         fnlen=len(timelist[i])
-        time=float(timelist[i][5:fnlen-4])	#fnlen-4 excluded
+        time=float(timelist[i][5:fnlen-4])-firstTdt	#fnlen-4 excluded
         #print(time)
         idx=binsearch(xmltimelist,time,tol=(xmltimelist[1]-xmltimelist[0])/2)
         if idx>=0:
