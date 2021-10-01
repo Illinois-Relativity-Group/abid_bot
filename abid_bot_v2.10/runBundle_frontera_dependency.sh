@@ -32,7 +32,7 @@ h5prefix=3d_data_
 picsavedir=$root/movies
 logdir=$root/log
 visitScript=$root/bin/bw_many_folder_scripts/run.py
-totranks=10
+utotranks=10		#as an average workload estimation. Only used to determine number of nodes.
 dependency=$3
 
 #plotting varibles
@@ -79,6 +79,8 @@ echo "Writing jobs to joblist..."
 for dir in $(ls -d ${h5dir}"/"$h5prefix* ); do
 	xmldir=$(ls -d -1 $extrasDir/** | sed -n ${count}p) 
 	tosave="$picsavefolder"/"$jobName"_$(printf "%03d" $count)_
+	totranks=$(ls ${xmldir}/time_* | wc -l)
+	echo $totranks
 	#if [ $((count%20)) -eq 0 ]; then 		#Image every 20th folder
 	if [ $all = true ] || [ $count -ge $firstFolder -a $count -le $lastFolder ]; then
 		#loop over ranks within 3d_data folder
@@ -98,7 +100,7 @@ done
 chmod -R 777 $logfolder/job
 jobcount=$((jobcount-1))
 runcount=$((jobcount/foldersPerRun))
-numjobs=$(((foldersPerRun*totranks+1)))
+numjobs=$(((foldersPerRun*utotranks+1)))
 numnodes=$(((numjobs+1)/2))
 for i in `seq 0 $runcount`; do
 	touch $logfolder/joblist/looper$i.sh

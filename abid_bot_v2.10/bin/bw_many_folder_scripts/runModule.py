@@ -89,12 +89,12 @@ def boxspinvec(x,y,z,addOp):
                 AddOperator("Box", 0)
         BoxAtts = BoxAttributes()
         BoxAtts.amount = BoxAtts.Some  # Some, All
-        BoxAtts.minx = x-0.001
-        BoxAtts.maxx = x+0.001
-        BoxAtts.miny = y-0.001
-        BoxAtts.maxy = y+0.001
-        BoxAtts.minz = z-0.001
-        BoxAtts.maxz = z+0.001
+        BoxAtts.minx = x-0.0005
+        BoxAtts.maxx = x+0.0005
+        BoxAtts.miny = y-0.0005
+        BoxAtts.maxy = y+0.0005
+        BoxAtts.minz = z-0.0005
+        BoxAtts.maxz = z+0.0005
         BoxAtts.inverse = 0
         SetOperatorOptions(BoxAtts, 0)
         print("Box set")
@@ -830,7 +830,8 @@ class VisitPlot:
 		if self.spinvec():
 			SetActivePlots(self.idx("spin"))
 			SetPlotOptions(self.spinvec_atts)
-			spherespinvec(self.CoM_x,self.CoM_y,self.CoM_z, frame==self.firstFrame)
+			#spherespinvec doesn't center correctly
+			boxspinvec(self.CoM_x,self.CoM_y,self.CoM_z, frame==self.firstFrame)
 			print("spinvec set")
 			#if self.cutPlot: box(self.CoM_y, frame==self.firstFrame)
 		if self.g00():
@@ -895,7 +896,7 @@ class VisitPlot:
 			ar = ai + t*(af - ai)
 			v.freeformOpacity = tuple(cr)
 			v.opacityAttenuation = ar
-			movie_attributes = [c, v, self.rho_pseudoXML, self.bsq2rXML, self.vectorXML, self.g00_pseudoXML, '','']
+			movie_attributes = [c, v, self.rho_pseudoXML, self.bsq2rXML, self.vectorXML, self.spinvecXML, self.g00_pseudoXML, '','']
 			self.SetAtts(frame, movie_attributes)
 			self.PlotFrame(frame)
 	
@@ -962,7 +963,7 @@ class VisitPlot:
 			newView.viewNormal = viewNormal
 			newView.viewUp = viewUp
 
-			movie_attributes = [newView, myVol, self.rho_pseudoXML, self.bsq2rXML, self.vectorXML, self.g00_pseudoXML, '','']
+			movie_attributes = [newView, myVol, self.rho_pseudoXML, self.bsq2rXML, self.vectorXML, self.spinvecXML, self.g00_pseudoXML, '','']
 			self.SetAtts(frame, movie_attributes)
 			self.PlotFrame(frame)
 			

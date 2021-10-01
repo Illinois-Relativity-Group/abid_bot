@@ -1,8 +1,9 @@
-update pending
+update 2021.9.30/10.1
 -updated runModule outdated attribute (legendFlag -> legendInfoFlag)
 -updated ittxt.py for in place update
 -added spinVec support for runMisc (not tested)
-
+-runBundle_frontera_dependency.sh now automatically detects totranks to avoid duplicate frames.
+-fixed spinvec centering issue. changed spherespinvec to boxspinvec.
 
 update 2021.9.19
 -fixed setmovie.py error when not starting at t=0
