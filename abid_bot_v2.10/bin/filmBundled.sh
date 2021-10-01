@@ -30,8 +30,8 @@ vol1XML=${21}
 view2XML=${22}
 vol2XML=${23}
 
-PlotSpinVec={24}
-spinvecXML={25}
+PlotSpinVec=${24}
+spinvecXML=${25}
 
 ########run movies variables
 logdir=$root/log
