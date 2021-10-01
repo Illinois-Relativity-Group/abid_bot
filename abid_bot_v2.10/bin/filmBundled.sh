@@ -30,6 +30,9 @@ vol1XML=${21}
 view2XML=${22}
 vol2XML=${23}
 
+PlotSpinVec={24}
+spinvecXML={25}
+
 ########run movies variables
 logdir=$root/log
 visitScript=$root/bin/bw_many_folder_scripts/${pyscript}
@@ -59,7 +62,7 @@ echo "Writing jobs to joblist..."
 for rank in `seq 0 $(( $totranks - 1 ))`; do
 	jobfile=$logfolder/job/job_$(printf "%03d" $rank).sh
 	outfile=$logfolder/out/out_$(printf "%03d" $rank).txt
-	echo visit -forceversion 3.0.0 -cli -nowin -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $xmldir $picsavefolder$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $maxdensity $rho_pseudoXML $rho_isoXML $g00_pseudoXML $g00_isoXML $idx $totframes $view1XML $vol1XML $view2XML $vol2XML> $jobfile
+	echo visit -forceversion 3.1.2 -cli -nowin -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $xmldir $picsavefolder$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $maxdensity $rho_pseudoXML $rho_isoXML $g00_pseudoXML $g00_isoXML $PlotSpinVec $spinvecXML $idx $totframes $view1XML $vol1XML $view2XML $vol2XML> $jobfile
 	echo "$jobfile >> $outfile" >> $logfolder/joblist/joblist$((rank/ranksPerJob))
 done
 

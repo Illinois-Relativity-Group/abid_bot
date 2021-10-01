@@ -37,13 +37,6 @@ PlotSpinVec	= sys.argv[27] ==  '1'
 SpinVecXML	= sys.argv[28]
 ##################################
 
-combos = [PlotEvolve and PlotZoom, PlotEvolve and PlotFlyOver, PlotEvolve and PlotFlyAround, PlotZoom and PlotFlyOver, PlotZoom and PlotFlyAround, PlotFlyOver and PlotFlyAround]
-for combo in combos:
-	if combo:
-		print("Can't have two types of evolution in one plot")
-		sys.exit()
-
-print(sys.argv)
 h5dir 			= sys.argv[14]
 extrasDir 		= sys.argv[15]
 saveFolder 		= sys.argv[16]
@@ -58,28 +51,34 @@ rho_isoXML 		= sys.argv[24]
 g00_pseudoXML 	= sys.argv[25]
 g00_isoXML 		= sys.argv[26]
 
-		
+########## EXPERIMENTAL ##########
+if PlotZoom or PlotFlyOver or PlotFlyAround:
+	idx = int(sys.argv[29])
+	num_frames = int(sys.argv[30])
+	view_initial = sys.argv[31]
+	vol_initial = sys.argv[32]
+	miscatts = [idx, num_frames, view_initial, vol_initial]
+	if PlotZoom:
+		view_final = sys.argv[33]
+		vol_final = sys.argv[34]
+		miscatts += [view_final, vol_final]
+
+##################################
+
+
+combos = [PlotEvolve and PlotZoom, PlotEvolve and PlotFlyOver, PlotEvolve and PlotFlyAround, PlotZoom and PlotFlyOver, PlotZoom and PlotFlyAround, PlotFlyOver and PlotFlyAround]
+for combo in combos:
+	if combo:
+		print("Can't have two types of evolution in one plot")
+		sys.exit()
+
+print(sys.argv)
 PlotOpts = [ PlotDensAsVol, PlotDensAsIso, PlotDensLinear, PlotVel, PlotSpinVec, PlotBsq2r, Plotg00, refPlot,\
 			 cutPlot, bgcolor ]
 ArgList  = [ h5dir, extrasDir, saveFolder, rank, total_ranks, numBfieldPlots, vectorXML, SpinVecXML,\
 			 bsq2rXML, max_density, rho_pseudoXML, rho_isoXML, g00_pseudoXML, g00_isoXML ]
 
 time.strftime("%Y-%m-%d %H:%M:%S")
-
-
-########## EXPERIMENTAL ##########
-if PlotZoom or PlotFlyOver or PlotFlyAround:
-	idx = int(sys.argv[27])
-	num_frames = int(sys.argv[28])
-	view_initial = sys.argv[29]
-	vol_initial = sys.argv[30]
-	miscatts = [idx, num_frames, view_initial, vol_initial]
-	if PlotZoom:
-		view_final = sys.argv[31]
-		vol_final = sys.argv[32]
-		miscatts += [view_final, vol_final]
-
-##################################
 
 
 ########## MAIN ##########

@@ -15,6 +15,7 @@ PlotDensAsVol=1 # Plot density in a volume plot
 PlotDensAsIso=0 # Plot density in a pseudocolor plot as isosurfaces
 PlotDensLinear=0 # Plot linear scale density rather than log scale
 PlotVel=0 # Plot velocity arrows
+PlotSpinVec=0 # Plot spin vector
 PlotBsq2r=0 # Plot B squared over 2 rho
 Plotg00=0 # Plot g00 from metric
 refPlot=1 # Reflect plot over xy plane
@@ -43,7 +44,7 @@ vol2XML=$attsdir/nsns_vol_dim.xml
 ranksPerJob=20 # divisor of totframes
 
 if [[ $zoom_flag -eq 1 ]]; then
-	. bin/filmBundled.sh $jobName $h5folder $idx $totframes $ranksPerJob $savedir $pyscript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor $zoom_flag 0 0 $view1XML $vol1XML $view2XML $vol2XML
+	. bin/filmBundled.sh $jobName $h5folder $idx $totframes $ranksPerJob $savedir $pyscript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor $zoom_flag 0 0 $view1XML $vol1XML $view2XML $vol2XML $PlotSpinVec $spinvecXML
 fi
 ##################################################################
 
@@ -65,7 +66,7 @@ vol2XML=$attsdir/_.xml
 ranksPerJob=20 # divisor of totframes
 
 if [[ $zoom2_flag -eq 1 ]]; then
-	. bin/filmBundled.sh $jobName $h5folder $idx $totframes $ranksPerJob $savedir $pyscript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor $zoom2_flag 0 0 $view1XML $vol1XML $view2XML $vol2XML
+	. bin/filmBundled.sh $jobName $h5folder $idx $totframes $ranksPerJob $savedir $pyscript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor $zoom_flag 0 0 $view1XML $vol1XML $view2XML $vol2XML $PlotSpinVec $spinvecXML
 fi
 ##################################################################
 
@@ -87,7 +88,7 @@ vol2XML=$attsdir/_.xml
 ranksPerJob=20 # divisor of totframes
 
 if [[ $zoom3_flag -eq 1 ]]; then
-	. bin/filmBundled.sh $jobName $h5folder $idx $totframes $ranksPerJob $savedir $pyscript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor $zoom3_flag 0 0 $view1XML $vol1XML $view2XML $vol2XML
+	. bin/filmBundled.sh $jobName $h5folder $idx $totframes $ranksPerJob $savedir $pyscript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor $zoom_flag 0 0 $view1XML $vol1XML $view2XML $vol2XML $PlotSpinVec $spinvecXML
 fi
 ####################################################################
 
@@ -107,7 +108,7 @@ vol1XML=$attsdir/nsns_vol_bright.xml
 ranksPerJob=20 # divisor of totframes
 
 if [[ $fly_over_flag -eq 1 ]]; then
-	. bin/filmBundled.sh $jobName $h5folder $idx $totframes $ranksPerJob $savedir $pyscript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor 0 $fly_over_flag 0 $view1XML $vol1XML
+	. bin/filmBundled.sh $jobName $h5folder $idx $totframes $ranksPerJob $savedir $pyscript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor 0 $fly_over_flag 0 $view1XML $vol1XML 0 0 $PlotSpinVec $spinvecXML
 fi
 ######################################################################
 
@@ -125,7 +126,7 @@ vol1XML=$attsdir/nsns_vol_bright.xml
 
 ranksPerJob=20 # divisor of totframes
 if [[ $fly_around_flag -eq 1 ]]; then
-	. bin/filmBundled.sh $jobName $h5folder $idx $totframes $ranksPerJob $savedir $pyscript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor 0 0 $fly_around_flag $view1XML $vol1XML
+	. bin/filmBundled.sh $jobName $h5folder $idx $totframes $ranksPerJob $savedir $pyscript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor 0 0 $fly_around_flag $view1XML $vol1XML 0 0 $PlotSpinVec $spinvecXML
 fi
 ######################################################################
 

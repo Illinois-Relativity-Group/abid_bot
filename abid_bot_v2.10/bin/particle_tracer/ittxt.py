@@ -11,7 +11,6 @@ rmdupes=0	#NOT suggested to use here. Takes too long. Run inside ptctracer.
 rlmax=12	#Used when rmdupes
 MPI=128		#Used when rmdupes
 
-outy=open(outfile,"w")
 bigtimelist=[]
 old_list=np.zeros((1,2))
 
@@ -25,9 +24,8 @@ for filename in os.listdir(root):
 	timelist=[]
 	#print(filename)
 	if filename.startswith("3d_data_") and os.path.isdir(root+"/"+filename):
-		#print("here")
-		#guy=root+"/"+filename+"By.file_0.h5"
-		#print(guy)
+		#cwf=root+"/"+filename+"By.file_0.h5"
+		#print(cwf)
 		f=h5py.File(root+"/"+filename+"/By.file_0.h5")
 		for chunk in list(f.keys()):
 			#print(chunk)
@@ -40,7 +38,6 @@ for filename in os.listdir(root):
 				timelist.append(int(it))
 		#timelist.sort()
 		for time in timelist:
-			#outy.write(filename+ ", "+str(time))
 			bigtimelist.append((filename, time))
 bigtimelist.sort(key=lambda x: (x[1],x[0]))
 
@@ -76,6 +73,8 @@ if append and len(bigtimelist):
 elif append:
 	print("No new data found")
 	bigtimelist=old_list
+
+outy=open(outfile,"w")
 for i in bigtimelist:
 	outy.write(i[0]+ ", "+str(i[1])+"\n")	
 outy.close()	
