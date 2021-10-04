@@ -33,6 +33,7 @@ if len(argv)<=2 or len(argv)>=5:
 	print("number of arguments incorrect. exiting.")
 	exit(1)
 	
+ordered=1	#if h5folders are ordered by data time
 root=argv[1]
 M=float(argv[2])
 setupid=""
@@ -61,6 +62,12 @@ timelist=[file for file in os.listdir(xmlfolder+minxml) if file.startswith("time
 mintime=min(timelist)
 fnlen=len(mintime)
 firstTdt=float(mintime[5:fnlen-4])-xmltimelist[0]	#Automatically detects firstTime offset. Should be same as in params
+if not ordered:
+    for xmlfol in xmlfollist:
+        timelist=[file for file in os.listdir(xmlfolder+xmlfol) if file.startswith("time_")]
+        mintime=min(timelist)
+        fnlen=len(mintime)
+        firstTdt=min(firstTdt, float(mintime[5:fnlen-4])-xmltimelist[0])
 print("time offset: %f" % firstTdt)
 
 #print(xmlfollist)

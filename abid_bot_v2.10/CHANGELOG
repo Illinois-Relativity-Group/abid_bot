@@ -1,3 +1,9 @@
+update 2021.10.3
+-better rmdupes error handling
+-setup_spinvtk support for randomly ordered h5folder. Manually change ordered=0 to use this feature.
+-fixed another outdated attributes in runModule
+-fixed runMisc cutplot options not working in runModule
+
 update 2021.9.30/10.1
 -updated runModule outdated attribute (legendFlag -> legendInfoFlag)
 -updated ittxt.py for in place update

@@ -666,7 +666,7 @@ class VisitPlot:
 			Ann.backgroundColor = (50,50,50,255)
 		else:
 			Ann.backgroundColor = (55,118,255,255) #stu blue default
-		#Ann.legendFlag = 0
+		#Ann.legendInfoFlag = 0
 		Ann.databaseInfoFlag = 0
 		Ann.userInfoFlag = 0
 		Ann.axes3D.visible = 0
@@ -793,26 +793,26 @@ class VisitPlot:
 
 #############################################
 
-	def PlotFrame(self, frame):
+	def PlotFrame(self, frame, forceAddOp=0):
 		######implement loaded plot settings
 		print("setting settings")
 		if self.density_vol():
 			SetActivePlots(self.idx("density"))
 			SetPlotOptions(self.vol)
 			print("volume set")
-			if self.cutPlot: box(self.CoM_y, frame==self.firstFrame)
+			if self.cutPlot: box(self.CoM_y, forceAddOp or frame==self.firstFrame)
 		if self.density_iso():
 			SetActivePlots(self.idx("density"))
 			SetPlotOptions(self.rho_atts)
 			iso(self.rho_isoXML)
 			reflect()
 			print("pseudocolor set")
-			if self.cutPlot: box(self.CoM_y, frame==self.firstFrame)
+			if self.cutPlot: box(self.CoM_y, forceAddOp or frame==self.firstFrame)
 		if self.bsq2r():
 			SetActivePlots(self.idx("bsq2r"))
 			SetPlotOptions(self.bsq_atts)
 			print("bsq2r set")
-			if self.cutPlot: box(self.CoM_y, frame==self.firstFrame)
+			if self.cutPlot: box(self.CoM_y, forceAddOp or frame==self.firstFrame)
 		if self.particles():
 			for i in range(self.numBfieldPlots):
 				SetActivePlots(self.idx("particles{}".format(i)))
@@ -824,16 +824,16 @@ class VisitPlot:
 		if self.velocity():
 			SetActivePlots(self.idx("vel"))
 			SetPlotOptions(self.vector_atts)
-			cylinder(self.CoM_x,self.CoM_y, 45, frame==self.firstFrame, -100, z2=100)
+			cylinder(self.CoM_x,self.CoM_y, 45, forceAddOp or frame==self.firstFrame, -100, z2=100)
 			print("velocities set")
-			if self.cutPlot: box(self.CoM_y, frame==self.firstFrame)
+			if self.cutPlot: box(self.CoM_y, forceAddOp or frame==self.firstFrame)
 		if self.spinvec():
 			SetActivePlots(self.idx("spin"))
 			SetPlotOptions(self.spinvec_atts)
 			#spherespinvec doesn't center correctly
-			boxspinvec(self.CoM_x,self.CoM_y,self.CoM_z, frame==self.firstFrame)
+			boxspinvec(self.CoM_x,self.CoM_y,self.CoM_z, forceAddOp or frame==self.firstFrame)
 			print("spinvec set")
-			#if self.cutPlot: box(self.CoM_y, frame==self.firstFrame)
+			#if self.cutPlot: box(self.CoM_y, forceAddOp or frame==self.firstFrame)
 		if self.g00():
 			SetActivePlots(self.idx("g00"))
 			SetPlotOptions(self.g00_atts)
@@ -898,7 +898,7 @@ class VisitPlot:
 			v.opacityAttenuation = ar
 			movie_attributes = [c, v, self.rho_pseudoXML, self.bsq2rXML, self.vectorXML, self.spinvecXML, self.g00_pseudoXML, '','']
 			self.SetAtts(frame, movie_attributes)
-			self.PlotFrame(frame)
+			self.PlotFrame(frame, forceAddOp=1)
 	
 #############################################
 	
@@ -965,7 +965,7 @@ class VisitPlot:
 
 			movie_attributes = [newView, myVol, self.rho_pseudoXML, self.bsq2rXML, self.vectorXML, self.spinvecXML, self.g00_pseudoXML, '','']
 			self.SetAtts(frame, movie_attributes)
-			self.PlotFrame(frame)
+			self.PlotFrame(frame, forceAddOp=1)
 			
 
 #############################################
@@ -1034,9 +1034,9 @@ class VisitPlot:
 			newView.viewNormal = viewNormal
 			newView.viewUp = viewUp
 
-			movie_attributes = [newView, myVol, self.rho_pseudoXML, self.bsq2rXML, self.vectorXML, self.g00_pseudoXML, '','']
+			movie_attributes = [newView, myVol, self.rho_pseudoXML, self.bsq2rXML, self.vectorXML, self.spinvecXML, self.g00_pseudoXML, '','']
 			self.SetAtts(frame, movie_attributes)
-			self.PlotFrame(frame)
+			self.PlotFrame(frame, forceAddOp=1)
 
 ###################END#######################
 

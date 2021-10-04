@@ -1,6 +1,6 @@
 from shutil import move,rmtree
 from os import unlink
-from sys import argv
+from sys import argv,exc_info
 
 root = argv[1]
 duplicate_txt = root + "bin/bw_many_folder_scripts/duplicate.txt"
@@ -10,13 +10,16 @@ f.readline()
 for line in f:
 	headerlen=line[:-2].rfind('/')	#root/h5data
 	headerlen2=line[:headerlen].rfind('/')	#root
-	print("rmdupes: ",line,line[:headerlen],line[headerlen:-1])
+	print("rmdupes: ",line)
+	#print("rmdupes: ",line,line[:headerlen],line[headerlen:-1])
 	
-	try: move(line[:-1],line[:headerlen] + "/bad_data" + line[headerlen:-1])
-	except: move(line[:-2],line[:headerlen] + "/bad_data" + line[headerlen:-2])	#for symlinks
-
+	try: move(line[:-1],line[:headerlen] + "/bad_data" + line[headerlen:-1])		#for actual files
+	except FileNotFoundError: print("folder not found, please check h5folder: %s" % (line[:-1])) 
+	except OSError: move(line[:-2],line[:headerlen] + "/bad_data" + line[headerlen:-2])	#for symlinks
+	
 	#try: rmtree(line[:-1])		#for actual files
 	#except: unlink(line[:-1])	#for symlinks
 
 	try: rmtree(line[:headerlen2]  + "/xml" + line[headerlen:-1])
-	except: unlink(line[:headerlen2]  + "/xml" + line[headerlen:-2])
+	except FileNotFoundError: print("folder not found, skipped: %s" % (line[:headerlen2]  + "/xml" + line[headerlen:-1])) 
+	except OSError: unlink(line[:headerlen2]  + "/xml" + line[headerlen:-2])
