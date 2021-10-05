@@ -1,3 +1,7 @@
+update 2021.10.4
+-setup_spinvec support for randomly ordered h5 folder is default to be turned on
+-runBundle_frontera_dependency now automatically detects totranks to calculate number of nodes. You can adjust number of nodes assigned by changing jobpernode.
+
 update 2021.10.3
 -better rmdupes error handling
 -setup_spinvtk support for randomly ordered h5folder. Manually change ordered=0 to use this feature.
