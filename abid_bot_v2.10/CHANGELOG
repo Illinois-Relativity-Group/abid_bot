@@ -1,3 +1,5 @@
+update 2021.10.27
+-Increased spin box size from 3 3 3 -> 30 30 30
 update 2021.10.4
 -setup_spinvec support for randomly ordered h5 folder is default to be turned on
 -runBundle_frontera_dependency now automatically detects totranks to calculate number of nodes. You can adjust number of nodes assigned by changing jobpernode.

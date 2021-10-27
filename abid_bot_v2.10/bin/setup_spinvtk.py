@@ -6,7 +6,7 @@ import os
 
 def printvtk(fvtk,j,com=(0,0,0)):
     f = open(fvtk, "w")
-    f.write("# vtk DataFile Version 2.0\nspin_vector\nASCII\nDATASET STRUCTURED_POINTS\nDIMENSIONS 3 3 3\nORIGIN -3 -3 -3\nSPACING 3 3 3\nPOINT_DATA 27\nVECTORS spinvec float\n")
+    f.write("# vtk DataFile Version 2.0\nspin_vector\nASCII\nDATASET STRUCTURED_POINTS\nDIMENSIONS 3 3 3\nORIGIN -30 -30 -30\nSPACING 30 30 30\nPOINT_DATA 27\nVECTORS spinvec float\n")
     for _ in range(27):
         f.write("%e %e %e\n" % j)
     f.close
