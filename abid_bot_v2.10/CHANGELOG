@@ -1,3 +1,16 @@
+update 2021.11.12
+-Added new opacity setting at abid_bot/bhbhdisk.ct. Copy it to ~/.visit
+-Added new xmls.Here's how to use each xml for different bhdisk stills :
+    1) Full bhdisk zoomout image with 45 deg view ::  bhdisk_view_45deg.xml,Vec_spin_big.xml,cutPlot = 0 in runSingle.sh
+    2) Full bhdisk zoomin image with top view :: bhdisk_view_zoomin.xml,Vec_spin_zoomin.xml,cutPlot = 0 in runSingle.sh
+    3) Sliced bhdisk zoomout image with 10 deg view :: bhdisk_view_10deg.xml,
+    Vec_spin_big.xml,cutPlot = 1 in runSingle.sh
+    4) Sliced bhdisk superzoomin image for first frame with 10 deg view :: bhdisk_view_10deg_superzoomin_first.xml,Vec_spin_superzoomin_first.xml,cutPlot = 1 in runSingle.sh
+    5) Sliced bhdisk superzoomin image for last frame with 10 deg view :: bhdisk_view_10deg_superzoomin_last.xml,Vec_spin_superzoomin_last.xml,cutPlot = 1 in runSingle.sh
+    6) Sliced bhdisk zoomout image with equatorial deg view :: bhdisk_view_equatorial.xml, Vec_spin_big.xml,cutPlot = 1 in runSingle.sh
+    7) Sliced bhdisk superzoomin image for first frame with equatorial view :: bhdisk_view_equatorial_superzoomin_first.xml,Vec_spin_equatorial_first.xml,cutPlot = 1 in runSingle.sh
+    8) Sliced bhdisk superzoomin image for last frame with equatorial view :: bhdisk_view_equatorial_superzoomin_last.xml,Vec_spin_superzoomin_last.xml,cutPlot = 1 in runSingle.sh
+    
 update 2021.10.27
 -Increased spin box size from 3 3 3 -> 30 30 30
 update 2021.10.4

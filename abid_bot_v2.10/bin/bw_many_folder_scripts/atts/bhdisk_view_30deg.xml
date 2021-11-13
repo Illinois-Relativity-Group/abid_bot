@@ -8,7 +8,7 @@
     <Field name="nearPlane" type="double">-743.789</Field>
     <Field name="farPlane" type="double">743.789</Field>
     <Field name="imagePan" type="doubleArray" length="2">0 0 </Field>
-    <Field name="imageZoom" type="double">250</Field>
+    <Field name="imageZoom" type="double">320</Field>
     <Field name="perspective" type="bool">true</Field>
     <Field name="eyeAngle" type="double">2</Field>
     <Field name="centerOfRotationSet" type="bool">false</Field>

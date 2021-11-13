@@ -6,7 +6,7 @@
     <Field name="nVectors" type="int">100000</Field>
     <Field name="lineStyle" type="int">0</Field>
     <Field name="lineWidth" type="int">3</Field>
-    <Field name="scale" type="double">240</Field>
+    <Field name="scale" type="double">110</Field>
     <Field name="scaleByMagnitude" type="bool">true</Field>
     <Field name="autoScale" type="bool">false</Field>
     <Field name="headSize" type="double">0.3</Field>
@@ -15,7 +15,7 @@
     <Field name="useLegend" type="bool">false</Field>
     <Object name="vectorColor">
         <Object name="ColorAttribute">
-            <Field name="color" type="unsignedCharArray" length="4">0 255 0 255 </Field>
+            <Field name="color" type="unsignedCharArray" length="4">255 255 0 255 </Field>
         </Object>
     </Object>
     <Field name="colorTableName" type="string">Default</Field>

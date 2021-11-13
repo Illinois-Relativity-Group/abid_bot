@@ -6,7 +6,7 @@
     <Field name="nVectors" type="int">100000</Field>
     <Field name="lineStyle" type="int">0</Field>
     <Field name="lineWidth" type="int">3</Field>
-    <Field name="scale" type="double">48</Field>
+    <Field name="scale" type="double">135</Field>
     <Field name="scaleByMagnitude" type="bool">true</Field>
     <Field name="autoScale" type="bool">false</Field>
     <Field name="headSize" type="double">0.3</Field>
