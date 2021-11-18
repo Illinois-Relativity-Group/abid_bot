@@ -1,3 +1,6 @@
+update 2021.11.17
+-Added Vec_spin_big_45.xml for 45 deg spin
+
 update 2021.11.12
 -Added new opacity setting at abid_bot/bhbhdisk.ct. Copy it to ~/.visit
 -Added new xmls.Here's how to use each xml for different bhdisk stills :
