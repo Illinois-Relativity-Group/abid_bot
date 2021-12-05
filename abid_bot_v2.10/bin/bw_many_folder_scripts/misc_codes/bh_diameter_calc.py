@@ -1,6 +1,11 @@
 import numpy as np
 
-root = "/scratch1/08211/ericyu3/bhdisk/hydro_45"
+
+#edit "root" and "target_it" 
+#this script uses the .3d files in abid_bot/bhdata/ and abid_bot/cm.txt
+#to calculate the average diameter of the black hole at the specified it in code units
+#the diameter is printed directly to the command line 
+root = "/scratch1/08211/ericyu3/bhdisk/abid_bot"
 misc_dir = root + "/bin/bw_many_folder_scripts/misc_codes"
 target_it = 826880
 
