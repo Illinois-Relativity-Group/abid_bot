@@ -237,7 +237,7 @@ def fill_bh(bh_func, bhNum, extrasDir, stateList, bh_formed):
 
 def getLists(extrasDir, numBfieldPlots=1):
 	#vars=[volumeXML,particleTXT,gridPointTXT,viewXML,TimeTXT,bh3D,bh23D,bh33D,trace3D,trace23D](stateList)
-	fileNames1 = ["volume_", "grid_seeds_", "view_", "time_", "bh1_", "bh2_", "bh3_", "trace1_", "trace2_", "spin_"]
+	fileNames1 = ["volume_", "grid_seeds_", "view_", "time_", "bh1_cm_", "bh2_cm_", "bh1_", "bh2_", "bh3_", "trace1_", "trace2_", "spin_"]
 	fileNames2 = [("particle_seeds_","txt"), ("Stream_","xml")]
 	xmls=[]
 	for fileName in fileNames1:
@@ -467,7 +467,8 @@ class VisitPlot:
 		self.bh3dir		= self.extrasDir + "bh3_*.3d database"
 		self.trace1dir		= self.extrasDir + "trace1_*.3d database"
 		self.trace2dir		= self.extrasDir + "trace2_*.3d database"
-		self.spinvtk		= self.extrasDir + "spin_*.vtk database"		
+		self.spinvtk		= self.extrasDir + "spin_0_*.vtk database"
+		self.spinvtk2       = self.extrasDir + "spin_1_*.vtk database"		
 
 		self.tot_frames = len(self.stateList)
 		self.firstFrame = int(round(( self.rank*1.0 /self.total_ranks)*self.tot_frames))
@@ -633,6 +634,10 @@ class VisitPlot:
 			dbs+=[self.spinvtk]
 			plot_idx += ["spin"]
 
+			OpenDatabase(self.spinvtk2,0,"VTK")
+			dbs+=[self.spinvtk2]
+			plot_idx += ["spin2"]
+
 		if self.g00():
 			print("Loading g00...")
 			LoadandDefine(self.g00dir, 'g00', 'BSSN')
@@ -729,7 +734,9 @@ class VisitPlot:
 		if self.trace1():		  PlotTrace(self.trace1dir, '1', self.idx("trace1"))
 		if self.trace2():		  PlotTrace(self.trace2dir, '2', self.idx("trace2"))
 		if self.velocity():		  self.vector_atts = PlotVelocity(self.vxdir, "vVec", self.idx("vel"))
-		if self.spinvec():		  self.spinvec_atts = PlotVelocity(self.spinvtk, "spinvec", self.idx("spin"))
+		if self.spinvec():
+			self.spinvec_atts = PlotVelocity(self.spinvtk, "spinvec", self.idx("spin"))
+			self.spinvec2_atts = PlotVelocity(self.spinvtk2, "spinvec", self.idx("spin2"))
 		if self.g00():			  self.g00_atts = PlotPseudo(self.g00dir, "g00", self.idx("g00"), self.refPlot)
 
 #############################################
@@ -749,8 +756,12 @@ class VisitPlot:
 	
 		### adjust the cm focus ###
 		self.CoM = getCoM(self.extrasDir + self.timeTXT[state])
+		self.bh1CoM = getCoM(self.extrasDir + self.bh1cmTXT[state])
+		self.bh2CoM = getCoM(self.extrasDir + self.bh2cmTXT[state])
 		self.myView.focus = self.CoM
 		self.CoM_x, self.CoM_y, self.CoM_z = self.CoM
+		self.bh1CoM_x, self.bh1CoM_y, self.bh1CoM_z = self.bh1CoM
+		self.bh2CoM_x, self.bh2CoM_y, self.bh2CoM_z = self.bh2CoM
 		
 		if self.density_vol(): print(rho_vol)
 		time.strftime("%Y-%m-%d %H:%M:%S")
@@ -759,8 +770,10 @@ class VisitPlot:
 		if self.density_iso():		LoadAttribute(rho_pseudo, self.rho_atts)
 		if self.bsq2r():			LoadAttribute(bsq2r, self.bsq_atts)
 		if self.velocity():			LoadAttribute(vector, self.vector_atts)
-		if self.spinvec():			LoadAttribute(spinvec, self.spinvec_atts)
-		
+		if self.spinvec():
+			LoadAttribute(spinvec, self.spinvec_atts)
+			LoadAttribute(spinvec, self.spinvec2_atts)
+
 		if len(seedfile) > 0 and isfile(seedfile):
 			if len(stream) > 0:
 				LoadAttribute(stream, self.stream_particles_dict["stream_particles_0"])
@@ -831,8 +844,15 @@ class VisitPlot:
 			SetActivePlots(self.idx("spin"))
 			SetPlotOptions(self.spinvec_atts)
 			#spherespinvec doesn't center correctly
-			boxspinvec(self.CoM_x,self.CoM_y,self.CoM_z, forceAddOp or frame==self.firstFrame)
+			boxspinvec(self.bh1CoM_x,self.bh1CoM_y,self.bh1CoM_z, forceAddOp or frame==self.firstFrame)
 			print("spinvec set")
+			#if self.cutPlot: box(self.CoM_y, forceAddOp or frame==self.firstFrame)
+			
+			SetActivePlots(self.idx("spin2"))
+			SetPlotOptions(self.spinvec2_atts)
+			#spherespinvec doesn't center correctly
+			boxspinvec(self.bh2CoM_x,self.bh2CoM_y,self.bh2CoM_z, forceAddOp or frame==self.firstFrame)
+			print("spinvec2 set")
 			#if self.cutPlot: box(self.CoM_y, forceAddOp or frame==self.firstFrame)
 		if self.g00():
 			SetActivePlots(self.idx("g00"))
