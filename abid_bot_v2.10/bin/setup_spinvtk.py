@@ -83,7 +83,11 @@ for xmlfol in xmlfollist:
         #print(time)
         idx=binsearch(xmltimelist,time,tol=(xmltimelist[1]-xmltimelist[0])/2)
         if idx>=0:
-            printvtk(xmlfolder+xmlfol+"/spin_%04d.vtk"%i,tuple(spindata[idx,1:]))
+            if len(spindata) == 4:
+                printvtk(xmlfolder+xmlfol+"/spin_%04d.vtk"%i,tuple(spindata[idx,1:]))
+            else:
+                printvtk(xmlfolder+xmlfol+"/spin_0_%04d.vtk"%i,tuple(spindata[idx,1:4]))
+                printvtk(xmlfolder+xmlfol+"/spin_1_%04d.vtk"%i,tuple(spindata[idx,4:]))
         else:
             print("time %e not found" % time)
 
