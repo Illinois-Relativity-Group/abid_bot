@@ -1,3 +1,8 @@
+update 2022.1.27
+-Updated setmovie.py to create bhcm1_*_.txt and bhcm2_*_.txt
+-Updated runModule.py to create 2 spinvectors centered at bh's 
+-Updated setup_spinvtk.py to create spin_0_*_.vtk and spin_1_*.vtk
+
 updated 2021.12.04
 -Added bin/bw_many_folder_scripts/misc_code/bh_diameter_calc.py
 
