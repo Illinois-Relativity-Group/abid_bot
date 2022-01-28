@@ -46,6 +46,8 @@ trace1path = rootdir + "trace1/"
 trace2path = rootdir + "trace2/"
 #xmldir = rootdir + "xml/"
 cm_file = rootdir + "cm.txt"
+bh1_cm_file = rootdir + "bin/grid_code/bhcen1.txt"
+bh2_cm_file = rootdir + "bin/grid_code/bhcen2.txt"
 attsdir = rootdir + "bin/bw_many_folder_scripts/atts/"
 
 in_file = open(cm_file, 'r')
@@ -59,6 +61,32 @@ for line in in_file:
 	z = float(data[3])
 	timeList.append(t)
 	cmList.append((x, y, z))
+in_file.close()
+
+in_file = open(bh1_cm_file, 'r')
+timeList = []
+bh1_cm_List = []
+for line in in_file:
+	data = line.split()
+	t = float(data[0])
+	x = float(data[1])
+	y = float(data[2])
+	z = float(data[3])
+	timeList.append(t)
+	bh1_cm_List.append((x, y, z))
+in_file.close()
+
+in_file = open(bh2_cm_file, 'r')
+timeList = []
+bh2_cm_List = []
+for line in in_file:
+	data = line.split()
+	t = float(data[0])
+	x = float(data[1])
+	y = float(data[2])
+	z = float(data[3])
+	timeList.append(t)
+	bh2_cm_List.append((x, y, z))
 in_file.close()
 
 ### These assume that if two color option is true, filenames in the other folder must be the same.
@@ -279,6 +307,32 @@ def run_mov_change_attribute(first_frame, last_frame, view_initial, view_final, 
 		timeTXT = "{}time_{}.txt".format(saveFolder,tidex) 
 		f = open(timeTXT, 'w')
 		f.write(str(cm[0]) + "\t" + str(cm[1]) + "\t" + str(cm[2]))
+		f.close()
+		###########################
+		
+		###copy bh1 cm and time data###
+		myTime = state*dt + time_offset
+		tList = [ abs(x - myTime) for x in timeList ]
+		pos = tList.index(min(tList))
+		bh1_cm = bh1_cm_List[pos]
+
+		tidex = "{:07.2f}".format(float(myTime/M))
+		bh1_cm_TXT = "{}bh1_cm_{}.txt".format(saveFolder,tidex) 
+		f = open(bh1_cm_TXT, 'w')
+		f.write(str(bh1_cm[0]) + "\t" + str(bh1_cm[1]) + "\t" + str(bh1_cm[2]))
+		f.close()
+		###########################
+
+		###copy bh2 cm and time data###
+		myTime = state*dt + time_offset
+		tList = [ abs(x - myTime) for x in timeList ]
+		pos = tList.index(min(tList))
+		bh2_cm = bh2_cm_List[pos]
+
+		tidex = "{:07.2f}".format(float(myTime/M))
+		bh2_cm_TXT = "{}bh2_cm_{}.txt".format(saveFolder,tidex) 
+		f = open(bh2_cm_TXT, 'w')
+		f.write(str(bh2_cm[0]) + "\t" + str(bh2_cm[1]) + "\t" + str(bh2_cm[2]))
 		f.close()
 		###########################
 
