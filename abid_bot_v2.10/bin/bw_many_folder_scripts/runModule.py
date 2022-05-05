@@ -948,7 +948,7 @@ class VisitPlot:
 		myViewNormal = myView.viewNormal
 		myViewUp = myView.viewUp
 		
-		for i in range(frame_i, framef):
+		for i in range(frame_i, frame_f):
 			factor = 0.4
 			#factor slows down rotation when looking into jet,
 			#			higher value slows down more.  0<factor<0.5
