@@ -8,8 +8,8 @@
 #include <omp.h>
 #endif
 #include <sys/stat.h>
-#include <fftw3.h>
 
+#include "fftw3.h"
 #include "DataFile.h"
 using namespace std;
 

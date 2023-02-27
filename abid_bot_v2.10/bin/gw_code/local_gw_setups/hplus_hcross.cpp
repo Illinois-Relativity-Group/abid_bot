@@ -8,8 +8,8 @@
 #include <omp.h>
 #endif
 #include <sys/stat.h>
-#include <fftw3.h>
 
+#include "fftw3.h"
 #include "DataFile.h"
 using namespace std;
 
@@ -349,12 +349,12 @@ int main (int argc, const char *argv[])
 	//calc_Clm("Psi4_rad.mon.sort.1", 48.948052762078, 1.0);
 	//calc_Clm("Psi4_rad.mon.sort.9", 191.0, 1.0);
 	//calc_Clm("Psi4_rad.mon.sort.7", 110.69101357243, 1.0);
-	calc_Clm("Psi4_rad.mon.sort.3", 300.0, 7.895769590229179); //TODO (filename, radius, ADM mass)
+	calc_Clm("Psi4_rad.mon.sort.3", 80.0, 1.0); //TODO (filename, radius, ADM mass)
 
 	cout << "1D test...\n";
 	write_1D("gwdata/1D",3.14159265368979/4.0,0.0);
 
-	//cout << "3D test...\n";
+	cout << "3D test...\n";
 	write_3D("gwdata/3D",n,n,n/2,-max,max,-max,max,-max,0,1);
    
    return 0;
