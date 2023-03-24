@@ -1,0 +1,32 @@
+for the cpp code to work, follow the directions in 'install_fftw.txt' to install correct packages for cpp code
+then you need your Psi4 file of choice, in my experience, i usually use 3 because it works and the man hasn't complained about the images
+  but i think the reason why psi4 has many extraction radii (1-9 correspond to increasing extraction radii) is because
+  the smaller ones closer to the BH might have weird numeric stuff going on and the larger ones too far also might have weird numeric stuff going on
+  to see if the file is good, just run THIS OTHER SCRIPT THAT I HAVENT MADE YET and plot it versus time
+ 
+if there are multiple psi4 files that are needed to cover the entire time range, combine them into 1, duplicates and order will be fixed in script
+  can do this like 'cat file1 file2 >> file'
+
+IN run_hphc.sh SET THE VARIABLES
+  root: path to the place you will run these scripts
+  test_flag: should be 0, these are for test cases that the man had me visualize to see their behavior, see the python code for details
+  fol_name: gwdata folder where .vtk files will be written to 
+  update_lookup: creating the lookup tables for the chosen grid take a long time b/c it involves the calculations of the orthogonal functions ie the
+    spin weighted s=-2 spherical harmonics; these involve loops that can't be bypassed (as far as i know) and factorials
+  psi4_f: psi4 file
+  M_ADM: same as in params
+  cutoff_w: 0.05 works well for binaries, this is an artifact of the old cpp FFTW code, it needs to be lower than the fundamental frequency of wave
+    wave geneartion, frequencies below are ignored b/c to avoid division by very small numbers in FFTW code
+  extraction_r: r_areal in Psi4, its one of the last 4 columns and is labeled, it doesn't change much so just use the number from t=0
+  files_per_folder: number of vtk files per folder, leave at 25
+  dt:   this is gw_dt, look at time step between lines in Psi4
+  num_modes:   is num columns of Psi4 - 5 divided by 2, printed out by calc_clm
+  num_times:   num of rows in psi4 minus comments
+  start_num:   set to 0 and end num to num_times to do entire range
+  end_num:
+  xy_max: creates the grid, is a square on xy
+  xy_num:
+  z_min:  can specify exact z range, usually its (-z to 0) to get nice image
+  z_max:     see run_hphc.sh and the python for more details
+  z_num:
+  ignore the test variables
