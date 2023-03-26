@@ -74,7 +74,7 @@ python3 hplus_hcross.py $root $fol_name $dt $num_modes $num_times $xy_max $xy_nu
 
 
 
-python3 gw_time_lister.py $M_ADM $gw_dt $extraction_r $fol_name
+python3 gw_time_lister.py $M_ADM $dt $extraction_r $fol_name
 echo "Time list finished"
 cur=$PWD
 cd $fol_name/3D
