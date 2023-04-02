@@ -146,6 +146,7 @@ def write_vtk(ylm, r, t, dt, num_times, clm, xs, ys, zs, sx, sy, sz, num_modes, 
            "SPACING " + str(sx) + " " + str(sy) + " " + str(sz) + "\n"
            "POINT_DATA " + str(len(xs)*len(ys)*len(zs)) + "\n"
            "SCALARS GW-FIELD float 1\nLOOKUP_TABLE default\n")
+
     hp_f = open(fol + "/3D/hplus_" + str(t) + ".vtk", "w")
     hc_f = open(fol + "/3D/hcross_" + str(t) + ".vtk", "w")
     hp_f.write(header); hc_f.write(header)
@@ -154,12 +155,13 @@ def write_vtk(ylm, r, t, dt, num_times, clm, xs, ys, zs, sx, sy, sz, num_modes, 
     #     clip sets all negative values to 0 so doesn't go out of index
     rt = ((t - (r/dt)).astype(int)).clip(min=0)  #r is r[i,j,k], so this is rt[i,j,k]
     clm_ijk = clm[rt,:]   #becomes clm_ijk[i,j,k,mode], same shape as ylm
+    r_kji = np.einsum('ijk->kji', r)
     # sum over modes column (u should learn einsum if u haven't already)
     #      order is reversed b/c vtk requires the flattened array to be indexed like
     #      kji = (k*num_y+j)*num_y+i; a[kji]
-    hphc = np.einsum('ijkm->kji',ylm*clm_ijk)/np.einsum('ijk->kji',r)
-    hp = np.real(hphc).flatten()
-    hc = np.imag(hphc).flatten()
+    hphc = np.einsum('ijkm->kji',ylm*clm_ijk)/r_kji
+    hp = 2*np.real(hphc).flatten()
+    hc = -2*np.imag(hphc).flatten()
 
     hp_f.write(" ".join([str(i) for i in hp]))
     hc_f.write(" ".join([str(i) for i in hc]))
