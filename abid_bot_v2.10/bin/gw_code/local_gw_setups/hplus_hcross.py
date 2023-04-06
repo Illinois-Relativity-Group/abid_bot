@@ -162,18 +162,22 @@ def write_vtk(ylm, r, t, dt, num_times, clm, xs, ys, zs, sx, sy, sz, num_modes, 
     hphc = np.einsum('ijkm->kji',ylm*clm_ijk)/r_kji
     hp = 2*np.real(hphc).flatten()
     hc = -2*np.imag(hphc).flatten()
-
+    h_max = max(np.amax(hp), np.amax(hc))
     hp_f.write(" ".join([str(i) for i in hp]))
     hc_f.write(" ".join([str(i) for i in hc]))
     hp_f.close(); hc_f.close()
+    return h_max
                  
 def gen_data(dt, start_num, end_num, clm, xs, ys, zs, sx, sy, sz, num_modes, fol, ylm, r):
     time_f = open(fol + "/time_list.txt", "w")
+    max_strain = 0.0
     for time in range(start_num, end_num, 1):
         time_f.write(str(time*dt))   #unretarded time
         print("gen_data at time=" + str(time))
-        write_vtk(ylm, r, time, dt, num_times, clm, xs, ys, zs, sx, sy, sz, num_modes, fol)
+        h_max = write_vtk(ylm, r, time, dt, num_times, clm, xs, ys, zs, sx, sy, sz, num_modes, fol)
+        max_strain = max(max_strain, h_max)
     time_f.close()
+    print("max strain = " + str(max_strain))
 
 # # # # # START TEST H FROM IDEALIZED SOURCES # # # # #
 def get_I_rotate(t, R, M, Om):
@@ -212,34 +216,81 @@ def get_hc(t, ph, th, Ixx, Iyy, Ixy):
     return ret
 
 def write_vtk_test(dt, num_times, xs, ys, zs, sx, sy, sz, kind, R, M, Om, fol):
-    hedder = "# vtk DataFile Version 3.0.\nkeep at it the end is in sight\nASCII\nDATASET STRUCTURED_POINTS\n"\
-           "DIMENSIONS " + str(len(xs)) + " " + str(len(ys)) + " " + str(len(zs)) + "\n"\
-           "ORIGIN " + str(min(xs)) + " " + str(min(ys)) + " " + str(min(zs)) + "\n"\
-           "SPACING " + str(sx) + " " + str(sy) + " " + str(sz) + "\n"\
-           "POINT_DATA " + str(len(xs)*len(ys)*len(zs)) + "\n"\
-           "SCALARS GW-FIELD float 1\nLOOKUP_TABLE default"
-    t = 5
-    hp_fname = fol + "/3D/hplus_" + str(t).zfill(6) + ".vtk"
-    hc_fname = fol + "/3D/hcross_" + str(t).zfill(6) + ".vtk"
-
+    # hedder = "# vtk DataFile Version 3.0.\nkeep at it the end is in sight\nASCII\nDATASET STRUCTURED_POINTS\n"\
+    #        "DIMENSIONS " + str(len(xs)) + " " + str(len(ys)) + " " + str(len(zs)) + "\n"\
+    #        "ORIGIN " + str(min(xs)) + " " + str(min(ys)) + " " + str(min(zs)) + "\n"\
+    #        "SPACING " + str(sx) + " " + str(sy) + " " + str(sz) + "\n"\
+    #        "POINT_DATA " + str(len(xs)*len(ys)*len(zs)) + "\n"\
+    header = ("# vtk DataFile Version 3.0\nhunters done us all a great service\nASCII\nDATASET STRUCTURED_POINTS\n"
+           "DIMENSIONS " + str(len(xs)) + " " + str(len(ys)) + " " + str(len(zs)) + "\n"
+           "ORIGIN " + str(min(xs)) + " " + str(min(ys)) + " " + str(min(zs)) + "\n"
+           "SPACING " + str(sx) + " " + str(sy) + " " + str(sz) + "\n"
+           "POINT_DATA " + str(len(xs)*len(ys)*len(zs)) + "\n"
+           "SCALARS GW-FIELD float 1\nLOOKUP_TABLE default\n")
     ts = np.linspace(0, dt*num_times, num=num_times)
-    T, X, Y, Z = np.meshgrid(ts,xs,ys,zs,indexing='ij')
+    X, Y, Z = np.meshgrid(xs, ys, zs, indexing='ij')
+    ph = np.arctan2(Y,X)
+    th = np.nan_to_num(np.arccos(Z/np.sqrt(X**2+Y**2+Z**2)), copy=False)
+    # ph, th are of shape [i,j,k]
     if kind == 0: #rotate
-        Ixx, Iyy, Ixy, Izz = get_I_rotate(T, R, M, Om)
+        Ixx, Iyy, Ixy, Izz = get_I_rotate(ts, R, M, Om)
     elif kind == 1: #pulsate
-        Ixx, Iyy, Ixy, Izz = get_I_pulsate(T, R, M, Om)
+        Ixx, Iyy, Ixy, Izz = get_I_pulsate(ts, R, M, Om)
     elif kind == 2: #ring_pulsate
-        Ixx, Iyy, Ixy, Izz = get_I_ring_pulsate(T, R, M, Om)
-    hp = get_hp(T, np.arctan2(Y,X), np.nan_to_num(np.arccos(Z/np.sqrt(X**2+Y**2+Z**2)), copy=False), Ixx, Iyy, Ixy, Izz)
-    hc = get_hc(T, np.arctan2(Y,X), np.nan_to_num(np.arccos(Z/np.sqrt(X**2+Y**2+Z**2)), copy=False), Ixx, Iyy, Ixy)
-    # hp = hp.reshape(num_times, len(xs)*len(ys)*len(zs))
-    # hc = hc.reshape(num_times, len(xs)*len(ys)*len(zs))
+        Ixx, Iyy, Ixy, Izz = get_I_ring_pulsate(ts, R, M, Om)
+    # I[t], is like clm, reshape to I[rt[ijk]]
+
+    max_strain = 0.
     for t in range(num_times):
-        print(t)
-        hp_fname = fol + "/3D/hplus_" + str(t).zfill(6) + ".vtk"
-        hc_fname = fol + "/3D/hcross_" + str(t).zfill(6) + ".vtk"
-        np.savetxt(hp_fname, hp[t].flatten(), header=hedder, comments='')
-        np.savetxt(hc_fname, hc[t].flatten(), header=hedder, comments='')
+        print("write vtk test time = " + str(t))
+        hp_f = open(fol + "/3D/hplus_" + str(t) + ".vtk", "w")
+        hc_f = open(fol + "/3D/hcross_" + str(t) + ".vtk", "w")
+        hp_f.write(header); hc_f.write(header)
+        rt = ((t - (r/dt)).astype(int)).clip(min=0)
+        #print("th shape = " + str(th.shape))
+        #print("ph shape = " + str(ph.shape))
+        #print("rt shape = " + str(rt.shape))
+
+        Ixx_ijk = Ixx[rt,]; Iyy_ijk = Iyy[rt,]; Ixy_ijk = Ixy[rt,]; Izz_ijk = Izz[rt,] #I_ijk[i,j,k]
+
+        #t_ijk = np.full_like(r, t).astype(int)
+        #Ixx_ijk = Ixx[t_ijk]; Iyy_ijk = Iyy[t_ijk]; Ixy_ijk = Ixy[t_ijk]; Izz_ijk = Izz[t_ijk]
+
+        #print("I_ijk shape = " + str(Ixx_ijk.shape))
+        normalize = 100.
+        hp = np.einsum('ijk->kji', get_hp(t, ph, th, Ixx_ijk, Iyy_ijk, Ixy_ijk, Izz_ijk) / r)/normalize
+        hc = np.einsum('ijk->kji', get_hc(t, ph, th, Ixx_ijk, Iyy_ijk, Ixy_ijk) / r)/normalize
+        h_max = max(np.amax(hp), np.amax(hc)); max_strain = max(max_strain, h_max)
+        #print("h shape = " + str(hp.shape))
+        hp_f.write(" ".join([str(i) for i in hp.flatten()]))
+        hc_f.write(" ".join([str(i) for i in hc.flatten()]))
+        hp_f.close(); hc_f.close()
+
+
+    print("max_strain = " + str(max_strain))
+    #        "SCALARS GW-FIELD float 1\nLOOKUP_TABLE default"
+    # t = 5
+    # hp_fname = fol + "/3D/hplus_" + str(t).zfill(6) + ".vtk"
+    # hc_fname = fol + "/3D/hcross_" + str(t).zfill(6) + ".vtk"
+
+    # ts = np.linspace(0, dt*num_times, num=num_times)
+    # T, X, Y, Z = np.meshgrid(ts,xs,ys,zs,indexing='ij')
+    # if kind == 0: #rotate
+    #     Ixx, Iyy, Ixy, Izz = get_I_rotate(T, R, M, Om)
+    # elif kind == 1: #pulsate
+    #     Ixx, Iyy, Ixy, Izz = get_I_pulsate(T, R, M, Om)
+    # elif kind == 2: #ring_pulsate
+    #     Ixx, Iyy, Ixy, Izz = get_I_ring_pulsate(T, R, M, Om)
+    # hp = get_hp(T, np.arctan2(Y,X), np.nan_to_num(np.arccos(Z/np.sqrt(X**2+Y**2+Z**2)), copy=False), Ixx, Iyy, Ixy, Izz)
+    # hc = get_hc(T, np.arctan2(Y,X), np.nan_to_num(np.arccos(Z/np.sqrt(X**2+Y**2+Z**2)), copy=False), Ixx, Iyy, Ixy)
+    # # hp = hp.reshape(num_times, len(xs)*len(ys)*len(zs))
+    # # hc = hc.reshape(num_times, len(xs)*len(ys)*len(zs))
+    # for t in range(num_times):
+    #     print(t)
+    #     hp_fname = fol + "/3D/hplus_" + str(t).zfill(6) + ".vtk"
+    #     hc_fname = fol + "/3D/hcross_" + str(t).zfill(6) + ".vtk"
+    #     np.savetxt(hp_fname, hp[t].flatten(), header=hedder, comments='')
+    #     np.savetxt(hc_fname, hc[t].flatten(), header=hedder, comments='')
 
     # X, Y, Z = np.meshgrid(xs,ys,zs,indexing='ij')
     # if kind == 0: #rotate
