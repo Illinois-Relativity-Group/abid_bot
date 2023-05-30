@@ -79,7 +79,7 @@ for dir in $(ls -d ${h5dir}"/"$h5prefix* ); do
 		totranks=$(ls ${blah}/time_* | wc -l)
 		for rank in `seq 0 $(( $totranks - 1 ))`; do
 			jobfile=$logfolder/job/job$job_num.sh
-			echo visit -cli -nowin -forceversion 3.1.4 -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $blah $tosave$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $maxdensity $rho_pseudoXML $rho_isoXML $g00_pseudoXML $g00_isoXML $PlotSpinVec $spinvecXML $PlotSpinPlane >> $jobfile
+			echo visit -cli -nowin -forceversion 3.1.4 -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2r $Plotg00 $refPlot $cutPlot $bgcolor $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $blah $tosave$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $maxdensity $rho_pseudoXML $rho_isoXML $g00_pseudoXML $g00_isoXML $PlotSpinVec $spinvecXML >> $jobfile
 			frame_count=$((frame_count+1))
 			if [[ "$frame_count" -ge "$framesPerRun" ]]; then
 				frame_count=0
