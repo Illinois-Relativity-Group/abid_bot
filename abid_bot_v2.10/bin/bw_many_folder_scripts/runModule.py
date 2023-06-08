@@ -120,6 +120,47 @@ def cylinder(x, y, r, addOp, z1, z2=1000): #for addOp argument, use 'frame==firs
 	SetOperatorOptions(CylinderAtts)
 	print("Cylinder set")
 
+def cylinder_velocity(addOp):
+        if addOp:
+                print("Adding Cylinder Operator")
+                AddOperator("Cylinder", 0)
+        CylAtts = CylinderAttributes()
+        CylAtts.point1=(0, 0, -15)
+        CylAtts.point2=(0, 0, 15)
+        CylAtts.radius=5
+        CylAtts.inverse=0
+        SetOperatorOptions(CylAtts,0)
+        print("Cylinder Set")
+
+def clip_vec(x,y,z,addOp):
+        if addOp:
+                print("Adding Clip Operator")
+                AddOperator("Clip", 0)
+        ClipAtts = ClipAttributes()
+        ClipAtts.funcType= ClipAtts.Sphere
+        ClipAtts.center=(x,y,z)
+        ClipAtts.radius=0.5
+        ClipAtts.sphereInverse=0
+
+        SetOperatorOptions(ClipAtts,0)
+        print("Clip for Vectors Set")
+
+# When adding VELOCITY VECTORS, the mesh of our data is concentrated largely around the black hole which results too much
+# clustering in this region compared to in the jet. The clip_vec and clip_vec_inverse operators will separately plot  
+# vectors around the black hole and those in the jet. The clip_vec removes vecotrs in a sphere around the origin whereas
+# clip_vec_inverse removes everything outside the sphere around the origin. 
+def clip_vec_inverse(x,y,z,addOp):
+        if addOp:
+                print("Adding Inverse Clip Operator")
+                AddOperator("Clip", 0)
+        InClipAtts = ClipAttributes()
+        InClipAtts.funcType= InClipAtts.Sphere
+        InClipAtts.center=(x,y,z)
+        InClipAtts.radius=0.5
+        InClipAtts.sphereInverse=1
+        SetOperatorOptions(InClipAtts,0)
+        print("Inverse Clip for Vectors Set")
+
 ########Setup########
 def LoadandDefine(database, symbol, prefix="MHD_EVOLVE"):#loads database, defines variable 
 	OpenDatabase(database,0,"CarpetHDF5_2.1")
@@ -436,7 +477,7 @@ class VisitPlot:
 		
 		self.arg_list = arg_list
 		
-		self.h5dir, self.extrasDir, self.saveFolder, self.rank, self.total_ranks, self.numBfieldPlots, self.vectorXML,self.spinvecXML ,self.bsq2rXML, self.max_density, self.rho_pseudoXML, self.rho_isoXML, self.g00_pseudoXML, self.g00_isoXML, = self.arg_list
+		self.h5dir, self.extrasDir, self.saveFolder, self.rank, self.total_ranks, self.numBfieldPlots, self.vector1XML, self.vector2XML, self.spinvecXML ,self.bsq2rXML, self.max_density, self.rho_pseudoXML, self.rho_isoXML, self.g00_pseudoXML, self.g00_isoXML, = self.arg_list
 
 		self.rank			= int(self.rank)
 		self.total_ranks	= int(self.total_ranks)
@@ -604,25 +645,46 @@ class VisitPlot:
 			plot_idx += ["trace2"]
 		
 		if self.velocity():
-			if not self.density_vol() and not self.density_iso():
-				LoadandDefine(self.rho_bdir, "rho_b")
-				dbs += [self.rho_bdir]
-				plot_idx += ['density']
-
-			if not self.bsq2r() and self.density_vol():
-				LoadandDefine(self.smallb2dir, "smallb2")
-				DefineScalarExpression("logbsq2r","log10(<smallb2>/(2*<rho_b>), -200)")
-				dbs += [self.smallb2dir]
-				plot_idx += ["bsq2r"]
-
+			#if not self.density_vol() and not self.density_iso():
+                        #        LoadandDefine(self.rho_bdir, "rho_b")
+                        #        dbs += [self.rho_bdir]
+                        #        plot_idx += ['density']
+			
+			if not self.bsq2r():
+                               LoadandDefine(self.smallb2dir, "smallb2")
+                               DefineScalarExpression("logbsq2r","log10(<smallb2>/(2*<rho_b>), -200)")
+                               dbs += [self.smallb2dir]
+                               plot_idx += ["bsq2r"]
+			
 			LoadandDefine(self.vxdir, 'vx')
-			LoadandDefine(self.vydir, 'vy')
-			LoadandDefine(self.vzdir, 'vz')
-			DefineVectorExpression("vVec_temp","{vx,vy,vz}")
-			DefineVectorExpression("vVec","if(gt(magnitude(vVec_temp), 0.1),vVec_temp,{0,0,0})") #Remove small arrows
-			#DefineVectorExpression("vVec","if(gt(logbsq2r,-1),vVec_temp,{0,0,0})") #Only show arrows around jet, need to load smallb2 database
-			dbs += [self.vxdir,self.vydir,self.vzdir]
-			plot_idx += ["vel"]
+                        LoadandDefine(self.vydir, 'vy')
+                        LoadandDefine(self.vzdir, 'vz')
+                        DefineVectorExpression("vVec_temp","{vx,vy,vz}")
+                        # DefineVectorExpression("vVec","if(gt(magnitude(vVec_temp), 0.5) , vVec_temp , {0,0,0})") #Remove small arrows
+                        DefineVectorExpression("vVec","if(gt(logbsq2r, -0.5), vVec_temp, {0,0,0})") #Only show arrows around jet, need to load smallb2 database
+                        dbs += [self.vxdir,self.vydir,self.vzdir]
+                        plot_idx += ["vel1"]
+		
+		if self.velocity():
+                        #if not self.density_vol() and not self.density_iso():
+                        #        LoadandDefine(self.rho_bdir, "rho_b")
+                        #        dbs += [self.rho_bdir]
+                        #        plot_idx += ['density']
+
+                        #if not self.bsq2r() and self.density_vol():
+                        #        LoadandDefine(self.smallb2dir, "smallb2")
+                        #        DefineScalarExpression("logbsq2r","log10(<smallb2>/(2*<rho_b>), -200)")
+                        #        dbs += [self.smallb2dir]
+                        #        plot_idx += ["bsq2r"]
+			
+			LoadandDefine(self.vxdir, 'vx')
+                        LoadandDefine(self.vydir, 'vy')
+                        LoadandDefine(self.vzdir, 'vz')
+                        DefineVectorExpression("vVec_temp","{vx,vy,vz}")
+                        # DefineVectorExpression("vVec","if(gt(magnitude(vVec_temp), 0.5) , vVec_temp , {0,0,0})") #Remove small arrows
+                        DefineVectorExpression("vVec","if(gt(logbsq2r, -0.5), vVec_temp, {0,0,0})") #Only show arrows around jet, need to load smallb2 database
+                        dbs += [self.vxdir,self.vydir,self.vzdir]
+                        plot_idx += ["vel2"]
 		
 		if self.spinvec():
 			#if not self.density_vol() and not self.density_iso():
@@ -733,7 +795,8 @@ class VisitPlot:
 		if self.merge_formed():		  PlotBH(self.bh3dir, '3', self.idx("bh3"), self.refPlot)
 		if self.trace1():		  PlotTrace(self.trace1dir, '1', self.idx("trace1"))
 		if self.trace2():		  PlotTrace(self.trace2dir, '2', self.idx("trace2"))
-		if self.velocity():		  self.vector_atts = PlotVelocity(self.vxdir, "vVec", self.idx("vel"))
+		if self.velocity():               self.vector1_atts = PlotVelocity(self.vxdir, "vVec", self.idx("vel1"))
+                if self.velocity():               self.vector2_atts = PlotVelocity(self.vxdir, "vVec", self.idx("vel2"))
 		if self.spinvec():
 			self.spinvec_atts = PlotVelocity(self.spinvtk, "spinvec", self.idx("spin"))
 			self.spinvec2_atts = PlotVelocity(self.spinvtk2, "spinvec", self.idx("spin2"))
@@ -743,7 +806,7 @@ class VisitPlot:
 
 	def SetAtts(self, frame, att_list):
 		print("Loading Attibutes")
-		view, rho_vol, rho_pseudo, bsq2r, vector,spinvec, g00_att, seedfile, stream = att_list
+		view, rho_vol, rho_pseudo, bsq2r, vector1, vector2, spinvec, g00_att, seedfile, stream = att_list
 		
 		state = self.stateList[frame] - self.stateList[0]
 		print("Loading state {}".format(state))
@@ -769,7 +832,8 @@ class VisitPlot:
 		if self.density_vol():		self.LoadAttr(rho_vol, "vol")
 		if self.density_iso():		LoadAttribute(rho_pseudo, self.rho_atts)
 		if self.bsq2r():			LoadAttribute(bsq2r, self.bsq_atts)
-		if self.velocity():			LoadAttribute(vector, self.vector_atts)
+		if self.velocity():                     LoadAttribute(vector1, self.vector1_atts)
+                if self.velocity():                     LoadAttribute(vector2, self.vector2_atts)
 		if self.spinvec():
 			LoadAttribute(spinvec, self.spinvec_atts)
 			LoadAttribute(spinvec, self.spinvec2_atts)
@@ -835,11 +899,16 @@ class VisitPlot:
 			SetActivePlots(self.idx("gridPoints"))
 			SetOperatorOptions(self.stream_gridPoints)
 		if self.velocity():
-			SetActivePlots(self.idx("vel"))
-			SetPlotOptions(self.vector_atts)
-			cylinder(self.CoM_x,self.CoM_y, 45, forceAddOp or frame==self.firstFrame, -100, z2=100)
-			print("velocities set")
-			if self.cutPlot: box(self.CoM_y, forceAddOp or frame==self.firstFrame)
+                        SetActivePlots(self.idx("vel1"))
+                        SetPlotOptions(self.vector1_atts)
+                        cylinder_velocity(forceAddOp or frame==self.firstFrame)
+                        clip_vec(self.CoM_x, self.CoM_y, self.CoM_z, forceAddOp or frame==self.firstFrame)
+                        print("velocities 1 set")
+		if self.velocity():
+                        SetActivePlots(self.idx("vel2"))
+                        SetPlotOptions(self.vector2_atts)
+                        clip_vec_inverse(self.CoM_x, self.CoM_y, self.CoM_z, forceAddOp or frame==self.firstFrame)
+                        print("velocities 2 set")
 		if self.spinvec():
 			SetActivePlots(self.idx("spin"))
 			SetPlotOptions(self.spinvec_atts)
@@ -882,7 +951,7 @@ class VisitPlot:
 			state	= self.stateList[frame] - self.stateList[0]
 			viewAtt = self.extrasDir + self.viewXML[state]
 			volAtt	= self.extrasDir + self.volumeXML[state]
-			movie_attributes = [viewAtt, volAtt, self.rho_pseudoXML, self.bsq2rXML, self.vectorXML, self.spinvecXML, self.g00_pseudoXML,'','']
+			movie_attributes = [viewAtt, volAtt, self.rho_pseudoXML, self.bsq2rXML, self.vector1XML, self.vector2XML, self.spinvecXML, self.g00_pseudoXML,'','']
 
 			self.SetAtts(frame, movie_attributes)
 			self.PlotFrame(frame)
@@ -916,7 +985,7 @@ class VisitPlot:
 			ar = ai + t*(af - ai)
 			v.freeformOpacity = tuple(cr)
 			v.opacityAttenuation = ar
-			movie_attributes = [c, v, self.rho_pseudoXML, self.bsq2rXML, self.vectorXML, self.spinvecXML, self.g00_pseudoXML, '','']
+			movie_attributes = [c, v, self.rho_pseudoXML, self.bsq2rXML, self.vector1XML, self.vector2XML, self.spinvecXML, self.g00_pseudoXML, '','']
 			self.SetAtts(frame, movie_attributes)
 			self.PlotFrame(frame, forceAddOp=1)
 	
@@ -983,7 +1052,7 @@ class VisitPlot:
 			newView.viewNormal = viewNormal
 			newView.viewUp = viewUp
 
-			movie_attributes = [newView, myVol, self.rho_pseudoXML, self.bsq2rXML, self.vectorXML, self.spinvecXML, self.g00_pseudoXML, '','']
+			movie_attributes = [newView, myVol, self.rho_pseudoXML, self.bsq2rXML, self.vector1XML, self.vector2XML, self.spinvecXML, self.g00_pseudoXML, '','']
 			self.SetAtts(frame, movie_attributes)
 			self.PlotFrame(frame, forceAddOp=1)
 			
@@ -1054,7 +1123,7 @@ class VisitPlot:
 			newView.viewNormal = viewNormal
 			newView.viewUp = viewUp
 
-			movie_attributes = [newView, myVol, self.rho_pseudoXML, self.bsq2rXML, self.vectorXML, self.spinvecXML, self.g00_pseudoXML, '','']
+			movie_attributes = [newView, myVol, self.rho_pseudoXML, self.bsq2rXML, self.vector1XML, self.vector2XML, self.spinvecXML, self.g00_pseudoXML, '','']
 			self.SetAtts(frame, movie_attributes)
 			self.PlotFrame(frame, forceAddOp=1)
 
