@@ -87,6 +87,7 @@ streamXML=$root/bin/bw_many_folder_scripts/atts/Stream_3D_?.xml
 
 # vecXML:		The full path to the vector attribute xml file.
 vecXML=$root/bin/bw_many_folder_scripts/atts/Vec.xml
+vec2XML=$root/bin/bw_many_folder_scripts/atts/Vec_fewer.xml
 spinvecXML=$root/bin/bw_many_folder_scripts/atts/Vec_spin_big.xml	#XML for spin vector
 
 # bsqXML:		The full path to the bsq2r attribute xml file.
