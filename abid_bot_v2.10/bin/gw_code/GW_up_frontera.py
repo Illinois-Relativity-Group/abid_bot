@@ -43,7 +43,7 @@ hplusfiles.sort()
 	
 ###### load databases
 hcrossdir = GWdir + "hcross_*.vtk database"
-hplusdir = GWdir + "hcross_*.vtk database"
+hplusdir = GWdir + "hplus_*.vtk database"
 
 if kind == "hcross":
 	print("Loading hcross....")
