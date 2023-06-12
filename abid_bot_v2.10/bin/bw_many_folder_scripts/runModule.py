@@ -521,7 +521,7 @@ class VisitPlot:
 
 	def __repr__(self):
 		plots = ['PlotDensAsVol', 'PlotDensAsIso', 'PlotDensLinear', 'PlotVel', 'PlotSpinVec', 'PlotBsq2r', 'Plotg00', 'refPlot', 'cutPlot']
-		args = ['h5dir', 'extrasDir', 'saveFolder', 'rank', 'total ranks', 'numBfieldPlots', 'vectorXML','spinvecXML', 'bsq2rXML', 'max_density', 'rho_pseudoXML', 'rho_isoXML', 'g00_pseudoXML', 'g00_isoXML']
+		args = ['h5dir', 'extrasDir', 'saveFolder', 'rank', 'total ranks', 'numBfieldPlots', 'vector1XML', 'vector2XML', 'spinvecXML', 'bsq2rXML', 'max_density', 'rho_pseudoXML', 'rho_isoXML', 'g00_pseudoXML', 'g00_isoXML']
 
 		myFrame = ''	
 		for plt, opt in zip(plots, self.plot_opts):
