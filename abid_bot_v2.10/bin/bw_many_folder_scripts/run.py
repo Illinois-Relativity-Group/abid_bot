@@ -43,7 +43,8 @@ saveFolder 		= sys.argv[16]
 rank 			= int(sys.argv[17])
 total_ranks 	= int(sys.argv[18])
 numBfieldPlots	= int(sys.argv[19])
-vectorXML 		= sys.argv[20]
+vector1XML 		= sys.argv[20]
+vector2XML		= sys.argv[29]
 bsq2rXML 		= sys.argv[21]
 max_density 	= sys.argv[22]
 rho_pseudoXML 	= sys.argv[23]
@@ -75,7 +76,7 @@ for combo in combos:
 print(sys.argv)
 PlotOpts = [ PlotDensAsVol, PlotDensAsIso, PlotDensLinear, PlotVel, PlotSpinVec, PlotBsq2r, Plotg00, refPlot,\
 			 cutPlot, bgcolor ]
-ArgList  = [ h5dir, extrasDir, saveFolder, rank, total_ranks, numBfieldPlots, vectorXML, SpinVecXML,\
+ArgList  = [ h5dir, extrasDir, saveFolder, rank, total_ranks, numBfieldPlots, vector1XML, vector2XML, SpinVecXML,\
 			 bsq2rXML, max_density, rho_pseudoXML, rho_isoXML, g00_pseudoXML, g00_isoXML ]
 
 time.strftime("%Y-%m-%d %H:%M:%S")
