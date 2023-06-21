@@ -24,6 +24,7 @@ then
 		cd $particledir/misc/
 		rm -rf $particledir/filesOrigin.txt
 		rm -rf $particledir/misc/dat/
+		chmod 770 makeparts.awk  
 		./makeparts.awk $particledir/misc/
 		rm *.mon
 
