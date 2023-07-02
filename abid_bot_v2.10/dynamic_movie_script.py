@@ -3,6 +3,11 @@ import os
 import xml.etree.ElementTree as ET
 import argparse
 
+# Created by Shreyas Jammi 05/17/2023
+
+# This scripts goes through the xml directory, changes the view setting so that resulting movie would have a progressive zoom out
+
+
 parser = argparse.ArgumentParser(description = "goes through the xml directory, changes the view setting so that resulting movie would have a progressive zoom out")
 parser.add_argument("xml_directory", type=str, help="input path to xml directory")
 parser.add_argument("xmlfile", type=str, help="the xml file we want to modify")
