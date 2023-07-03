@@ -15,6 +15,8 @@ parser.add_argument("zoomin", type=float, help="imageZoom number for Zoom In")
 parser.add_argument("zoomout", type=float, help="imageZoom number foor Zoom Out")
 args = parser.parse_args()
 
+# Run the script with the following command:
+# python dynamic_movie_script.py path-to-xml-direction xml-files zoom-in-number zoom-out-number
 
 def xml_editor(xml_directory, xmlfile, zoomin, zoomout):
     xml_paths = []
