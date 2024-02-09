@@ -1,3 +1,2 @@
 # abid_bot
-Contains all update versions of abid_bot
-test
+A visualization toolkit for making images and movies of GRMHD simulations of black hole and neutron star dynamics.
