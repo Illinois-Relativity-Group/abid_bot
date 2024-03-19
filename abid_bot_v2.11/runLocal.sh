@@ -6,11 +6,16 @@ else
         . params
 fi
 
-#Use this if you are submitting very few folders (~1-5)
-#Otherwise use runBundle.sh
-#####begin things you have to change TODO
+# in bash, can run this as a process like
+# . runLocal.sh >& output &
+# can view the code ouput by doing
+# tail -f output   (use ctrl + c to exit)
+# to check running processes (there is probably a bette way)
+# do
+# ps -elf | grep 'R ericyu8'  (replacing ericyu8 w/ your username)
+# it will show your running processes; find the process number and do
+# kill -9 PROCESS_NUMBER
 
-all_frames=true
 
 
 # jobName=04_no_Bfields
@@ -101,10 +106,9 @@ for dir in $(ls -d ${h5dir}"/"$h5prefix* ); do
 		echo $totranks
 		for rank in `seq 0 $(( $totranks - 1 ))`; do
 			    if [[ " ${ranknum[@]} " =~ " ${rank} " ]]; then
-				# if [[ $all_frames ]] || [[ " ${ranknum[@]} " =~ " ${rank} " ]]; then
 		        	echo submitting job $count with rank = $rank
-					visit -cli -nowin -forceversion 3.3.3 -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2rAsVol $Plotg00 $refPlot $cutPlot $bgcolor $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $blah $tosave$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $g00_pseudoXML $g00_isoXML $maxdensity $rho_pseudoXML $rho_isoXML $PlotSpinVec $spinvecXML $vec2XML $bsq_pseudoXML $bsq_isoXML $PlotBsq2rAsIso	
-				fi
+				visit -cli -nowin -forceversion 3.3.3 -s $visitScript $PlotDensAsVol $PlotDensAsIso $PlotDensLinear $PlotVel $PlotBsq2rAsVol $Plotg00 $refPlot $cutPlot $bgcolor $PlotEvolve $PlotZoom $PlotFlyOver $PlotFlyAround $dir $blah $tosave$(printf "%03d" $rank)"_" $rank $totranks $numBfieldPlots $vecXML $bsqXML $g00_pseudoXML $g00_isoXML $maxdensity $rho_pseudoXML $rho_isoXML $PlotSpinVec $spinvecXML $vec2XML $bsq_pseudoXML $bsq_isoXML $PlotBsq2rAsIso	
+			    fi
 		done
 	fi
     count=$((count+1))
