@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<Object name="IsosurfaceAttributes">
+    <Field name="contourNLevels" type="int">5</Field>
+    <Field name="contourValue" type="doubleVector">-2.6 -2.5 -2.4 -2.3 -2.2 -2.1 -2.0 -1.9 -1.8 -1.7 -1.6 -1.5 -1.4 -1.3 -1.2 -1.1 -1.0 -0.9 -0.8 -0.7 -0.6</Field>
+    <Field name="contourPercent" type="doubleVector">0.1 </Field>
+    <Field name="contourMethod" type="string">Value</Field>
+    <Field name="minFlag" type="bool">true</Field>
+    <Field name="min" type="double">-4.0</Field>
+    <Field name="maxFlag" type="bool">true</Field>
+    <Field name="max" type="double">0</Field>
+    <Field name="useBelowMinColor" type="bool">false</Field>
+    <Field name="useAboveMaxColor" type="bool">false</Field>
+    <Field name="belowMinColor" type="unsignedCharArray" length="4">0 255 255 40</Field>
+    <Field name="aboveMaxColor" type="unsignedCharArray" length="4">255 0 0 255</Field>
+    <Field name="scaling" type="string">Linear</Field>
+    <Field name="variable" type="string">logrho</Field>
+</Object>

@@ -1,0 +1,11 @@
+particle tracer manual
+
+1. ittxt.py: generates folder-iteration correspondence. Once started tracing do NOT rerun the whole file. Use append.
+
+2. ptctracer.py: trace given particles. 
+   This program can continue to trace automatically. You can run it again once the first run ends to continue tracing.
+   This program also detects duplicate and bad data in h5folder and updates the iters_txt, so do NOT rerun the full iters_txt after you started the particle tracer.
+
+3. split_dat.py: splits the traced particle data into dat_new/<time>.dat for reading in abid bot. Link/put them inside bin/particle_code
+
+4. submitjob.sh and job_submit_ptctrace_frontera.pbs: submission script for use on frontera.

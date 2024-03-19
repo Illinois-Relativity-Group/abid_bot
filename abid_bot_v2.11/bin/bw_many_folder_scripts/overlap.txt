@@ -1,0 +1,8 @@
+# Version 2
+# List the overlaps with next data (skipping last few frames)
+# negative number means there's gap between current and next folder
+# will only use latest dataset for duplicated data
+# frames_overlaps total_frames_w/_overlaps folder_path
+4 123 /anvil/scratch/x-ericyu3/SUPERMASSIVExd/ab_IRE2.57/h5data/3d_data_24_01_23_170522/
+1 36 /anvil/scratch/x-ericyu3/SUPERMASSIVExd/ab_IRE2.57/h5data/3d_data_24_01_31_184102/
+0 72 /anvil/scratch/x-ericyu3/SUPERMASSIVExd/ab_IRE2.57/h5data/3d_data_24_02_13_144642/

@@ -1,0 +1,12 @@
+#!/bin/bash
+#PBS -j oe
+#PBS -l nodes=1:ppn=1
+#PBS -q low
+#PBS -l walltime=1:00:00
+cd $PBS_O_WORKDIR
+. ${MODULESHOME}/init/bash
+
+#submit the python script that will make all the g00 files
+module load bwpy
+aprun python $G00SCRIPT $DIR_STR
+module unload bwpy
