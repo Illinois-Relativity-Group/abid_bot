@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<Object name="View3DAttributes">
+    <Field name="viewNormal" type="doubleArray" length="3">0 -0.770239 0.2</Field>
+    <Field name="focus" type="doubleArray" length="3">0 0 0 </Field>
+    <Field name="viewUp" type="doubleArray" length="3">0 0.0 0.770239  </Field>
+    <Field name="viewAngle" type="double">30</Field>
+    <Field name="parallelScale" type="double">1800.73</Field>
+    <Field name="nearPlane" type="double">-3601.45</Field>
+    <Field name="farPlane" type="double">3601.45</Field>
+    <Field name="imagePan" type="doubleArray" length="2">0 0 </Field>
+    <Field name="imageZoom" type="double">75</Field>
+    <Field name="perspective" type="bool">true</Field>
+    <Field name="eyeAngle" type="double">2</Field>
+    <Field name="centerOfRotationSet" type="bool">false</Field>
+    <Field name="centerOfRotation" type="doubleArray" length="3">1.16217 1.16217 0 </Field>
+    <Field name="axis3DScaleFlag" type="bool">false</Field>
+    <Field name="axis3DScales" type="doubleArray" length="3">1 1 1 </Field>
+    <Field name="shear" type="doubleArray" length="3">0 0 1 </Field>
+</Object>

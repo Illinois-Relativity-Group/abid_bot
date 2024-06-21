@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<Object name="IsosurfaceAttributes">
+    <Field name="contourNLevels" type="int">20</Field>
+    <Field name="contourValue" type="doubleVector">-5 -4.8 -4.6 -4.4 -4.2 -4 -3.8 -3.6 -3.4 -3.2 -3 -2.5 -2 -1.8 -1.6 -1.4 </Field>
+    <Field name="contourPercent" type="doubleVector"></Field>
+    <Field name="contourMethod" type="string">Value</Field>
+    <Field name="minFlag" type="bool">true</Field>
+    <Field name="min" type="double">-2</Field>
+    <Field name="maxFlag" type="bool">true</Field>
+    <Field name="max" type="double">0</Field>
+    <Field name="scaling" type="string">Linear</Field>
+    <Field name="variable" type="string">default</Field>
+</Object>

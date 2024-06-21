@@ -1,0 +1,24 @@
+#!/bin/bash
+#SBATCH -p RM
+#SBATCH -N NUMBER_OF_NODES
+#SBATCH -n TOTAL_JOBS
+#SBATCH -t 02:00:00
+#SBATCH --output="bringleout_NUM.txt"
+
+cd $SLURM_SUBMIT_DIR
+#source /usr/local/lib/global.kshrc
+#module load comp-intel/2018.3.222
+#module load mpi-sgi/mpt
+#setenv MPI_SHEPHERD true
+#setenv DISPLAY pfe21:37.0
+module load anaconda3
+module load visit/3.1.2
+module load hdf5
+#module load python
+#setenv PYTHONHOME /nasa/pkgsrc/sles12/2018Q3/views/python/2.7.15/lib/python2.7/site-packages
+#mpiexec -n TOTAL_JOBS SCH_DIR/scheduler.x LOG_DIR/JOBLIST /bin/csh > LOG_DIR/out/out_NUM.log
+srun="srun --exclusive -N1 -n1"
+parallel="parallel --delay 0.2 --joblog runtask.log --resume"
+
+seq TOTAL_JOBS | $parallel -j NUMBER_OF_NODES -u \
+"$srun LOOPER {}"

@@ -1,0 +1,5 @@
+Move all these colortables to you .visit directory in your home directory.
+
+run the following command inside this colortables directory
+
+cp *.ct ~/.visit/

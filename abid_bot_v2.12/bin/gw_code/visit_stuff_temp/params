@@ -1,0 +1,187 @@
+#!/bin/bash
+#
+#Created by Abid Khan 03/31/17
+#Last updated by Ben 07/10/17
+#python 3
+module load comp-intel/2018.3.222
+module load python3/Intel_Python_3.6_2018.3.222
+
+# root:			The full path to abid_bot (so it should end with abid_bot) 
+root="/anvil/scratch/x-ericyu3/gw_plane_development/visit_code"
+
+# it:			The iteration cycle in the h5 data
+it="512"
+
+# dt:			How much time in code units pass between each frame
+#dt="2.85714"
+
+# firstTime:		This is a string that is 017.11f number (5 digits left of the decimal, and 
+#			11 digits right right of it, both zero padded). The value is the time in code
+#			units of the very first frame. You can find this by looking at the first 
+#			iteration number in the first 3d_data* folder, and convert that into code 
+#			units of time. Then look at at "bhns.xon" and look for that time. Copy 
+#			that time exactly into "firstTime" but not using scientific notation.
+#			If your first time is zero and you use particle seed, check "particle.mon" 
+#			and look at the first line. If the time here is not zero, use this time instead.
+firstTime="00000.00000000000"
+
+# M: 			The ADM mass
+#M="1.0"
+M="0.064923059"
+
+# offset: 		Take the value of "firstTime" and divide it by "dt" the result should be an 
+#			integer, and that is the offset. Alternatively, you can look at the very 
+#			first iteration number of the h5 data, and divide it by the iteration step, 
+#			"it". 
+offset=0
+
+# numStars:		The number of stellar objects in our initial system. This is needed to 
+#			determine where to center the camera when filming.
+numStars=1
+
+# maxdensity:		The maximum density value in the initial time. This is found in "bhns.mon"
+#			file 9th column. Make sure it the time row corresponds to "firstTime". This 
+#			variable is used in "run_many_movie_rankes.py" when defining the logrho 
+#			variable: 
+#			DefineScalarExpression("logrha","log10(<MHD_EVOLVE--rho_b>/"+max_density+")")
+maxdensity="1.0822293452E-003"
+
+# time_offset:		This parameter is rarely nonzero. time_offset is described by the following 
+#			relation
+#				t/M = ( (iteration number)*(dt)/(it) + (time_offset) )/M
+#			time_offset may be nonzero if there is regridding involved.
+#			If there has been regridding and the new run starts at iteration 0 this will 
+#			probably be nonzero
+time_offset="0"
+
+# vol1XML:		The full path to the volume attributes xml file. This is file is usually 
+# vol2XML:		placed in "bw_many_folder_scripts/atts/". If you need another volume xml file
+# 			for your movie (say for later times), then use this variable. Both these 
+# 			variables are used in "setmovie.py"
+vol1XML=$root/bin/bw_many_folder_scripts/atts/nsns_vol_dim.xml
+vol2XML=$root/bin/bw_many_folder_scripts/atts/_.xml
+
+# rho_pseudoXML:	These files are used for when you'd prefer plotting the stars with
+# rho_isoXML:		Pseudocolor plots with isosurfaces instead of the usual volume plot with
+#			ray-casting. This saves time and resources at the cost of details and realism
+rho_pseudoXML=$root/bin/bw_many_folder_scripts/atts/rho_pseudo.xml
+rho_isoXML=$root/bin/bw_many_folder_scripts/atts/rho_iso.xml
+
+# view1XML:		The full path to the view attribute xml file. This is usually placed in 
+# view2XML:		"bin/bw_many_folder_scripts/atts/".
+view1XML=$root/bin/bw_many_folder_scripts/atts/bhdisk_view_30deg.xml
+view2XML=$root/bin/bw_many_folder_scripts/atts/_.xml
+#####################################################################
+
+
+
+###################### Field line stuff #############################
+# fields:		This is set to "true" if we want to show magnetic field lines. Otherwise, set 
+#			it to "false"
+fields=true
+
+# numBfieldPlots:		Total number of B field plots in visit
+numBfieldPlots=1
+
+# streamXML
+streamXML=$root/bin/bw_many_folder_scripts/atts/Stream_3D_?.xml
+
+# vecXML:		The full path to the vector attribute xml file.
+vecXML=$root/bin/bw_many_folder_scripts/atts/Vec.xml
+spinvecXML=$root/bin/bw_many_folder_scripts/atts/Vec_spin_big.xml	#XML for spin vector
+
+# bsqXML:		The full path to the bsq2r attribute xml file.
+bsqXML=$root/bin/bw_many_folder_scripts/atts/bsq2r.xml
+
+# particleSeeds:	TRUE if you want to seed field lines using particles, otherwise FALSE
+particleSeeds=true
+
+# updateParticleMon:	TRUE if this is the first time you generate particles, or if you update
+#			particle.mon file.
+#			Otherwise set it to FALSE will save you a lot of time.
+updateParticleMon=false
+
+# appendSeed:		TRUE if you want to have both particle seeds and grid seeds in the same plot.
+#			FALSE if you want turn off particle seeds once a black hole forms
+appendSeeds=false
+
+# twoColorsSeeds:	TRUE if you want to have both particle seeds and grid seeds in different
+#			colors.
+#			FALSE if you want them in the same color.
+#			appendSeed is automatically set to false when twoColorsSeeds is true
+twoColorsSeeds=false
+if $twoColorsSeeds; then appendSeeds=false; fi
+
+# arg1,  		These are arguments that you'll be passing into particlePicker.py. This will 
+# arg2, 		be different objects depending on what the system is. For example, for NSNS, 
+# arg3,			the 4 arguments will be the xy coordinates of their center of masses. These 
+# arg4,			arguments are there for your leisure. You may not need them at all. Make 
+#			sure you modify particlePicker.py before running this script
+arg1="0.0"
+arg2="0.0"
+arg3="0.0"
+arg4="0.0"
+
+# extend:		Sometimes, the particles only surround one stellar object. For example our 
+#			NSNS cases only have particles surrounding one NS. Set this variable to 
+#			"true" to reflect those particles to the other stellar object. Note this must
+#			be set to "false" if we're dealing with only one stellar object like a SMS
+extend=false
+#####################################################################
+
+
+
+#################### Particle tracer stuff ##########################
+# particleTracer:	true if you do Lagrangian Matter Tracer movie
+particleTracer=false
+
+
+# twoColorsTracer	true if you want two colors particle tracer, like in NSNS(2016) particle movies.
+twoColorsTracer=false
+#####################################################################
+
+
+
+############################ g00 stuff ##############################
+g00=false
+g00_pseudoXML=$root/bin/bw_many_folder_scripts/atts/g00_pseudo.xml
+g00_isoXML=$root/bin/bw_many_folder_scripts/atts/g00_iso.xml
+#####################################################################
+
+
+
+################### Gravitational wave stuff ########################
+#gw_dt:			Change in time in Psi4 data
+if [ -e $root/gwdata/1D ]; then
+	gw_dt=$(sed -n '2p' $root/gwdata/1D | sed -e 's,e.*,,')
+fi
+#####################################################################
+
+
+
+# don't change below
+#####################################################################################################
+bin=$root/bin
+[ -d $root"/h5data/horizon/" ] && bhForms=true || bhForms=false 
+[ $(ls $root/h5data/horizon/all_horizon/h.t*.ah2.gp 2>/dev/null | wc -l) -eq 0 ] && binary=false || binary=true
+[ $(ls $root/h5data/horizon/all_horizon/h.t*.ah3.gp 2>/dev/null | wc -l) -eq 0 ] && merged=false || merged=true
+#####################################################################################################
+
+
+
+echo 'vol1XML  = '$(echo $vol1XML | sed "s,$root/bin/bw_many_folder_scripts/atts/,,")
+echo 'view1XML = '$(echo $view1XML | sed "s,$root/bin/bw_many_folder_scripts/atts/,,")
+echo
+echo 'fields          = '$fields
+echo 'particleSeeds   = '$particleSeeds
+echo 'updateParticles = '$updateParticleMon
+echo
+if [ $g00 = true ]; then
+        echo 'g00           = '$g00
+        echo 'g00_pseudoXML = '$(echo $g00_pseudoXML | sed "s,$root/bin/bw_many_folder_scripts/atts/,,")
+        echo 'g00_isoXML    = '$(echo $g00_isoXML | sed "s,$root/bin/bw_many_folder_scripts/atts/,,")
+        echo
+fi
+echo "bhForms = "$bhForms
+echo "binary  = "$binary
+echo "merged  = "$merged

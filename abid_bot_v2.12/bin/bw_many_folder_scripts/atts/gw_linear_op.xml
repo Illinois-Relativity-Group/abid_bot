@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<Object name="VolumeAttributes">
+    <Field name="osprayShadowsEnabledFlag" type="bool">false</Field>
+    <Field name="osprayUseGridAcceleratorFlag" type="bool">false</Field>
+    <Field name="osprayPreIntegrationFlag" type="bool">false</Field>
+    <Field name="ospraySingleShadeFlag" type="bool">false</Field>
+    <Field name="osprayOneSidedLightingFlag" type="bool">false</Field>
+    <Field name="osprayAoTransparencyEnabledFlag" type="bool">false</Field>
+    <Field name="ospraySpp" type="int">1</Field>
+    <Field name="osprayAoSamples" type="int">0</Field>
+    <Field name="osprayAoDistance" type="double">100000</Field>
+    <Field name="osprayMinContribution" type="double">0.001</Field>
+    <Field name="legendFlag" type="bool">false</Field>
+    <Field name="lightingFlag" type="bool">false</Field>
+    <Object name="colorControlPoints">
+        <Object name="ColorControlPointList">
+            <Object name="ColorControlPoint">
+                <Field name="colors" type="unsignedCharArray" length="4">0 0 255 255 </Field>
+                <Field name="position" type="float">0</Field>
+	    </Object>
+	    <Object name="ColorControlPoint">
+                <Field name="colors" type="unsignedCharArray" length="4">0 0 255 255 </Field>
+                <Field name="position" type="float">0.25</Field>
+            </Object>
+            <Object name="ColorControlPoint">
+                <Field name="colors" type="unsignedCharArray" length="4">0 255 255 255 </Field>
+                <Field name="position" type="float">0.375</Field>
+            </Object>
+            <Object name="ColorControlPoint">
+                <Field name="colors" type="unsignedCharArray" length="4">0 255 255 255 </Field>
+                <Field name="position" type="float">0.5</Field>
+            </Object>
+	    <Object name="ColorControlPoint">
+                <Field name="colors" type="unsignedCharArray" length="4">255 255 0 255 </Field>
+                <Field name="position" type="float">0.5</Field>
+            </Object>
+            <Object name="ColorControlPoint">
+                <Field name="colors" type="unsignedCharArray" length="4">255 255 0 255 </Field>
+                <Field name="position" type="float">0.625</Field>
+            </Object>
+            <Object name="ColorControlPoint">
+                <Field name="colors" type="unsignedCharArray" length="4">0 255 0 255 </Field>
+                <Field name="position" type="float">0.75</Field>
+            </Object>
+            <Object name="ColorControlPoint">
+                <Field name="colors" type="unsignedCharArray" length="4">0 255 0 255 </Field>
+                <Field name="position" type="float">1</Field>
+            </Object>
+            <Field name="smoothing" type="string">Linear</Field>
+            <Field name="equal" type="bool">false</Field>
+            <Field name="discrete" type="bool">false</Field>
+            <Field name="category" type="string"></Field>
+        </Object>
+    </Object>
+    <Field name="opacityAttenuation" type="float">0.3333333</Field>
+    <Field name="opacityMode" type="string">FreeformMode</Field>
+    <Object name="opacityControlPoints">
+        <Object name="GaussianControlPointList">
+        </Object>
+    </Object>
+    <Field name="resampleFlag" type="bool">true</Field>
+    <Field name="resampleTarget" type="int">100000</Field>
+    <Field name="opacityVariable" type="string">default</Field>
+    <Field name="compactVariable" type="string">default</Field>
+    <Field name="freeformOpacity" type="unsignedCharArray" length="256">202 203 203 204 204 204 205 205 206 206 206 207 207 207 208 208 209 209 209 210 210 210 211 211 211 212 212 212 212 213 213 213 214 214 214 215 215 215 215 216 216 216 216 217 217 217 217 217 218 218 218 218 218 219 219 219 219 219 220 220 220 220 220 220 220 221 221 221 221 221 221 221 221 221 222 222 222 222 222 222 222 222 222 222 222 222 222 222 222 222 222 222 206 170 125 83 50 26 9 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 9 26 50 83 125 170 206 222 222 222 222 222 222 222 222 222 222 222 222 222 222 222 222 222 222 221 221 221 221 221 221 221 221 221 220 220 220 220 220 220 220 219 219 219 219 219 218 218 218 218 218 217 217 217 217 217 216 216 216 216 215 215 215 215 214 214 214 213 213 213 212 212 212 212 211 211 211 210 210 210 209 209 209 208 208 207 207 207 206 206 206 205 205 204 204 204 203 203 202</Field>
+    <Field name="useColorVarMin" type="bool">true</Field>
+    <Field name="colorVarMin" type="float">-0.0001</Field>
+    <Field name="useColorVarMax" type="bool">true</Field>
+    <Field name="colorVarMax" type="float">0.0001</Field>
+    <Field name="useOpacityVarMin" type="bool">false</Field>
+    <Field name="opacityVarMin" type="float">0</Field>
+    <Field name="useOpacityVarMax" type="bool">false</Field>
+    <Field name="opacityVarMax" type="float">0</Field>
+    <Field name="smoothData" type="bool">false</Field>
+    <Field name="samplesPerRay" type="int">350</Field>
+    <Field name="rendererType" type="string">RayCasting</Field>
+    <Field name="gradientType" type="string">SobelOperator</Field>
+    <Field name="scaling" type="string">Linear</Field>
+    <Field name="skewFactor" type="double">1</Field>
+    <Field name="limitsMode" type="string">OriginalData</Field>
+    <Field name="sampling" type="string">Rasterization</Field>
+    <Field name="rendererSamples" type="float">3</Field>
+    <Field name="lowGradientLightingReduction" type="string">Lower</Field>
+    <Field name="lowGradientLightingClampFlag" type="bool">false</Field>
+    <Field name="lowGradientLightingClampValue" type="double">1</Field>
+    <Field name="materialProperties" type="doubleArray" length="4">0.4 0.75 0 15 </Field>
+</Object>

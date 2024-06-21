@@ -1,0 +1,37 @@
+When you first get abidbot, check that you have the following folders:
+	/h5data/
+	/h5data/horizon/  (only for black holes)
+	/h5data/horizon/all_horizon/ (only for black holes)
+
+
+Inside h5data/ is where you put all of the folders that contain the *.h5 data. Inside this directory there will be a bunch of 3d_data_*/ folders once you copy/link the data over. The all_horizon/ folder will contain all of the *.ah1.gp files (black hole data). The horizon/ folder will by populated with all the black hole data that we actually need for the movie (a subset of the all_horizon files). You will also need the following files in h5data/: bhns.mon, bhns.xon, particles.mon (might need to rename it from bhns-particles.mon to particles.mon), BH_diagnostics.ah1.gp, and a *.par file (* depends on the case).
+
+This README will provide instructions on how to run the code to make these movies. While you read, follow these instructions, be sure to look at the code that you are running, as most of the time you will have to edit the files themselves. It's important to know what's going on in the code as well.
+
+The first step is making sure that we have the latest data in our h5data folder. All the *.h5 files should be in their respective 3d_data_*/ folders. and all h.t*.gp files grabbed from the postdocs should be in the h5data/horizon/all_horizon/ folder. There are two options when copying the data. First is to use the ln -s command to simply make symbolic links to the data that lives in the postdocs folders. The other option is to copy the data directly into your folder using Globus. For this log onto Globus with your ACCESS login, use the two pane option, navigate to the postdocs folder on one and to your abidbot on the other and then initalize a copy. It is best to do these in chuncks rather than all at once becasue it is kind of slow.
+
+The first thing to do is run setup_params.py to get the correct parameters. Read through the comments in that script to figure out what all you need, and then run the params file itself. ([. params] in the terminal)
+
+Most of the setup will be taken care of with the setup.sh script however this will walk you through what the script does. 
+
+1. params
+	This sets the parameters of abid_bot to the current shell. Before you do anything you'll need to update these for your current project. The main ones you need to worry about immediately are root, M, it, dt, and maxdensity. You can ask the postdocs for these, or you can find them in the files in your h5data/ folder. UPDATE: the setup_params.py script should take care of this as long as you have bhns.xon, bhns.mon and a rho_b.file_0.h5.
+
+2. clean_h5folders.sh and make_h5folders.sh
+	These scripts will delete the old xml/ folder and go through and check if each 3d_data folder has files in it. If there are no files in it, it will move the 3d_data folder to a new folder called bad_data. Then it will make a new empty xml/ folder which will be used later on.
+
+3. setup_bh.sh
+	If there are black hole files, this script will go through and select which black hole files to use because there are typically more black hole files than density time steps. The scripts that this uses are sift_gp.py, center_lister.py, and gpto3d.cpp. sift_gp.py is the one that actually separates the black hole files. center_lister.py does exactly what it says, lists the center of the black hole. gpto3d.cpp takes the .gp files that come from the grad students code to .3d files which visit can use. If there are multiple black holes in the simulation (such as BHNS or BHBH) it will take into account those files too.
+
+4. setup_seeds.sh
+	If you have B fields you will be editing particlePicker.py and rerunning this step a lot. This script will take the particles.mon file and split it up into smaller, more manageable files if you have updateParticlemon=True in params, otherwise it'll skip this step. For each particles.mon file, you only need to update it once, so remember to turn off updateParticlemon; otherwise this will waste a lot of time. After that, it will run particlePicker.py. Go to the README inside bin/particle_code for an explanation on how this works or see the tutorial section on Particle Picker. If there are black holes, we don't use particle seeds anymore; we use grid seeds above them to show jets so the code will then replace the particle seeds with black hole seeds it just made. The grid code and seed files can be found in bin/grid_code/. Less common is a tracer movie but it isn't all that different from particle seeds.
+
+5. setup_cm.sh
+	This script takes the bhns.xon file and tracks the center of mass of the entire system so we know where to center our camera in visit.
+
+6. setup_frames.sh
+	This is the final script to be run. This will take all the black hole files, seed files, and center of mass and split everything up by 3d_data folder so visit can use them when making a movie. The first script run is cray.sh which checks the 3d_data folders to make sure we don't have duplicate time steps. If there are, this scripts creates a file of the duplicates that rmdupes.py uses to ignore those time steps. Next is the setmovie.py script which will actually makes all the .xml files in the xml/ folders. You will have to edit the bottom of this file as it has custom options for which .xml file you want to use for each frame.
+
+And that's it! That is the full setup of abidbot. Each one of these setps can be run independently of the others but you must ALWAYS run setup_frames.sh at the end otherwise none of your changes will be used in visit.
+
+Happy Movie Making!

@@ -1,0 +1,31 @@
+this is a self-contained tool to visualize gravity waves extracted from numerical relativity simulations
+it processes output from NR simulation into either 2D or 3D .vtk data which can then be visualized using VisIt
+for the cpp code to work, the fftw package is needed, see 'install_fftw.txt' for instructions
+
+the input is the Weyl curvature component Psi4
+ - the script 'bin/calc_clm.cpp' script more or less follows the frequency domain integration talked about in arXiv:1006.1632
+ - the files that this code is built to read have columns (the last three columns aren't used by the code but are output by the simulations we use)
+       time | (2,2)_real | (2,2)_imag | (2,1)_real | (2,1)_imag | (2,0)_real ....... | ('last_mode')_imag | r_areal | Averaged g^tt | Averaged g^tr | Averaged g^rr
+
+
+USE: 
+Step 1, set parameters in 'params_gw.py'. The main parameters to set are 
+-update_lookup (set to false if you've already run once before with true)
+-M_ADM, cutoff_w (get this from the postdoc/s)
+-threeD_flag and times
+
+----------------------------------Old Method---------------------------
+Step 2, in 'setup_gw.py', specify the name of the output folder and run it; it does the following things
+ - this Psi4 file is cleaned and then in 'calc_clm.cpp', the 'Psi4_lm's are processed into 'C_lm's which is the strain h decomposed into s=-2 spherical harmonics
+ - rather inefficient python code 'hplus_hcross.py' takes the 'C_lm's and generates 2D or 3D data that adds the 1/r falloff, time retardation t -> t - r
+
+Step 3, in 'runGW.sh', specify some run parameters and run it;
+ - this script is designed to use sbatch
+----------------------------------Old Method---------------------------
+
+The above enclosed method is the old method. I think you can still use it, but it is unnecessary. Once you're done with params_gw.py, go back to the root directory. Everything from now on will be run through the regular params and setup. I've outlined the new method below. 
+
+Step 1.5, if you haven't generated VTKdata before, set updategwdata=true in your root params and run setup.sh. This takes a very long time, so check on it periodically. Once that is done, set updategwdata=false and rerun params and then setup.sh.
+
+Step 2, once setup is finished, you should see hcross/hplus files in your xml folders (depending on your params file). Set PlotGW2D or PlotGW3D to 1 in whichever run script you are using and submit the jobs!
+

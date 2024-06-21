@@ -1,0 +1,3 @@
+57984 77184 51 /anvil/scratch/x-rnarasimhan/abid_bot_v2.12/h5data/3d_data_24_06_15_225738/
+51072 57984 19 /anvil/scratch/x-rnarasimhan/abid_bot_v2.12/h5data/3d_data_24_06_13_174409/
+46848 51840 14 /anvil/scratch/x-rnarasimhan/abid_bot_v2.12/h5data/3d_data_24_06_10_213700/

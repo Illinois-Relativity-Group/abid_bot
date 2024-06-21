@@ -1,0 +1,36 @@
+Lmod has detected the following error: The following module(s) are unknown:
+"phdf5"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore_cache load "phdf5"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+
+
+/anvil/scratch/x-rnarasimhan/abid_bot_binary_SP/bin/particle_tracer
+making vx grid
+making vy grid
+Traceback (most recent call last):
+  File "/anvil/scratch/x-rnarasimhan/abid_bot_binary_SP/bin/particle_tracer/ptctracer.py", line 99, in <module>
+    k1,_ =get_v(h5folder,it,s)
+  File "/anvil/scratch/x-rnarasimhan/abid_bot_binary_SP/bin/particle_tracer/ptctracer.py", line 30, in get_v
+    vy, _ = make_point_grid(h5dir, "vy", it, rl, MPI, x_list, y_list, z_list)
+  File "/anvil/scratch/x-rnarasimhan/abid_bot_binary_SP/bin/particle_tracer/gridder.py", line 65, in make_point_grid
+    D = Dataset(h5dir, var, it, rl, MPI)
+  File "/anvil/scratch/x-rnarasimhan/abid_bot_binary_SP/bin/particle_tracer/h5loader.py", line 50, in __init__
+    self.c_list = [ Data_C(h5folder, var, it, rl, c) for c in range(MPI) ]
+  File "/anvil/scratch/x-rnarasimhan/abid_bot_binary_SP/bin/particle_tracer/h5loader.py", line 50, in <listcomp>
+    self.c_list = [ Data_C(h5folder, var, it, rl, c) for c in range(MPI) ]
+  File "/anvil/scratch/x-rnarasimhan/abid_bot_binary_SP/bin/particle_tracer/h5loader.py", line 12, in __init__
+    self.data = f[ds_name]
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "/home/x-rnarasimhan/.local/lib/python3.9/site-packages/h5py/_hl/group.py", line 357, in __getitem__
+    oid = h5o.open(self.id, self._e(name), lapl=self._lapl)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/h5o.pyx", line 190, in h5py.h5o.open
+KeyError: 'Unable to open object (bad heap free list)'
