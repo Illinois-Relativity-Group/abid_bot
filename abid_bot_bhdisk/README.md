@@ -30,6 +30,6 @@ In `h5data` there are two scripts for generating a line or a box. The box is use
 
 ## Debugging
 
-When you encounter a bug, read through your script carefully. In most cases (~80%) the issue is immediately obvious, and for the rest you can usually make a good guess from the error message. Errors from module loading are typically fine to ignore. Pay extra attention to VisIt complaining about files not found, especially `.vtk` files, as these can cause issues. VisIt opens data in datasets, so you need at least two data files to plot or it may fail. If you want to plot a later `3d_data` folder, you still need the first `3d_data` folder present — this is how the code determines the correct time.
+When you encounter a bug, read through your script carefully. In most cases (~80%) the issue is immediately obvious, and for the rest you can usually make a good guess from the error message. Errors from module loading are typically fine to ignore. Pay extra attention to VisIt complaining about files not found, especially `.vtk` files, as these can cause issues. VisIt opens data in datasets, so you need at least two data files to plot or it may fail. If you only want to plot a later `3d_data` folder, you still need the first `3d_data` folder present — this is how the code determines the correct time.
 
 Good luck!
