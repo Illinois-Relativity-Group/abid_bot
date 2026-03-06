@@ -4,7 +4,7 @@ This software generates visualizations for black hole disk systems using VisIt. 
 
 ## Setup
 
-Untar the tarball and copy `bhdisk.ct` to your `~/.visit` directory to ensure visibility. Then open the parameter file and update the following fields: `root`, `it`, `dt`, `M`, `rho_pseudoXML`, `rho_isoXML`, and `view1XML`. You have the option to plot either spin `S` or dimensionless spin `chi`. If you want magnetized systems, turn on `fieldlines` and the relevant settings.
+Untar the tarball and copy `bhdisk.ct` to your `~/.visit` directory to ensure colortable visibility. Then open the parameter file and update the following fields: `root`, `it`, `dt`, `M`, `rho_pseudoXML`, `rho_isoXML`, and `view1XML`. You have the option to plot either spin `S` or dimensionless spin `chi`. If you want magnetized systems, turn on `fieldlines` and the relevant settings.
 
 Next, create an `h5data` folder. Softlink or copy your HDF5 data into this folder and add a `3d_data_` prefix to all data folders — there is a script in `h5data` to help with this. From your source directory, also copy over all files starting with `bhns*`. The most important ones are `bhns_BHspin.mon` (spin vector), `bhns.*on` (center of mass), and `bhns_particles.mon` (for particle fieldline plotting; rename it to `particles.mon`). You will also need a `horizon/all_horizon` directory inside `h5data`. Copy all apparent horizon data (files ending in `.gp`) into `all_horizon`, including `BH_diagnostics.ah#.gp`, where `#` can be 1–3 depending on how many black holes are in the system and whether they have merged.
 
