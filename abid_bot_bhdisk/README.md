@@ -12,7 +12,7 @@ Now run setup. If you encounter errors, read through the output stream carefully
 
 ## Plotting
 
-Use `runSingle.sh` for single-frame plotting. You can select what to plot: isosurface or volume rendering, spin vector on/off, reflection on/off, cut on/off, and velocity arrows on/off. Then specify the folder number (1-indexed) and which image within that folder to plot (0-indexed).
+Use `runSingle.sh` for single-frame plotting. You can select what to plot: isosurface or volume rendering, spin vector on/off, reflection on/off, cut on/off, and velocity arrows on/off, and others. Then specify the folder number (1-indexed) and which image within that folder to plot (0-indexed).
 
 For batch production of movie frames, use `runMulti`. For zoom-in transitions or fly-around/fly-over camera paths for movies, use `runMisc`.
 
