@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<Object name="BoxAttributes">
+    <Field name="amount" type="string">Some</Field>
+    <Field name="minx" type="double">-100</Field>
+    <Field name="maxx" type="double">100</Field>
+    <Field name="miny" type="double">-100</Field>
+    <Field name="maxy" type="double">100</Field>
+    <Field name="minz" type="double">-100</Field>
+    <Field name="maxz" type="double">100</Field>
+    <Field name="inverse" type="bool">false</Field>
+</Object>

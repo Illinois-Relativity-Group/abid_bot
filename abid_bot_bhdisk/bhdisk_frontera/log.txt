@@ -1,0 +1,122 @@
+Lmod has detected the following error: The following module(s) are unknown: "python"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore_cache load "python"
+
+Also make sure that all modulefiles written in TCL start with the string #%Module
+
+
+
+Lmod has detected the following error: The following module(s) are unknown: "python"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore_cache load "python"
+
+Also make sure that all modulefiles written in TCL start with the string #%Module
+
+
+
+vol1XML  = bhdisk_volume_pink_fluffy_2025_3.xml
+view1XML = bhdisk_view_30deg.xml
+
+fields          = true
+particleSeeds   = true
+updateParticles = false
+
+bhForms = true
+binary  = false
+merged  = false
+cleaning h5 and xml folders
+making h5 and xml folders
+setting up black hole data...
+		sifting *.gp files'
+		creating bhdata
+done
+setting up particles
+	making particle seeds
+PP Module Loaded
+Generating filesOrigin...
+1021  files found
+Done generating Files Origin!
+Finding Nearest Neighbor...
+starting with 24  points
+hello
+(2.3416421656312915e-07, 0)
+(2.3416421635695418e-07, 1)
+(2.3416421676930412e-07, 2)
+(2.3416421594460425e-07, 3)
+(2.3416421540216613e-07, 4)
+(2.341642156623426e-07, 5)
+(2.3416421553225432e-07, 6)
+(2.3416421545616765e-07, 7)
+(2.737122558862263e-07, 8)
+(2.7371225592931194e-07, 9)
+(2.737122558431407e-07, 10)
+(2.7371225592931194e-07, 11)
+(2.7371225491606667e-07, 12)
+(2.737122571148998e-07, 13)
+(2.737122568994716e-07, 14)
+(2.737122571579855e-07, 15)
+(4.863747589656623e-06, 16)
+(4.863747589612068e-06, 17)
+(4.863747589701177e-06, 18)
+(4.863747589612068e-06, 19)
+(4.863747591475297e-06, 20)
+(4.863747587570621e-06, 21)
+(4.8637475877488394e-06, 22)
+(4.863747587526067e-06, 23)
+Nearest Neighbor finds 24 points
+Done finding nearest neighbor
+Plot # 0
+We got 24 particles
+lineNumbers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+Done generating txt files!
+	making grid seeds
+removing old seeds...
+creating new seeds...
+done
+making cm.txt
+done
+setting up frames
+Lmod has detected the following error: The following module(s) are unknown: "hdf5/1.10.7"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore_cache load "hdf5/1.10.7"
+
+Also make sure that all modulefiles written in TCL start with the string #%Module
+
+
+
+./movieSeq_v2_arg.bash -i 512 -r /scratch2/10281/guoyuheng/bh_disk/h5data -p 3d_data_ -n Bx.file_0.h5 -f
+Gap found! See gap.txt for details
+Gap found! See gap.txt for details
+Success! Please check overlap.txt for output
+...done
+deleting xml files...
+creating xml files...
+Lmod has detected the following error: The following module(s) are unknown: "bwpy"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore_cache load "bwpy"
+
+Also make sure that all modulefiles written in TCL start with the string #%Module
+
+
+
+
+Note: the module "bwpy" cannot be unloaded because it was not loaded.
+
+done
+dimensionless spin: true
+setup_spinvtk_dimensionless.py
+Interpolating areal radii to match spin timestamps...
+[0.10670212 0.32010637 0.53351062 0.74691487 0.96031912 1.17372337
+ 1.38712762 1.60053187 1.81393612 2.02734037]
+[356.49179792 356.70520217 356.91860642 357.13201067 357.34541491
+ 357.55881916 357.77222341 357.98562766 358.19903191 358.41243616]
+time offset: -0.106702
+setup complete!

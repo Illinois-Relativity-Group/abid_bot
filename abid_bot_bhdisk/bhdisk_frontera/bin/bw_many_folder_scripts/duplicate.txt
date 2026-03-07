@@ -1,0 +1,6 @@
+# List of folderpaths which are duplicated by other data
+# These folders won't be used for filming
+/scratch2/10281/guoyuheng/bh_disk_sol_32/h5data/3d_data_26_01_09_083945/
+/scratch2/10281/guoyuheng/bh_disk_sol_32/h5data/3d_data_26_01_11_161014/
+/scratch2/10281/guoyuheng/bh_disk_sol_32/h5data/3d_data_26_01_10_235609/
+/scratch2/10281/guoyuheng/bh_disk_sol_32/h5data/3d_data_26_01_18_092019/
