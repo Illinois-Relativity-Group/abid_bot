@@ -1,0 +1,89 @@
+# Clean data beforehand! Remove all lines that don't contain data
+# For example, try: grep -v -e "^$" -e "#" vy.xy.asc > vy.xy.clean
+
+import numpy as np
+from os import listdir
+from sys import argv
+
+
+delta_r=int(argv[1])
+M=float(argv[2])
+ini_time=float(argv[3])
+vxfiles=[]
+vyfiles=[]
+for fil in listdir("/u/sciteam/lsun2/scratch/Omega_Tool_ver080118/data/vel_data"):
+	if (fil[1]=='x'):
+		vxfiles.append(fil)
+	if (fil[1]=='y'):
+		vyfiles.append(fil)
+
+#Sort
+vxfiles.sort()
+vyfiles.sort()
+
+
+cmdata=np.loadtxt("/data/bhns.xon")
+t_cen = cmdata[:,0]+ini_time
+print t_cen
+
+t_cen /= M
+
+print t_cen
+
+x_cen = cmdata[:,1]
+y_cen = cmdata[:,2]
+
+#print t_cen[0:100],x_cen[0:100]
+
+
+
+for xfile, yfile in zip(vxfiles,vyfiles):
+
+	vx_data = np.loadtxt("vel_data/"+xfile)
+	vy_data = np.loadtxt("vel_data/"+yfile)
+	
+	time=xfile[3:-4]
+	idx = (np.abs(t_cen-float(time))).argmin() #No need to add t_offset here since bhns.xon is shifted as well
+
+	x = vx_data[:,9]-x_cen[idx]
+	y = vy_data[:,10]-y_cen[idx]
+	vx = vx_data[:,12]
+	vy = vy_data[:,12]
+	
+	print "Caculating omega at t="+str(time)+"M"
+	print "The center of mass at this time is:" 
+	print x_cen[idx], y_cen[idx]
+	
+	d = x**2+y**2
+	#d = (x-x_cen[idx])**2 + (y-y_cen[idx])**2
+
+	omega_x = (-y*vx)/d
+	omega_y = (x*vy)/d
+
+	omega = omega_x + omega_y
+
+	w=np.zeros(300)
+	weights=np.zeros(300)
+
+	for i in range(x.size):
+		idx1=int(np.sqrt(d[i])/delta_r)
+		idx2=idx1+1
+		weight2=float(np.sqrt(d[i])%delta_r)/delta_r
+		weight1=1.0-weight2
+		#print(weight1)
+		if(idx2<300):
+			w[idx1]+=omega[i]*weight1
+			w[idx2]+=omega[i]*weight2
+			weights[idx1]+=weight1
+			weights[idx2]+=weight2
+
+	#print(w)
+	#Save w data
+	savename="w_data/w_"+time.zfill(6)+".txt"
+	savefile=open(savename, 'w')
+	for i, (omega, weight) in enumerate(zip(w,weights)):
+		rad=delta_r*i
+		if (weight==0):
+			weight=1
+		savefile.write(str(rad)+'\t'+str(omega/weight)+'\n')
+	savefile.close()

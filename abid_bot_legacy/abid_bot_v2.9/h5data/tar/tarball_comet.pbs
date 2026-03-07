@@ -1,0 +1,21 @@
+#!/bin/bash
+#SBATCH --partition=compute
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --output="bringleout.txt"
+#SBATCH --export=ALL
+#SBATCH -t 04:00:00
+cd $SLURM_SUBMIT_DIR
+. ${MODULESHOME}/init/bash
+
+test0="${PBS_JOBID}.$end"
+
+for i in $(ls -d 3d*| head -n $end | tail -n $num); do
+  echo "tar xvzf $i -C ../" >>$test0
+  #j=$(ls -l $i | sed 's/\(.*\)->\ \(.*\)/\2/')
+  #echo "tar cvzf tar/$i.tgz $j" >>$test0
+done
+  
+xargs -d '\n' -I cmd -P 32 bash -c 'cmd' < $test0
+
+rm $test0

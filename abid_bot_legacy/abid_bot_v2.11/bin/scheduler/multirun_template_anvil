@@ -1,0 +1,17 @@
+#!/bin/bash
+#SBATCH -p wholenode
+#SBATCH -N 1
+#SBATCH -n 128
+#SBATCH --export=ALL
+#SBATCH -t 02:00:00
+cd $PBS_O_WORKDIR
+. ${MODULESHOME}/init/bash
+#module load hdf5
+#module load python
+module load gcc/11.2.0
+module load openmpi/4.0.6
+#module load intel/18.0.5
+#module load impi/18.0.5
+#module load mvapich2-x/2.3
+#module use /work/01197/semeraro/frontera/rpminstall/intel19/impi19_0/modulefiles
+module load visit/3.1.4

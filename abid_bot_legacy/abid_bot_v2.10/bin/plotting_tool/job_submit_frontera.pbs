@@ -1,0 +1,10 @@
+#!/bin/bash 
+#SBATCH -n 1
+#SBATCH -t 06:00:00 
+#SBATCH -N 1
+#SBATCH --output="out.txt"
+#SBATCH -p normal
+cd $PBS_O_WORKDIR 
+#module load bwpy
+echo $start
+python3 /scratch1/07501/tg868002/fronteratest/abid_bot_v2.9/plotting_tool_test/bin/main_bsq2r.py $start $end

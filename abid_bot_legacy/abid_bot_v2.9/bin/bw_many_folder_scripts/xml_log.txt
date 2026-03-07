@@ -1,0 +1,198 @@
+['setmovie.py', '/home4/mpmudd/mpmudd/abid_bot_nasa2/', '256', '2.85714', '.1345', '0', 'true', '1', 'false', '0', '/home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/nsns_vol_dim.xml', '/home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/_.xml', '/home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/ergo_view.xml', '/home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/_.xml', 'false', 'false', 'false']
+There are 13 frames!
+
+Folder: /home4/mpmudd/mpmudd/abid_bot_nasa2/h5data/3d_data_201906292233/
+Index:  0
+
+Seed File: /home4/mpmudd/mpmudd/abid_bot_nasa2/seeds/0000000_0.txt
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/particle_seeds_0000_0.txt
+
+Stream File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/Stream_0.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/Stream_0000_0.xml
+
+View File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/ergo_view.xml
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/view_0000.xml
+
+Vol File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/nsns_vol_dim.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/volume_0000.xml
+
+Folder: /home4/mpmudd/mpmudd/abid_bot_nasa2/h5data/3d_data_201906292233/
+Index:  1
+
+Seed File: /home4/mpmudd/mpmudd/abid_bot_nasa2/seeds/0000001_0.txt
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/particle_seeds_0001_0.txt
+
+Stream File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/Stream_0.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/Stream_0001_0.xml
+
+View File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/ergo_view.xml
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/view_0001.xml
+
+Vol File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/nsns_vol_dim.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/volume_0001.xml
+
+Folder: /home4/mpmudd/mpmudd/abid_bot_nasa2/h5data/3d_data_201906292233/
+Index:  2
+
+Seed File: /home4/mpmudd/mpmudd/abid_bot_nasa2/seeds/0000002_0.txt
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/particle_seeds_0002_0.txt
+
+Stream File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/Stream_0.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/Stream_0002_0.xml
+
+View File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/ergo_view.xml
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/view_0002.xml
+
+Vol File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/nsns_vol_dim.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/volume_0002.xml
+
+Folder: /home4/mpmudd/mpmudd/abid_bot_nasa2/h5data/3d_data_201906292233/
+Index:  3
+
+Seed File: /home4/mpmudd/mpmudd/abid_bot_nasa2/seeds/0000003_0.txt
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/particle_seeds_0003_0.txt
+
+Stream File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/Stream_0.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/Stream_0003_0.xml
+
+View File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/ergo_view.xml
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/view_0003.xml
+
+Vol File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/nsns_vol_dim.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/volume_0003.xml
+
+Folder: /home4/mpmudd/mpmudd/abid_bot_nasa2/h5data/3d_data_201906292233/
+Index:  4
+
+Seed File: /home4/mpmudd/mpmudd/abid_bot_nasa2/seeds/0000004_0.txt
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/particle_seeds_0004_0.txt
+
+Stream File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/Stream_0.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/Stream_0004_0.xml
+
+View File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/ergo_view.xml
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/view_0004.xml
+
+Vol File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/nsns_vol_dim.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/volume_0004.xml
+
+Folder: /home4/mpmudd/mpmudd/abid_bot_nasa2/h5data/3d_data_201906292233/
+Index:  5
+
+Seed File: /home4/mpmudd/mpmudd/abid_bot_nasa2/seeds/0000005_0.txt
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/particle_seeds_0005_0.txt
+
+Stream File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/Stream_0.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/Stream_0005_0.xml
+
+View File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/ergo_view.xml
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/view_0005.xml
+
+Vol File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/nsns_vol_dim.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/volume_0005.xml
+
+Folder: /home4/mpmudd/mpmudd/abid_bot_nasa2/h5data/3d_data_201906292233/
+Index:  6
+
+Seed File: /home4/mpmudd/mpmudd/abid_bot_nasa2/seeds/0000006_0.txt
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/particle_seeds_0006_0.txt
+
+Stream File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/Stream_0.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/Stream_0006_0.xml
+
+View File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/ergo_view.xml
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/view_0006.xml
+
+Vol File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/nsns_vol_dim.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/volume_0006.xml
+
+Folder: /home4/mpmudd/mpmudd/abid_bot_nasa2/h5data/3d_data_201906292233/
+Index:  7
+
+Seed File: /home4/mpmudd/mpmudd/abid_bot_nasa2/seeds/0000007_0.txt
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/particle_seeds_0007_0.txt
+
+Stream File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/Stream_0.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/Stream_0007_0.xml
+
+View File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/ergo_view.xml
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/view_0007.xml
+
+Vol File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/nsns_vol_dim.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/volume_0007.xml
+
+Folder: /home4/mpmudd/mpmudd/abid_bot_nasa2/h5data/3d_data_201906292233/
+Index:  8
+
+Seed File: /home4/mpmudd/mpmudd/abid_bot_nasa2/seeds/0000008_0.txt
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/particle_seeds_0008_0.txt
+
+Stream File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/Stream_0.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/Stream_0008_0.xml
+
+View File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/ergo_view.xml
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/view_0008.xml
+
+Vol File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/nsns_vol_dim.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/volume_0008.xml
+
+Folder: /home4/mpmudd/mpmudd/abid_bot_nasa2/h5data/3d_data_201906292233/
+Index:  9
+
+Seed File: /home4/mpmudd/mpmudd/abid_bot_nasa2/seeds/0000009_0.txt
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/particle_seeds_0009_0.txt
+
+Stream File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/Stream_0.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/Stream_0009_0.xml
+
+View File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/ergo_view.xml
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/view_0009.xml
+
+Vol File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/nsns_vol_dim.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/volume_0009.xml
+
+Folder: /home4/mpmudd/mpmudd/abid_bot_nasa2/h5data/3d_data_201906292233/
+Index:  10
+
+Seed File: /home4/mpmudd/mpmudd/abid_bot_nasa2/seeds/0000010_0.txt
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/particle_seeds_0010_0.txt
+
+Stream File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/Stream_0.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/Stream_0010_0.xml
+
+View File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/ergo_view.xml
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/view_0010.xml
+
+Vol File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/nsns_vol_dim.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/volume_0010.xml
+
+Folder: /home4/mpmudd/mpmudd/abid_bot_nasa2/h5data/3d_data_201906292233/
+Index:  11
+
+Seed File: /home4/mpmudd/mpmudd/abid_bot_nasa2/seeds/0000011_0.txt
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/particle_seeds_0011_0.txt
+
+Stream File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/Stream_0.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/Stream_0011_0.xml
+
+View File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/ergo_view.xml
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/view_0011.xml
+
+Vol File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/nsns_vol_dim.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/volume_0011.xml
+
+Folder: /home4/mpmudd/mpmudd/abid_bot_nasa2/h5data/3d_data_201906292233/
+Index:  12
+
+Seed File: /home4/mpmudd/mpmudd/abid_bot_nasa2/seeds/0000012_0.txt
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/particle_seeds_0012_0.txt
+
+Stream File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/Stream_0.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/Stream_0012_0.xml
+
+View File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/ergo_view.xml
+XML File:  /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/view_0012.xml
+
+Vol File: /home4/mpmudd/mpmudd/abid_bot_nasa2/bin/bw_many_folder_scripts/atts/nsns_vol_dim.xml
+XML File: /home4/mpmudd/mpmudd/abid_bot_nasa2/xml/3d_data_201906292233/volume_0012.xml
+

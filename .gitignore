@@ -1,0 +1,4 @@
+# Feel free to add more patterns to ignore, like compressed or log files
+
+.DS_Store
+**/.DS_Store

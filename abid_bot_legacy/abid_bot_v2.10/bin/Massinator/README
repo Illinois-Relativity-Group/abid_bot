@@ -1,0 +1,50 @@
+Use massinator.py for full functionality. It is the most up to date script.
+
+The 1d instructions take a smaller sample of data and are more prone to error. This script assumes spherical symmetry of your star.
+The 2d instructions take a planar slice and is more accurate. This script assumes axial symmetry around the z axis.
+The 2d script assumes that the data is on a (possibly uneven) grid. This is necessary for the integration process. If each data point has a unique z value the script will likely return a small number for the total mass.
+
+Both scripts remove duplicate data and sort so you don't need to do that. 
+
+Test data is included in this folder. 1ddummy.txt is for 1d, 2ddummy.txt is for 2d. Both files are a sphere of radius and density one, so the return value on an all data run should be 4*pi/3. Use these files to test if your modifications and filters are working. The 2ddummy data will produce a slightly lower value (around 4.178) due to somewhat lower resolution in this dummy file. 
+
+MAKE THE SLICE:
+	how to run hdf5toascii_slicer
+	go into the directory "/u/sciteam/ruiz1/EToolkit/Cactus_bakp/exe/etk_cactus/"
+	then run the line
+	2d:
+		./hdf5toascii_slicer --out2d-xzplane-y 0. file*.h5 > new_file.asc
+
+		where "file" and "new_file" are the locations of the files you need
+
+		This specific command is for slicing the data along the xz-plane at y=0
+
+	1d:
+		./hdf5toascii_slicer --out1d-xline-yz 0. 0. file*.h5 > new_file.asc
+
+		This specific command is for slicing the data along the x-axiz at y=z=0
+	
+	After this is done use this helpful command to grab the necessary data at a certain iteration and put it into a text file
+	2d:
+		grep -v '#' rho.x.asc | awk '$1 == "0"' | awk '{print $1, $10, $12, $13}' > new_file.txt
+	
+		where "0" is the iteration you want and "new_file" is the name of your new text file
+	1d:
+		grep -v '#' rho.x.asc | awk '$1 == "0"' | awk '{print $1, $10, $13}' > new_file.txt
+	
+		where "0" is the iteration you want and "new_file" is the name of your new text file
+	$1 = iteration
+	$10 = x coord
+	$11 = y coord
+	$12 = z coord
+	$13 = data value
+	
+RUN THE SCRIPT:
+	Edit the script massinator.py in the region2 function for 2d or region1 function for 1d. This is where you tell the script what region of space it should look at. Sample geometries are in the script. Please test any geometries used on dummy data first, as filtering errors are common and ruin the calculation. The script is preset to read all data. You will need to know the radius of the star here. You can find this by using Visit or plotting the data read by the 1d script and looking for a drop. Currently, the script filters for positive x for efficiency. This is justified by axial/spherical symmetry. If you want to undo this, you will have to remove the x>=0 condition in the filter, check the region functions so that it supports all x, and adjust the integration line so that it integrates pi * abs(x) * rho instead of 2 * pi * x * rho. For 1d, this would be 2 * pi * abs(x)^2 * rho instead of 4 * pi * x^2 * rho. The current version of the 2d integrator is sensitive with z data so if you filter data incorrectly you may receive a 3 place tuple. The important value here is the 3rd entry, which is the z value that produced an empty list. Once this is done, the script can be run in terminal. Run it like 
+	python massinator.py 2 2drho.txt
+	The first argument is the number of dimensions of the data, the second argument is the name of the file.
+	
+
+	
+	
+

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<Object name="ClipAttributes">
+    <Field name="quality" type="string">Fast</Field>
+    <Field name="funcType" type="string">Sphere</Field>
+    <Field name="plane1Status" type="bool">true</Field>
+    <Field name="plane2Status" type="bool">false</Field>
+    <Field name="plane3Status" type="bool">false</Field>
+    <Field name="plane1Origin" type="doubleArray" length="3">0 0 0 </Field>
+    <Field name="plane2Origin" type="doubleArray" length="3">0 0 0 </Field>
+    <Field name="plane3Origin" type="doubleArray" length="3">0 0 0 </Field>
+    <Field name="plane1Normal" type="doubleArray" length="3">1 0 0 </Field>
+    <Field name="plane2Normal" type="doubleArray" length="3">0 1 0 </Field>
+    <Field name="plane3Normal" type="doubleArray" length="3">0 0 1 </Field>
+    <Field name="planeInverse" type="bool">false</Field>
+    <Field name="planeToolControlledClipPlane" type="string">Plane1</Field>
+    <Field name="center" type="doubleArray" length="3">0 0 0 </Field>
+    <Field name="radius" type="double">0.5</Field>
+    <Field name="sphereInverse" type="bool">false</Field>
+</Object>

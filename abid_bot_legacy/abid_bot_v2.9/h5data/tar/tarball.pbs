@@ -1,0 +1,23 @@
+#PBS -S /bin/bash
+#PBS -N cfd
+
+#PBS -q low
+#PBS -l select=1:ncpus=1:model=san
+#PBS -l walltime=4:00:00
+#PBS -j oe
+#PBS -m e
+#PBS -o bringleout.txt
+cd $PBS_O_WORKDIR
+. ${MODULESHOME}/init/bash
+
+test0="${PBS_JOBID}.$end"
+
+for i in $(ls -d 3d*| head -n $end | tail -n $num); do
+  echo "tar xvzf $i -C ../" >>$test0
+  #j=$(ls -l $i | sed 's/\(.*\)->\ \(.*\)/\2/')
+  #echo "tar cvzf tar/$i.tgz $j" >>$test0
+done
+  
+xargs -d '\n' -I cmd -P 32 bash -c 'cmd' < $test0
+
+rm $test0

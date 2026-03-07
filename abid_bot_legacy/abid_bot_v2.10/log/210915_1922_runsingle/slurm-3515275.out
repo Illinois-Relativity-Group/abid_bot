@@ -1,0 +1,22 @@
+Lmod has detected the following error: The following module(s) are unknown:
+"python"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore_cache load "python"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+
+
+Running: cli3.1.2 -nowin -forceversion 3.1.2 -s /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/run.py 0 0 0 0 0 0 1 0 blue 1 0 0 0 /scratch1/07525/tg868241/spin_code_test_bot/h5data/3d_data_21_03_11_180414 /scratch1/07525/tg868241/spin_code_test_bot/xml/3d_data_21_03_11_180414 /scratch1/07525/tg868241/spin_code_test_bot/movies/210915_1922_runsingle/runsingle_001_000_ 0 8 1 /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/Vec.xml /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/bsq2r.xml 1.0822293452E-003 /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/rho_pseudo.xml /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/rho_iso.xml /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/g00_pseudo.xml /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/g00_iso.xml 1 /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/Vec_big.xml
+Running: viewer3.1.2 -nowin -forceversion 3.1.2 -noint 0 0 0 0 0 0 1 0 blue 1 0 0 0 /scratch1/07525/tg868241/spin_code_test_bot/h5data/3d_data_21_03_11_180414 /scratch1/07525/tg868241/spin_code_test_bot/xml/3d_data_21_03_11_180414 /scratch1/07525/tg868241/spin_code_test_bot/movies/210915_1922_runsingle/runsingle_001_000_ 0 8 1 /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/Vec.xml /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/bsq2r.xml 1.0822293452E-003 /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/rho_pseudo.xml /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/rho_iso.xml /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/g00_pseudo.xml /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/g00_iso.xml 1 /scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/atts/Vec_big.xml -host 127.0.0.1 -port 5600
+Traceback (most recent call last):
+  File "/scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/run.py", line 10, in <module>
+    from runModule import VisitPlot
+  File "/scratch1/07525/tg868241/spin_code_test_bot/bin/bw_many_folder_scripts/runModule.py", line 430
+    self.PlotBsq2r,			# Plot B squared over 2 rho
+       ^
+SyntaxError: invalid syntax
+>>> 

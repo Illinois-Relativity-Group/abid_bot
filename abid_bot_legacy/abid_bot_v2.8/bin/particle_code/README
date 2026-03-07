@@ -1,0 +1,5 @@
+Particle picker uses two kinds of methods for choosing particles: findInVolume and nearestNeighbor
+
+To use findInVolume choose a volume function to use from the top of particlePicker and assign it to the variable "volumeFunction". Next, update the variable "maxParticles" to limit how many particles you want. Then it will use the function pPM.genFilesOrigin to generate a list of .dat files to use. Then regardless whether you want particle seeds or tracers (same thing really), use pPM.findInVolume to create a list of line numbers that correspond to the lines of genFilesOrigin and then use pPM.genFiles to create the actual files for those  particles.
+
+To use nearestNeighbor, the only thing that is different is instead of using pPM.findInVolume to get a list of line numbers, first you load a file with seed points (3 columns x,y,z) to pPM.loadLOP to get a list of points to use as seeds and then use pPM.nearestNeighbor to find the actual particle seeds nearest to the points you gave it.
