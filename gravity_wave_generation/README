@@ -1,0 +1,40 @@
+Modified Abid Bot: GW Generation
+--------------------------------
+This directory contains the modified Abid Bot scripts for generating
+gravitational wave (GW) .vtk and analysis files.
+
+Requirements
+------------
+Before running the pipeline, you must generate the `rhphc.*.dat` files
+using the included GW calculator.
+
+Setup
+-----
+1. Copy the following files into `psi4_dir/`:
+   - `psi4_rad.mon.*`
+   - `rhphc.*.dat`
+   - `rh_mem_20.3.dat`  (optional)
+   - `rh_mem_40.3.dat`  (optional)
+
+2. Check `params_gw.py` and modify any parameters as needed.
+
+Running the Pipeline
+--------------------
+Run the main script:
+    ./runData_generation.sh
+
+This script automatically runs the following steps:
+
+1. `make_lookup_with_memory.py`
+2. `make_gw_clm_from_jamies_data.py`
+3. `make_vtk_with_memory.py`
+
+Output
+------
+After the script completes, the GW data products and VTK files will be generated.
+
+Additional Scripts
+------------------
+`memory_plots.py`, `Psi4_plot.py`, and others contain additional plotting utilities for exploring the data.
+Note that these scripts may not be fully plug-and-play and may require manual
+adjustments to run.

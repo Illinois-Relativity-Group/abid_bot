@@ -1,0 +1,8 @@
+# psi4 filename           number of columns    w_lower_cut                Madm                 t_start    t_end
+'Psi4_rad.mon_sorted.1'         159             0.00867505198585411      11.527308443    -100    100.0
+
+#   ! Note: The parameter w_lower_cut refers to the *orbital* angular velocity in code unit, 
+#   !       not the (2,2) mode of GW frequency.
+#   ! GW strain with t<t_start and t>t_end will be set to 0
+#   !
+

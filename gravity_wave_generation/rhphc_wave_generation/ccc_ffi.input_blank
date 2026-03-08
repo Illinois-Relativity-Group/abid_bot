@@ -1,0 +1,8 @@
+# psi4 filename           number of columns    w_lower_cut                Madm                 t_start    t_end
+'PSI4FNAME'         NCOL             OMEGAVAL      ADMMASS    TSTART    TEND
+
+#   ! Note: The parameter w_lower_cut refers to the *orbital* angular velocity in code unit, 
+#   !       not the (2,2) mode of GW frequency.
+#   ! GW strain with t<t_start and t>t_end will be set to 0
+#   !
+

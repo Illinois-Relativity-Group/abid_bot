@@ -1,0 +1,50 @@
+README: Generating GW Waveform and Flux Quantities
+--------------------------------------------------
+This calculator generates:
+- r*h_plus
+- r*h_cross
+- kick velocity
+- total energy radiated in gravitational waves
+- total angular momentum radiated in gravitational waves
+
+This version of the workflow has been simplified and organized by Cody Olson and Jamie Bamber.
+---------------------------------------------------------------------
+Step 1 — Ensure Psi4 Files Exist
+
+The pipeline requires Psi4 data files.
+
+If you only have Weyl4 data, first convert it using:
+    format_Weyl4_data.py
+
+This script reformats the Weyl4 output into the Psi4 format required by the waveform tools.
+---------------------------------------------------------------------
+Step 2 — Configure and Run the Waveform Script
+
+Edit the script:
+    make_GW_hlm_from_psi4.sh
+
+You must set the following parameters:
+- simulation name
+- MADM (ADM mass)
+- FFT cutoff frequency (omega)
+
+Once configured, run the script. It will:
+- process the Psi4 files
+- run the Fortran waveform calculator
+- generate waveform and analysis outputs
+
+The primary outputs will include:
+    rhphc.*.dat
+
+One file is produced for each Psi4 extraction radius, along with additional analysis files.
+---------------------------------------------------------------------
+Step 3 — Copy Data for Visualization
+
+Run:
+    copy_wave_data.sh
+
+This script moves the Psi4 files and rhphc.dat outputs into the `psi4_dir`
+inside your `abid_bot` directory.
+
+This allows the calculator to generate the corresponding `.vtk` files for visualization.
+---------------------------------------------------------------------

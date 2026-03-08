@@ -1,0 +1,6 @@
+#     rhphc_filename     rhphcdot_filename        Madm        tstart       tend       delta t
+       'rhphc.dat'        'rhphcdot.dat'         ADMMASS       TSTARTVAL       TENDVAL       3.5303225806E+000
+# number of gw modes        xmin       ymin     zmin    xmax   ymax   zmax
+      21	           -3891.2       -3891.2    -3891.2    3891.2  3891.2   3891.2
+# Resolution for integration: nx     ny    nz
+                             40     40   40
