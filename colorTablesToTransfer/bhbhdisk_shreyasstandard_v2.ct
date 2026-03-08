@@ -3,23 +3,23 @@
     <Field name="Version" type="string">3.0.0</Field>
     <Object name="ColorControlPointList">
         <Object name="ColorControlPoint">
-            <Field name="colors" type="unsignedCharArray" length="4">13 0 255 8 </Field>
+            <Field name="colors" type="unsignedCharArray" length="4">100 93 227 8 </Field>
             <Field name="position" type="float">0.00</Field>
         </Object>
     <Object name="ColorControlPoint">
-            <Field name="colors" type="unsignedCharArray" length="4">0 51 255 12 </Field>
+            <Field name="colors" type="unsignedCharArray" length="4">117 110 250 12 </Field>
             <Field name="position" type="float">0.05</Field>
         </Object>
     <Object name="ColorControlPoint">
-            <Field name="colors" type="unsignedCharArray" length="4">23 69 255 20 </Field>
+            <Field name="colors" type="unsignedCharArray" length="4">82 115 247 20 </Field>
             <Field name="position" type="float">0.10</Field>
         </Object>    
     <Object name="ColorControlPoint">
-            <Field name="colors" type="unsignedCharArray" length="4">2 56 250 23 </Field>
+            <Field name="colors" type="unsignedCharArray" length="4">78 120 245 23 </Field>
             <Field name="position" type="float">0.15</Field>
         </Object>
     <Object name="ColorControlPoint">
-            <Field name="colors" type="unsignedCharArray" length="4">13 122 255 25 </Field>
+            <Field name="colors" type="unsignedCharArray" length="4">2 118 250 25 </Field>
             <Field name="position" type="float">0.20</Field>
         </Object>
     <Object name="ColorControlPoint">

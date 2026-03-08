@@ -8,11 +8,11 @@
         </Object>
     <Object name="ColorControlPoint">
             <Field name="colors" type="unsignedCharArray" length="4">100 255 200 12 </Field>
-            <Field name="position" type="float">0.35</Field>
+            <Field name="position" type="float">0.20</Field>
         </Object>
     <Object name="ColorControlPoint">
-            <Field name="colors" type="unsignedCharArray" length="4">255 150 0 25 </Field>
-            <Field name="position" type="float">0.525</Field>
+            <Field name="colors" type="unsignedCharArray" length="4">255 90 0 25 </Field>
+            <Field name="position" type="float">0.275</Field>
         </Object>
     <Object name="ColorControlPoint">
             <Field name="colors" type="unsignedCharArray" length="4">255 75 0 30 </Field>
