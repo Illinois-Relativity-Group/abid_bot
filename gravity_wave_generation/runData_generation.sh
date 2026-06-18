@@ -2,7 +2,7 @@
 # generate_memory_data.sh
 # Runs all Python scripts needed to generate memory data
 
-#set -e  # Exit immediately if a command exits with a non-zero status
+set -e  # Exit immediately if a command exits with a non-zero status
 
 echo "Starting memory data generation..."
 

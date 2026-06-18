@@ -4,18 +4,18 @@ from math import pi
 import sys
 # written by eric may '23
 
-root = "/data/codyolson/memory_effect/in_progress_mem_generation_spatial_sigma" 
+root = "/anvil/scratch/x-yguo11/abid_bot_dev/gravity_wave_generation" 
 
 print("Running params_gw.py")
 # # # for python part
 # # # don't end with slash (though i don't think it matters)
-gw_dir = "/data/codyolson/memory_effect/in_progress_mem_generation_spatial_sigma" 
+gw_dir = "/anvil/scratch/x-yguo11/abid_bot_dev/gravity_wave_generation" 
 test_flag = False     #boolean 0 (false) or 1 (true) (regular run or test source run)
 update_lookup = True   #boolean 0 or 1   only need to update if you change resolution or num modes
 
 # # # START PARAMETERS FOR PSI4 PROCESSING # # #
 psi4_dir = root + "/psi4_dir"   #folder containing Psi4_rad.mon.#
-psi4_num = 1  # the last number # in Psi4_rad.mon.#, corresponds to extraction radius
+psi4_num = 8  # the last number # in Psi4_rad.mon.#, corresponds to extraction radius (mon.8 = r 160 M_sun)
 plot_all_modes = True #plots the sum of all the modes if true
 modes_to_plot = 0   #if above is false, then plots only this mode; must be a number 0,1,...,num_modes-1
                        # mode 0 is (2,2), 1 is (2,1), 2 is (2,0), 3 is (2,-1), 4 is (2,-2), 5 is (3,3), etc..
@@ -26,7 +26,7 @@ memory_modes = [20, 40] # lm modes to include in memory effect calculation (l,m)
 memory_files = [psi4_dir + "/rh_mem_" + str(memory_modes[i]) + "." + str(psi4_num) +".dat" for i in range(len(memory_modes))]  # Psi4 files containing memory effect data
 rhphc_file = psi4_dir + "/rhphc." + str(psi4_num) + ".dat"  # Psi4 file to use for memory effect calculation                       
 
-M_ADM = 11.5598573559999
+M_ADM = 0.0603349020955639
 cutoff_w =  0.1 / M_ADM  # has to be lower than the fundamental freq of gw radiation, ask someone else for this
 files_per_folder = 25  #files per vtk folder
 

@@ -78,7 +78,7 @@ def write_vtk_2D_grid(gw):
     grid_f.close()
 
 def write_vtk_2D(ylm, r, t, dt, clm, xs, ys, sx, sy, fol, all_modes, modes, r_areal, num_times, dmemory, clm20, clm40, ylm20, ylm40, gw_root, plot_memory_effect):
-    rt = ((t - (r - r_areal/dt)).astype(int)).clip(min=0)  #see write_vtk_3D for details
+    rt = ((t - (r - r_areal_star)/dt).astype(int)).clip(min=0)  # true-c retarded-time INDEX; r_areal_star = tortoise r* anchors t_ret=0 at center @ frame 0
     rt[rt > num_times - 1] = num_times - 1
     clm_ij = clm[rt,:]
     r_ji = np.einsum('ij->ji', r)

@@ -3,7 +3,7 @@ from gwbot import gw
 
 # === PARAMETERS ===
 infile  = gw.rhphc_file  # replace with your actual filename
-outfile = 'gw.clm'          # output filename
+outfile = gw.root + '/VTKdata/gw.clm'   # write into VTKdata so make_vtk reads the Fortran/rhphc strains
 output_dir_final = gw.root + '/VTKdata/Clm_1D.txt'
 if gw.plot_memory_effect:
     for mode, mem_file in zip(gw.memory_modes, gw.memory_files):
@@ -22,6 +22,10 @@ n_modes = pairs.shape[1] // 2
 hp = pairs[:, 0::2]            # real parts (hp)
 hc = pairs[:, 1::2]          # imag parts (hc)
 clm = hp + 1j * hc             # complex array shape = (n_times, n_modes)
+
+# Q1: zero unphysical pre-emission strain (retarded time < 0 = "emitted before the source turned on")
+tret = data[:, 0] * gw.M_ADM   # recover code-unit retarded time (data was divided by M_ADM above)
+clm[tret < 0.0, :] = 0.0
 
 # === WRITE OUT ===
 with open(outfile, 'w') as f:

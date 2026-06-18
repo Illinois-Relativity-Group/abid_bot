@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from gwbot import gw
 
-clm = np.loadtxt(gw.root + '/VTKdata/Clm_1D.txt')[:,1]
+# clm = np.loadtxt(gw.root + '/VTKdata/Clm_1D.txt')[:,1]   # unused here; VTKdata not built yet
 data = np.loadtxt(gw.rhphc_file) /gw.M_ADM
 if gw.plot_memory_effect:
     for mode, mem_file in zip(gw.memory_modes, gw.memory_files):
