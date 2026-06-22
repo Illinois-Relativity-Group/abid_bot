@@ -5,15 +5,16 @@
 
 # source /opt/intel/oneapi/setvars.sh   # removed: gfortran build, no Intel/oneAPI on Anvil
 home_dir=$(pwd)
+GW_ROOT=${GW_ROOT:-$(cd "$home_dir/.." && pwd)}   # from config.sh; default = parent of this dir
 
 sim_names=(
-../psi4_dir   # local data dir; rhphc.N.dat written directly into psi4_dir
+"$GW_ROOT/psi4_dir"   # rhphc.N.dat written directly into psi4_dir
 )
 
 
 for sim_name in ${sim_names[@]}
 do
-  for Psi4_file_num in 1 2 3 4 5 6 7 8 9   # all extraction radii present in psi4_dir
+  for Psi4_file_num in ${PSI4_NUM:-8}   # only the configured extraction radius (config.sh)
   do
     echo "##### getting GW h_22 for ${sim_name}"
     #cp /data/jbamber/${sim_name}/data/Psi4_rad.mon.* .
@@ -23,15 +24,11 @@ do
 
     echo "Sorted Psi4_rad.mon.${Psi4_file_num}"
 
-    m_adm_val=0.0603349020955639   # M_ADM in code units (= M_sun) for this system
-    omega_val=0.342                # code-unit w_lower_cut (orbital ang. vel.), user-specified
-    # Chi0.7_aligned: 0.25/m_adm=0.02239769052
-    # Spatial_sigma_restart_1: 0.25/m_adm=0.02135921495
-    # Chi0.7_aligned_restart_20_v12: 0.25/m_adm=0.02168762996 0.5/m_adm=0.04337525992 
-    # Chi0.7_Spatial_Sigma: (0.25/m_adm is best) .1/m_adm=0.00865062577  1/m_adm=0.0865062577 0.5/m_adm=0.04325312887 0.01/m_adm=0.00865062577 0.25/m_adm=0.02162656443 0.2/m_adm=0.01730125154 
+    m_adm_val=${M_ADM:-0.0603349020955639}     # from config.sh (ADM mass, code units)
+    omega_val=${OMEGA_CUT:-0.342}              # from config.sh (w_lower_cut, orbital ang. vel., code units)
     t_start=-100
     t_end=100.0
-    number_of_columns=47   # this data: 47 cols = 21 modes  ((47-5)/2)
+    number_of_columns=$(awk 'NR==1{print NF; exit}' Psi4_rad.mon_sorted.${Psi4_file_num})   # auto from data: (NCOL-5)/2 = num modes
 
     declare $(head -n1 Psi4_rad.mon_sorted.${Psi4_file_num} | awk '{printf "t_start=%.6g",$1}')
     declare $(tail -n1 Psi4_rad.mon_sorted.${Psi4_file_num} | awk '{printf "t_end=%.6g",$1}')

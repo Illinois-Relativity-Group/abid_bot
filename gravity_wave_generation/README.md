@@ -1,40 +1,60 @@
-Modified Abid Bot: GW Generation
---------------------------------
-This directory contains the modified Abid Bot scripts for generating
-gravitational wave (GW) .vtk and analysis files.
+# GW generation pipeline
 
-Requirements
-------------
-Before running the pipeline, you must generate the `rhphc.*.dat` files
-using the included GW calculator.
+Turns a numerical-relativity simulation's `Psi4_rad.mon.*` output into gravitational-wave
+data products: the `rhphc.*.dat` strains, ylm/r lookup tables, `gw.clm`, 2D `.vtk` mesh
+frames, and 1D strain plots. (Downstream OBJ conversion + Blender rendering live in
+`blender_gw_dev`, not here.)
 
-Setup
------
-1. Copy the following files into `psi4_dir/`:
-   - `psi4_rad.mon.*`
-   - `rhphc.*.dat`
-   - `rh_mem_20.3.dat`  (optional)
-   - `rh_mem_40.3.dat`  (optional)
+## Requirements
 
-2. Check `params_gw.py` and modify any parameters as needed.
+- **gfortran** (to build the `rhphc` strain calculator; a prebuilt `rhphc` binary is included)
+- **Python 3** with `numpy`, `scipy`, `meshio`, `matplotlib`
 
-Running the Pipeline
---------------------
-Run the main script:
-    ./runData_generation.sh
+## Setup
 
-This script automatically runs the following steps:
+1. **Put your data in `psi4_dir/`:** copy your `Psi4_rad.mon.N` file(s) there
+   (`N` = extraction-radius index).
+2. **Edit `config.sh`** — the only file you change. It ships with sol_05 reference values:
+   ```sh
+   export PSI4_NUM=8           # which Psi4_rad.mon.N to process
+   export M_ADM=0.0603349...   # ADM mass, code units (= M_sun)
+   export OMEGA_CUT=0.342      # w_lower_cut (orbital ang. vel., code units)
+   export XY_MAX_2D=200        # mesh half-width (M_sun)
+   export XY_NUM_2D=500        # grid points per side
+   export SCALE_FACTOR=5000    # vertical exaggeration baked into the .vtk
+   ```
+   `num_modes`, `num_times`, `r_areal`, `gw_dt`, and the Fortran `NCOL` are auto-derived
+   from the data — you do not set them.
+3. **(if needed) rebuild `rhphc`:** the included binary is for Anvil/Linux; to rebuild:
+   ```sh
+   cd rhphc_wave_generation && gfortran -O2 -o rhphc ccc_ffi_hplus_hcross_ejkick.f90 && cd ..
+   ```
 
-1. `make_lookup_with_memory.py`
-2. `make_gw_clm_from_jamies_data.py`
-3. `make_vtk_with_memory.py`
+## Run
 
-Output
-------
-After the script completes, the GW data products and VTK files will be generated.
+```sh
+./runData_generation.sh
+```
+Re-runs skip the two slow stages (rhphc, lookups) if their output exists; use
+`FORCE=1 ./runData_generation.sh` to regenerate everything.
 
-Additional Scripts
-------------------
-`memory_plots.py`, `Psi4_plot.py`, and others contain additional plotting utilities for exploring the data.
-Note that these scripts may not be fully plug-and-play and may require manual
-adjustments to run.
+## Stages & deliverables
+
+| # | stage | script | output |
+|---|-------|--------|--------|
+| 1 | rhphc Fortran | `rhphc_wave_generation/make_GW_hlm_from_psi4.sh` | `psi4_dir/rhphc.N.dat`, `omega22.N.dat`, … |
+| 2 | lookups | `make_lookup.py` | `bin/ylm_lookup_2D.txt`, `bin/r_lookup_2D.txt` |
+| 3 | clm | `make_clm.py` | `VTKdata/gw.clm`, `VTKdata/Clm_1D.txt` |
+| 4 | 2D VTK | `make_vtk.py` | `VTKdata/2D/hplus_*.vtk` |
+| 5 | 1D plots | `make_1d_plots.py` | `VTKdata/clm_sum_vs_tret_pos.{png,dat}`, `each_mode_vs_tret_pos.png` |
+
+`config.sh` → `params_gw.py` → `gwbot.py` (the `gw` object) carries the config to every
+Python stage; the bash rhphc stage reads the same exported vars.
+
+## Notes
+
+- `legacy/` holds the old C++/memory-effect route, the analytical test source, 3D-VTK paths,
+  and extra tools (green-screen 1D animation, diagnostics). Not needed for the clean path —
+  in particular **do not** run `legacy/make_lookup_with_memory.py` (it `rmtree`s `VTKdata`).
+- Generated data (`VTKdata/`, `psi4_dir/`, lookup tables, binaries) is gitignored; clone
+  ships only source.

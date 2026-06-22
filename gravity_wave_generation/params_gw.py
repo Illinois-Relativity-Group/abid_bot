@@ -4,18 +4,17 @@ from math import pi
 import sys
 # written by eric may '23
 
-root = "/anvil/scratch/x-yguo11/abid_bot_dev/gravity_wave_generation" 
+# Pipeline root: set by config.sh (GW_ROOT); default = the sol_05 reference path.
+root = os.environ.get("GW_ROOT", "/anvil/scratch/x-yguo11/abid_bot_dev/gravity_wave_generation")
 
 print("Running params_gw.py")
-# # # for python part
-# # # don't end with slash (though i don't think it matters)
-gw_dir = "/anvil/scratch/x-yguo11/abid_bot_dev/gravity_wave_generation" 
+gw_dir = root   # de-duped (was a second copy of the same path)
 test_flag = False     #boolean 0 (false) or 1 (true) (regular run or test source run)
 update_lookup = True   #boolean 0 or 1   only need to update if you change resolution or num modes
 
 # # # START PARAMETERS FOR PSI4 PROCESSING # # #
 psi4_dir = root + "/psi4_dir"   #folder containing Psi4_rad.mon.#
-psi4_num = 8  # the last number # in Psi4_rad.mon.#, corresponds to extraction radius (mon.8 = r 160 M_sun)
+psi4_num = int(os.environ.get("PSI4_NUM", 8))  # which Psi4_rad.mon.N (extraction radius); from config.sh
 plot_all_modes = True #plots the sum of all the modes if true
 modes_to_plot = 0   #if above is false, then plots only this mode; must be a number 0,1,...,num_modes-1
                        # mode 0 is (2,2), 1 is (2,1), 2 is (2,0), 3 is (2,-1), 4 is (2,-2), 5 is (3,3), etc..
@@ -26,8 +25,8 @@ memory_modes = [20, 40] # lm modes to include in memory effect calculation (l,m)
 memory_files = [psi4_dir + "/rh_mem_" + str(memory_modes[i]) + "." + str(psi4_num) +".dat" for i in range(len(memory_modes))]  # Psi4 files containing memory effect data
 rhphc_file = psi4_dir + "/rhphc." + str(psi4_num) + ".dat"  # Psi4 file to use for memory effect calculation                       
 
-M_ADM = 0.0603349020955639
-cutoff_w =  0.1 / M_ADM  # has to be lower than the fundamental freq of gw radiation, ask someone else for this
+M_ADM = float(os.environ.get("M_ADM", 0.0603349020955639))   # ADM mass, code units; from config.sh
+cutoff_w = float(os.environ.get("OMEGA_CUT", 0.342))         # w_lower_cut (orbital ang. vel.); from config.sh, shared with the rhphc stage. (Legacy C++ route used 0.1/M_ADM; unused in the clean path.)
 files_per_folder = 25  #files per vtk folder
 
 # # # WHAT TYPE OF DATA TO GENERATE # # #
@@ -53,8 +52,8 @@ z_num_3D = 188 #75
 #                   ; can do grahm schmidt to get these
 #     makes the grid like
 #          xy = np.linspace(-xy_max, xy_max, xy_num), z=0   <-SQUARE
-xy_max_2D = 1000 #3000
-xy_num_2D = 500 #1500
+xy_max_2D = float(os.environ.get("XY_MAX_2D", 200))   # half-width of the 2D mesh (M_sun); from config.sh. MUST match convert_vtk_to_obj.py linspace bounds (downstream OBJ step).
+xy_num_2D = int(os.environ.get("XY_NUM_2D", 500))     # grid points per side; from config.sh
 
 # 2D PLANE SETTINGS ; option to pick on which plane 2D data is generated on
 #                   ; you may want to visualize other 'direcitons' if the system being studied is not axisymmetric
