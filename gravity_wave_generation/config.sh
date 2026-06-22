@@ -19,5 +19,10 @@ export XY_MAX_2D=200                    # half-width of the square mesh
 export XY_NUM_2D=500                    # grid points per side
 export SCALE_FACTOR=5000                # vertical exaggeration baked into the .vtk strain
 
+# --- 1D strain plots ---------------------------------------------------------
+export TRET_MODE=both                   # 1D-plot retarded-time range: both | pos | full
+                                        #   both = produce *_full (incl. negative lead-in) AND *_pos (u>=0)
+                                        #   pos  = only the u>=0 crop;  full = only the whole record
+
 # NCOL, num_modes, num_times, r_areal, gw_dt are auto-derived from the data
 # (Psi4 column count + bin/sort.sh) -- you do not set them here.

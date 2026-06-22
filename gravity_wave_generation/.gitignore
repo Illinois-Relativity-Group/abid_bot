@@ -33,3 +33,6 @@ __pycache__/
 
 # ---- logs ----
 *.log
+
+# ---- planning / design docs (keep local; not for the public repo) ----
+docs/

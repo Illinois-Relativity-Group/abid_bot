@@ -22,6 +22,7 @@ frames, and 1D strain plots. (Downstream OBJ conversion + Blender rendering live
    export XY_MAX_2D=200        # mesh half-width (M_sun)
    export XY_NUM_2D=500        # grid points per side
    export SCALE_FACTOR=5000    # vertical exaggeration baked into the .vtk
+   export TRET_MODE=both       # 1D plots: both | pos (u>=0 only) | full (whole record)
    ```
    `num_modes`, `num_times`, `r_areal`, `gw_dt`, and the Fortran `NCOL` are auto-derived
    from the data — you do not set them.
@@ -38,6 +39,12 @@ frames, and 1D strain plots. (Downstream OBJ conversion + Blender rendering live
 Re-runs skip the two slow stages (rhphc, lookups) if their output exists; use
 `FORCE=1 ./runData_generation.sh` to regenerate everything.
 
+On a cluster, run it as a **batch job** instead of on the login node (edit the `#SBATCH`
+account/partition in the script for your system):
+```sh
+sbatch submit_runData.sh
+```
+
 ## Stages & deliverables
 
 | # | stage | script | output |
@@ -46,7 +53,12 @@ Re-runs skip the two slow stages (rhphc, lookups) if their output exists; use
 | 2 | lookups | `make_lookup.py` | `bin/ylm_lookup_2D.txt`, `bin/r_lookup_2D.txt` |
 | 3 | clm | `make_clm.py` | `VTKdata/gw.clm`, `VTKdata/Clm_1D.txt` |
 | 4 | 2D VTK | `make_vtk.py` | `VTKdata/2D/hplus_*.vtk` |
-| 5 | 1D plots | `make_1d_plots.py` | `VTKdata/clm_sum_vs_tret_pos.{png,dat}`, `each_mode_vs_tret_pos.png` |
+| 5 | 1D plots | `make_1d_plots.py` | `VTKdata/clm_sum_vs_tret_{full,pos}.{png,dat}`, `each_mode_vs_tret_{full,pos}.png` |
+
+Stage 5 plots strain vs **retarded time** `t_ret/M`. `TRET_MODE` (config.sh) chooses the range:
+`pos` crops to `u>=0` (the physical signal, matching the mesh-movie start); `full` keeps the whole
+record including the small negative-retarded-time lead-in; `both` (default) writes each as
+`*_pos.*` / `*_full.*`.
 
 `config.sh` → `params_gw.py` → `gwbot.py` (the `gw` object) carries the config to every
 Python stage; the bash rhphc stage reads the same exported vars.
