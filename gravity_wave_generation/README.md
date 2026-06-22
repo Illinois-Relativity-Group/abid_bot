@@ -23,6 +23,8 @@ frames, and 1D strain plots. (Downstream OBJ conversion + Blender rendering live
    export XY_NUM_2D=500        # grid points per side
    export SCALE_FACTOR=5000    # vertical exaggeration baked into the .vtk
    export TRET_MODE=both       # 1D plots: both | pos (u>=0 only) | full (whole record)
+   export MAKE_1D_OVERLAY=0    # 1 = also emit overlay animation frames for the mesh movie
+   export OVERLAY_BG=transparent  # overlay background: transparent (alpha) | green (chroma key)
    ```
    `num_modes`, `num_times`, `r_areal`, `gw_dt`, and the Fortran `NCOL` are auto-derived
    from the data — you do not set them.
@@ -60,13 +62,21 @@ Stage 5 plots strain vs **retarded time** `t_ret/M`. `TRET_MODE` (config.sh) cho
 record including the small negative-retarded-time lead-in; `both` (default) writes each as
 `*_pos.*` / `*_full.*`.
 
+Set `MAKE_1D_OVERLAY=1` to have stage 5 *also* emit the progressive "drawing-in" `h_+` **overlay
+animation frames** used to composite the waveform onto the GW-mesh movie — one frame set per
+produced range, `VTKdata/overlay_1d_<suffix>/frame_NNNN.png` (1920×1440, white curve on a
+transparent or green background per `OVERLAY_BG`; transparent needs no chroma key). Cadence is two
+data points per frame so the count matches the mesh movie. Off by default to keep the core run lean.
+
 `config.sh` → `params_gw.py` → `gwbot.py` (the `gw` object) carries the config to every
 Python stage; the bash rhphc stage reads the same exported vars.
 
 ## Notes
 
 - `legacy/` holds the old C++/memory-effect route, the analytical test source, 3D-VTK paths,
-  and extra tools (green-screen 1D animation, diagnostics). Not needed for the clean path —
-  in particular **do not** run `legacy/make_lookup_with_memory.py` (it `rmtree`s `VTKdata`).
+  and diagnostics. Not needed for the clean path — in particular **do not** run
+  `legacy/make_lookup_with_memory.py` (it `rmtree`s `VTKdata`). The standalone 1D-overlay
+  script `legacy/plot_1D_edit.py` is the historical original of the now-folded-in stage-5
+  overlay option (`MAKE_1D_OVERLAY`); prefer the config flag.
 - Generated data (`VTKdata/`, `psi4_dir/`, lookup tables, binaries) is gitignored; clone
   ships only source.

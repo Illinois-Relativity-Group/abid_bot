@@ -24,5 +24,11 @@ export TRET_MODE=both                   # 1D-plot retarded-time range: both | po
                                         #   both = produce *_full (incl. negative lead-in) AND *_pos (u>=0)
                                         #   pos  = only the u>=0 crop;  full = only the whole record
 
+# --- 1D overlay frames (optional) --------------------------------------------
+# Progressive "drawing-in" h_+ animation frames, for compositing the waveform onto the
+# GW-mesh movie. One frame set per produced TRET_MODE range -> VTKdata/overlay_1d_<suffix>/.
+export MAKE_1D_OVERLAY=0                # 0 = off (default); 1 = also emit the overlay frames
+export OVERLAY_BG=transparent          # transparent (alpha, no chroma key) | green (chroma key)
+
 # NCOL, num_modes, num_times, r_areal, gw_dt are auto-derived from the data
 # (Psi4 column count + bin/sort.sh) -- you do not set them here.
