@@ -152,7 +152,7 @@ gw.ys_2D, gw.sy_2D = np.linspace(-gw.xy_max_2D, gw.xy_max_2D, num=gw.xy_num_2D, 
 #gw.num_modes = 77
 gw.ylm_2D = np.loadtxt(gw.bin_dir + "/ylm_lookup_2D.txt", dtype=complex).reshape(len(gw.xs_2D), len(gw.ys_2D), gw.num_modes)
 gw.r_2D = np.loadtxt(gw.bin_dir + "/r_lookup_2D.txt", dtype=float).reshape(len(gw.xs_2D), len(gw.ys_2D))
-gw.clm_file = gw.root + "/VTKdata/gw.clm"
+gw.clm_file = gw.out_dir + "/gw.clm"
 gw.clm = np.loadtxt(gw.clm_file, dtype=complex)
 #gw.gw_dt = 1.2
 if gw.plot_memory_effect:
@@ -178,16 +178,17 @@ times = range(int(start_time), int(end_time)+1)  # ALL movie frames (0..num_time
 l = len(times)
 
 def run_single_time(t):
-    t_val, hphc_1d_val, hp = write_vtk_2D(gw.ylm_2D, gw.r_2D, t, gw.gw_dt, gw.clm, gw.xs_2D, gw.ys_2D, gw.sx_2D, gw.sy_2D, gw.root + "/VTKdata", gw.plot_all_modes, gw.modes_to_plot, gw.r_areal, gw.num_times, gw.dmemory, clm20, clm40, ylm20, ylm40, gw.root, gw.plot_memory_effect)
+    t_val, hphc_1d_val, hp = write_vtk_2D(gw.ylm_2D, gw.r_2D, t, gw.gw_dt, gw.clm, gw.xs_2D, gw.ys_2D, gw.sx_2D, gw.sy_2D, gw.out_dir, gw.plot_all_modes, gw.modes_to_plot, gw.r_areal, gw.num_times, gw.dmemory, clm20, clm40, ylm20, ylm40, gw.root, gw.plot_memory_effect)
     print(f'Processed time = {t}', flush=True)
     return (t_val, hphc_1d_val)
 
 if __name__ == '__main__':
+    os.makedirs(gw.out_dir + "/2D", exist_ok=True)
     with closing(Pool(processes=int(os.environ.get("NPROC", os.cpu_count() or 8)))) as pool:
         result = pool.map(run_single_time, times)
         pool.terminate()
     # Sort results by time and write to file in order
     result.sort(key=lambda x: x[0])
-    with open(gw.root + "/VTKdata/hphc_1d.txt", "w") as f:
+    with open(gw.out_dir + "/hphc_1d.txt", "w") as f:
         for t, hphc_1d_val in result:
             f.write(f"{t} {hphc_1d_val}\n")

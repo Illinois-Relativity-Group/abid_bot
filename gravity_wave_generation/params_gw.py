@@ -4,8 +4,9 @@ from math import pi
 import sys
 # written by eric may '23
 
-# Pipeline root: set by config.sh (GW_ROOT); default = the sol_05 reference path.
-root = os.environ.get("GW_ROOT", "/anvil/scratch/x-yguo11/abid_bot_dev/gravity_wave_generation")
+# Pipeline root: set by config.sh (GW_ROOT); default = this file's own directory
+# (so single-stage runs without sourcing config.sh still resolve paths locally).
+root = os.environ.get("GW_ROOT", os.path.dirname(os.path.abspath(__file__)))
 
 print("Running params_gw.py")
 gw_dir = root   # de-duped (was a second copy of the same path)
@@ -95,8 +96,14 @@ test_Om = 0.3
 psi4_f = psi4_dir + "/Psi4_rad.mon." + str(psi4_num) # # # psi4 file
 bin_dir = gw_dir + "/bin"    # where main scripts are to avoid declutter
 
+# per-radius output dir: VTKdata/psi4_<N> (override the tag with OUT_TAG). Each stage writes here
+# so multiple extraction radii don't collide; created up-front.
+out_tag = os.environ.get("OUT_TAG", "psi4_" + str(psi4_num))
+out_dir = gw_dir + "/VTKdata/" + out_tag
+os.makedirs(out_dir, exist_ok=True)
+
 # # # # fetching some of the psi4 specific parameters
-psi4_f_sorted = bin_dir + "/Psi4_rad.sort"
+psi4_f_sorted = bin_dir + "/Psi4_rad.sort." + str(psi4_num)   # radius-tagged so loops/parallel runs don't clobber it
 
 completed = subprocess.run([bin_dir + "/sort.sh", psi4_f, psi4_f_sorted], capture_output=True, text=True)
 out_arr = completed.stdout.strip().split('\n')
@@ -109,7 +116,7 @@ gw_dt = float(out_arr[3])
 ###################################################################################################
 
 generalGWSettings = [gw_dir, test_flag, update_lookup, files_per_folder, threeD_flag, all_times, start_time, end_time]
-psi4Settings = [psi4_dir, psi4_num, psi4_f, psi4_f_sorted, bin_dir]
+psi4Settings = [psi4_dir, psi4_num, psi4_f, psi4_f_sorted, bin_dir, out_dir]
 gridSettings = [xy_max_3D, xy_num_3D, z_min_3D, z_max_3D, z_num_3D, xy_max_2D, xy_num_2D, phi_1D, theta_1D, choose_plane, plane_norm]
 simulationSettings = [M_ADM, cutoff_w, r_areal, gw_dt, num_modes, num_times, plot_all_modes, modes_to_plot]
 testGWSettings = [test_num_times, test_dt, test_kind, test_R, test_M, test_Om]

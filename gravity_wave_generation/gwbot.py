@@ -17,7 +17,7 @@ class GWBot:
             = generalGWSettings
     def unpack_psi4Settings(self, psi4Settings):
         self.psi4_dir, self.psi4_num, self.psi4_f, \
-            self.psi4_f_sorted, self.bin_dir \
+            self.psi4_f_sorted, self.bin_dir, self.out_dir \
             = psi4Settings
     def unpack_gridSettings(self, gridSettings):
         self.xy_max_3D, self.xy_num_3D, self.z_min_3D, self.z_max_3D, self.z_num_3D, \

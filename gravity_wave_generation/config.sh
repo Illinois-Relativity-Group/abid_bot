@@ -9,9 +9,10 @@
 export GW_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # --- your simulation ---------------------------------------------------------
-export PSI4_NUM=8                       # which Psi4_rad.mon.N to process (extraction radius)
-export M_ADM=0.0603349020955639         # ADM mass in code units (= M_sun)
-export OMEGA_CUT=0.342                  # w_lower_cut: orbital angular velocity (code units),
+export PSI4_NUM=8                       # single-radius default / fallback (which Psi4_rad.mon.N)
+export PSI4_NUMS="1 2 3 4 5 6 7 8 9"    # radii to loop over (space-separated); set to one value for a single radius
+export M_ADM=0.0502637561418947         # ADM mass in code units (= M_sun)
+export OMEGA_CUT=0.441137056341708      # w_lower_cut: orbital angular velocity (code units),
                                         #   must be below the (2,2) GW mode frequency
 
 # --- 2D output mesh (units of M_sun) -----------------------------------------

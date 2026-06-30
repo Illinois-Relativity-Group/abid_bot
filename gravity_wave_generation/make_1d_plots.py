@@ -22,7 +22,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from gwbot import gw
 
-OUT   = gw.root + "/VTKdata"
+OUT   = gw.out_dir
 M_ADM = gw.M_ADM
 MODE  = os.environ.get("TRET_MODE", "both").lower()   # both | pos | full
 
