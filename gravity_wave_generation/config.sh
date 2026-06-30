@@ -10,8 +10,8 @@ export GW_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # --- your simulation ---------------------------------------------------------
 export PSI4_NUM=8                       # which Psi4_rad.mon.N to process (extraction radius)
-export M_ADM=0.0603349020955639         # ADM mass in code units (= M_sun)
-export OMEGA_CUT=0.342                  # w_lower_cut: orbital angular velocity (code units),
+export M_ADM=0.0840478939414561         # ADM mass in code units (= M_sun)
+export OMEGA_CUT=0.257573177238334                  # w_lower_cut: orbital angular velocity (code units),
                                         #   must be below the (2,2) GW mode frequency
 
 # --- 2D output mesh (units of M_sun) -----------------------------------------
@@ -27,7 +27,7 @@ export TRET_MODE=both                   # 1D-plot retarded-time range: both | po
 # --- 1D overlay frames (optional) --------------------------------------------
 # Progressive "drawing-in" h_+ animation frames, for compositing the waveform onto the
 # GW-mesh movie. One frame set per produced TRET_MODE range -> VTKdata/overlay_1d_<suffix>/.
-export MAKE_1D_OVERLAY=0                # 0 = off (default); 1 = also emit the overlay frames
+export MAKE_1D_OVERLAY=1                # 0 = off (default); 1 = also emit the overlay frames
 export OVERLAY_BG=transparent          # transparent (alpha, no chroma key) | green (chroma key)
 
 # NCOL, num_modes, num_times, r_areal, gw_dt are auto-derived from the data

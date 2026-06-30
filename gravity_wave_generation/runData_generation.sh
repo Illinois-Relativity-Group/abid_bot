@@ -6,7 +6,11 @@
 #  Re-runs skip the two expensive stages if their output already exists;
 #  use  FORCE=1 ./runData_generation.sh  to regenerate everything.
 # ============================================================================
-set -e
+#set -e
+#module load texlive
+#module load anaconda
+#conda activate plotenv
+
 cd "$(dirname "$0")"
 source ./config.sh
 
