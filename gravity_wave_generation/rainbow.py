@@ -14,9 +14,7 @@ M_ADM = gw.M_ADM
 
 # ---------------- CONFIG ----------------
 FILES = [f"{gw.root}/psi4_dir/rhphc.{i}.dat" for i in range(1, 10)]
-
-EXCLUDE_M = (0, 4, -4)   # set to None to disable filtering
-COLORMAP = "turbo"   # try: viridis, plasma, inferno, turbo
+COLORMAP = "turbo"
 # ---------------------------------------
 
 
@@ -40,9 +38,12 @@ def compute_sum(file, pos_only=False):
 
     lm = build_lm(data[:, 1::2].shape[1])
 
+    # ONLY keep l=2, m=±1, ±2
+    wanted_modes = {(2, 2), (2, 1), (2, -1), (2, -2)}
+
     keep = np.array([
-        i for i, (_, m) in enumerate(lm)
-        if EXCLUDE_M is None or m not in EXCLUDE_M
+        i for i, mode in enumerate(lm)
+        if mode in wanted_modes
     ])
 
     md = data[sel, 1::2][:, keep] / M_ADM
@@ -69,13 +70,13 @@ def plot_all(pos_only=False, suffix="full"):
 
     plt.axvline(0, color="gray", lw=0.6)
     plt.xlabel(r"retarded time $t_{ret}/P_c$")
-    plt.ylabel(r"$(R/M_{ADM}) h_+$ (summed)")
-    plt.title(f"Summed waveform comparison rhphc.1–9 ({suffix})")
+    plt.ylabel(r"$(R/M_{ADM}) \sum_{m=\pm1,\pm2} h_{2m}$")
+    plt.title(f"Summed (2,±2) and (2,±1) modes comparison ({suffix})")
     plt.grid(alpha=0.3)
     plt.legend(ncol=3, fontsize=8)
     plt.tight_layout()
 
-    outname = f"{OUT}/rhphc_1_to_9_sum_{suffix}_{COLORMAP}.png"
+    outname = f"{OUT}/rhphc_l2_m12_sum_{suffix}_{COLORMAP}.png"
     plt.savefig(outname, dpi=200)
     plt.close()
 
@@ -83,7 +84,7 @@ def plot_all(pos_only=False, suffix="full"):
 
 
 if __name__ == "__main__":
-    print("Plotting rhphc.1–9 comparison (rainbow colormap)...")
+    print("Plotting rhphc.1–9 (l=2, m=±1,±2 only)...")
 
     plot_all(pos_only=False, suffix="full")
     plot_all(pos_only=True, suffix="pos")
