@@ -3,8 +3,8 @@ from gwbot import gw
 
 # === PARAMETERS ===
 infile  = gw.rhphc_file  # replace with your actual filename
-outfile = gw.root + '/VTKdata/gw.clm'   # write into VTKdata so make_vtk reads the Fortran/rhphc strains
-output_dir_final = gw.root + '/VTKdata/Clm_1D.txt'
+outfile = gw.out_dir + '/gw.clm'   # per-radius dir; make_vtk reads the Fortran/rhphc strains from here
+output_dir_final = gw.out_dir + '/Clm_1D.txt'
 if gw.plot_memory_effect:
     for mode, mem_file in zip(gw.memory_modes, gw.memory_files):
         l, m = int(str(mode)[0]), int(str(mode)[1])

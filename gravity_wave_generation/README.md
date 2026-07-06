@@ -25,6 +25,8 @@ frames, and 1D strain plots. (Downstream OBJ conversion + Blender rendering live
    export TRET_MODE=both       # 1D plots: both | pos (u>=0 only) | full (whole record)
    export MAKE_1D_OVERLAY=0    # 1 = also emit overlay animation frames for the mesh movie
    export OVERLAY_BG=transparent  # overlay background: transparent (alpha) | green (chroma key)
+   export MODE_SELECT=4mode    # mesh + overlay modes: 4mode = (2,±1)+(2,±2) only | all = every mode
+   export MAKE_VTK=0           # 1 = also emit the heavy 2D VTK stage from runData_generation.sh
    ```
    `num_modes`, `num_times`, `r_areal`, `gw_dt`, and the Fortran `NCOL` are auto-derived
    from the data — you do not set them.
@@ -67,6 +69,13 @@ animation frames** used to composite the waveform onto the GW-mesh movie — one
 produced range, `VTKdata/overlay_1d_<suffix>/frame_NNNN.png` (1920×1440, white curve on a
 transparent or green background per `OVERLAY_BG`; transparent needs no chroma key). Cadence is two
 data points per frame so the count matches the mesh movie. Off by default to keep the core run lean.
+
+`MODE_SELECT` (default `4mode`) picks which spherical-harmonic modes the **2D mesh** and the
+**overlay** are built from: `4mode` keeps only the non-axisymmetric quadrupole `(2,±1)+(2,±2)` (the
+clean 1/r radiation), `all` keeps every mode. The comparison **diagnostic** plots (`clm_sum_vs_tret`
+all-mode *and* `clm_sum_4mode_vs_tret` four-mode) are written regardless. The 2D VTK stage is heavy
+and **off by default** (`MAKE_VTK=0`); set `MAKE_VTK=1` to emit it from the driver, or run
+`sbatch submit_vtk_4mode.sh` for the full per-radius mesh movie.
 
 `config.sh` → `params_gw.py` → `gwbot.py` (the `gw` object) carries the config to every
 Python stage; the bash rhphc stage reads the same exported vars.

@@ -1,43 +1,54 @@
 #!/bin/bash
 # ============================================================================
-#  GW-generation pipeline driver.
-#  Edit config.sh, drop your Psi4_rad.mon.<PSI4_NUM> into psi4_dir/, then run:
+#  GW-generation pipeline driver (multi-extraction-radius).
+#  Edit config.sh, drop your Psi4_rad.mon.<N> files into psi4_dir/, then run:
 #      ./runData_generation.sh
-#  Re-runs skip the two expensive stages if their output already exists;
-#  use  FORCE=1 ./runData_generation.sh  to regenerate everything.
+#  Loops over PSI4_NUMS (config.sh); each radius N writes to VTKdata/psi4_N/.
+#  The ylm/r lookup is radius-independent and built ONCE (shared by all radii).
+#  Re-runs skip rhphc/lookup if their output exists; FORCE=1 regenerates them.
 # ============================================================================
 set -e
 cd "$(dirname "$0")"
 source ./config.sh
 
-echo "=== GW data generation  (GW_ROOT=$GW_ROOT  PSI4_NUM=$PSI4_NUM  M_ADM=$M_ADM  OMEGA_CUT=$OMEGA_CUT) ==="
-mkdir -p "$GW_ROOT/VTKdata/2D"
-RHPHC="$GW_ROOT/psi4_dir/rhphc.${PSI4_NUM}.dat"
+RADII="${PSI4_NUMS:-$PSI4_NUM}"          # space-separated radius list; default = single PSI4_NUM
+echo "=== GW data generation | radii: [$RADII] | M_ADM=$M_ADM OMEGA_CUT=$OMEGA_CUT ==="
+
+# --- shared lookup (radius-INDEPENDENT: grid + num_modes only) -- build once ---
 YLM="$GW_ROOT/bin/ylm_lookup_2D.txt"
-
-echo "[1/5] rhphc Fortran stage -> psi4_dir/rhphc.${PSI4_NUM}.dat"
-if [[ -s "$RHPHC" && "${FORCE:-0}" != 1 ]]; then
-  echo "      exists -> skip (FORCE=1 to regenerate)"
-else
-  ( cd rhphc_wave_generation && ./make_GW_hlm_from_psi4.sh )
-fi
-
-echo "[2/5] ylm + r lookups -> bin/  (slow; depends on XY_MAX_2D/XY_NUM_2D/num_modes)"
+echo "[lookup] ylm + r tables -> bin/  (shared by all radii)"
 if [[ -s "$YLM" && "${FORCE:-0}" != 1 ]]; then
-  echo "      exists -> skip (FORCE=1 to regenerate)"
+  echo "         exists -> skip (FORCE=1 to regenerate)"
 else
   python3 make_lookup.py
 fi
 
-echo "[3/5] gw.clm -> VTKdata/gw.clm"
-python3 make_clm.py
+# --- per-radius stages ---
+for n in $RADII; do
+  export PSI4_NUM=$n
+  TAG="psi4_$n"
+  echo "=== radius $n -> VTKdata/$TAG ==="
+  RHPHC="$GW_ROOT/psi4_dir/rhphc.$n.dat"
 
-echo "[4/5] 2D VTK frames -> VTKdata/2D/hplus_*.vtk"
-python3 make_vtk.py
+  echo "  [1] rhphc Fortran stage -> psi4_dir/rhphc.$n.dat"
+  if [[ -s "$RHPHC" && "${FORCE:-0}" != 1 ]]; then
+    echo "      exists -> skip (FORCE=1 to regenerate)"
+  else
+    ( cd rhphc_wave_generation && ./make_GW_hlm_from_psi4.sh )
+  fi
 
-echo "[5/5] 1D strain plots -> VTKdata/*.png"
-python3 make_1d_plots.py
+  echo "  [3] gw.clm -> VTKdata/$TAG/gw.clm"
+  python3 make_clm.py
 
-echo "=== done ==="
-echo "  psi4_dir/rhphc.${PSI4_NUM}.dat   bin/ylm_lookup_2D.txt  bin/r_lookup_2D.txt"
-echo "  VTKdata/gw.clm   VTKdata/2D/*.vtk   VTKdata/clm_sum_vs_tret_pos.png"
+  echo "  [5] 1D strain plots -> VTKdata/$TAG/*.png"
+  python3 make_1d_plots.py
+
+  # --- stage 4 (2D VTK): heavy; gated by MAKE_VTK (config.sh). Default off -- the mesh movie is
+  #     normally produced via sbatch submit_vtk_4mode.sh. Set MAKE_VTK=1 to emit it per-radius here.
+  if [[ "${MAKE_VTK:-0}" == 1 ]]; then
+    echo "  [4] 2D VTK frames -> VTKdata/$TAG/2D/hplus_*.vtk"
+    python3 make_vtk.py
+  fi
+done
+
+echo "=== done: $(echo $RADII | wc -w) radius/radii -> VTKdata/psi4_* (stages 1,3,5; 4 disabled) ==="
