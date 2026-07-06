@@ -43,9 +43,12 @@ for n in $RADII; do
   echo "  [5] 1D strain plots -> VTKdata/$TAG/*.png"
   python3 make_1d_plots.py
 
-  # --- stage 4 (2D VTK) disabled to save time; uncomment to enable per-radius ---
-  # echo "  [4] 2D VTK frames -> VTKdata/$TAG/2D/hplus_*.vtk"
-  # python3 make_vtk.py
+  # --- stage 4 (2D VTK): heavy; gated by MAKE_VTK (config.sh). Default off -- the mesh movie is
+  #     normally produced via sbatch submit_vtk_4mode.sh. Set MAKE_VTK=1 to emit it per-radius here.
+  if [[ "${MAKE_VTK:-0}" == 1 ]]; then
+    echo "  [4] 2D VTK frames -> VTKdata/$TAG/2D/hplus_*.vtk"
+    python3 make_vtk.py
+  fi
 done
 
 echo "=== done: $(echo $RADII | wc -w) radius/radii -> VTKdata/psi4_* (stages 1,3,5; 4 disabled) ==="

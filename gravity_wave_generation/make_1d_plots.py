@@ -31,6 +31,10 @@ MODE  = os.environ.get("TRET_MODE", "both").lower()   # both | pos | full
 MAKE_OVERLAY      = os.environ.get("MAKE_1D_OVERLAY", "0") == "1"
 OVERLAY_BG        = os.environ.get("OVERLAY_BG", "transparent").lower()  # transparent | green
 OVERLAY_MAXFRAMES = int(os.environ.get("OVERLAY_MAXFRAMES", "0"))        # 0 = all; >0 = preview cap
+# Which summed curve the drawn-in overlay uses. Defaults to MODE_SELECT (config.sh, default
+# "4mode" = only (2,+-1)+(2,+-2), matching the four-mode mesh movie); set OVERLAY_MODE to override
+# just the overlay curve independently ("all" | "2mode" | "4mode").
+OVERLAY_MODE      = os.environ.get("OVERLAY_MODE", os.environ.get("MODE_SELECT", "4mode")).lower()
 
 data   = np.loadtxt(gw.rhphc_file)
 u_code = data[:, 0]                                    # retarded time, code units (M_sun)
@@ -44,6 +48,11 @@ while len(lm) < nmodes:
         if len(lm) == nmodes:
             break
     l += 1
+
+# four-mode filter: the non-axisymmetric quadrupole (2,+-1)+(2,+-2); the dominant (2,0) is
+# EXCLUDED (it carries the near-axisymmetric-disk power / the 1/r-suspect content). Selected by
+# (l,m) off the lm ordering above so it stays correct regardless of column layout.
+FOUR_IDX = [i for i, (L, M) in enumerate(lm) if L == 2 and abs(M) in (1, 2)]
 
 
 def make_overlay_frames(u, hs, suffix):
@@ -109,6 +118,19 @@ def make_set(sel, suffix, note):
     plt.grid(alpha=0.3); plt.legend(); plt.tight_layout()
     plt.savefig(f"{OUT}/clm_sum_vs_tret_{suffix}.png", dpi=200); plt.close()
 
+    # (1b) four-mode sum: (2,+-1)+(2,+-2) only -- non-axisymmetric quadrupole, (2,0) excluded
+    hs4 = np.sum(md[:, FOUR_IDX], axis=1)
+    plt.figure(figsize=(9, 4))
+    plt.plot(u, hs4, c="red", lw=0.9, label=r"$h_+$ ($(2,\pm1)+(2,\pm2)$)")
+    plt.axvline(0, color="gray", lw=0.6)
+    plt.xlim(u[0], u[-1])
+    plt.xlabel(r"retarded time  $t_{ret}/M$"); plt.ylabel(r"$(R/M_{ADM})\,h_+$")
+    plt.title(r"four-mode $(2,\pm1)+(2,\pm2)$ $h_+$ vs retarded time  " + note)
+    plt.grid(alpha=0.3); plt.legend(); plt.tight_layout()
+    plt.savefig(f"{OUT}/clm_sum_4mode_vs_tret_{suffix}.png", dpi=200); plt.close()
+    np.savetxt(f"{OUT}/clm_sum_4mode_vs_tret_{suffix}.dat", np.column_stack((u, hs4)),
+               header="t_ret/M    (R/M_ADM)*h_plus  [modes (2,+-1),(2,+-2); (2,0) excluded]")
+
     # (2) each mode
     ncols = 3; nrows = (nmodes + ncols - 1) // ncols
     fig, axes = plt.subplots(nrows, ncols, figsize=(12, 2.3 * nrows), sharex=True)
@@ -127,11 +149,13 @@ def make_set(sel, suffix, note):
 
     np.savetxt(f"{OUT}/clm_sum_vs_tret_{suffix}.dat", np.column_stack((u, hs)),
                header="t_ret/M    (R/M_ADM)*h_plus_summed")
-    print(f"  [{suffix}] wrote clm_sum_vs_tret_{suffix}.{{png,dat}}, each_mode_vs_tret_{suffix}.png "
-          f"({int(sel.sum())} rows, t_ret/M {u[0]:.0f}..{u[-1]:.0f})")
+    print(f"  [{suffix}] wrote clm_sum_vs_tret_{suffix}.{{png,dat}}, clm_sum_4mode_vs_tret_{suffix}.{{png,dat}}, "
+          f"each_mode_vs_tret_{suffix}.png ({int(sel.sum())} rows, t_ret/M {u[0]:.0f}..{u[-1]:.0f}; "
+          f"4-mode peak={np.max(np.abs(hs4)):.2e})")
 
     if MAKE_OVERLAY:
-        make_overlay_frames(u, hs, suffix)
+        overlay_curve = hs4 if OVERLAY_MODE in ("2mode", "4mode") else hs
+        make_overlay_frames(u, overlay_curve, suffix)
 
 
 allmask = np.ones(len(u_code), dtype=bool)

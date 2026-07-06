@@ -7,6 +7,28 @@ from multiprocessing import Pool
 from contextlib import closing
 from scipy.special import factorial as fact
 
+# --- mode filter (env MODE_SELECT, default "4mode"): build the 2D mesh from ONLY the
+#     non-axisymmetric quadrupole (2,+-1)+(2,+-2), excluding the dominant (2,0). Set
+#     MODE_SELECT=all for every mode. Indices are derived from the (l,m) ordering
+#     (l=2 m=2..-2, l=3 m=3..-3, ...) so they stay correct.
+def _mode_lm(num_modes):
+    lm = []; l = 2
+    while len(lm) < num_modes:
+        for m in range(l, -l - 1, -1):
+            lm.append((l, m))
+            if len(lm) == num_modes:
+                break
+        l += 1
+    return lm
+
+_MODE_SELECT = os.environ.get("MODE_SELECT", "4mode").lower()   # 4mode (default) | 2mode | all
+if _MODE_SELECT in ("4mode", "2mode"):
+    _lm = _mode_lm(gw.num_modes)
+    MODE_IDX = [i for i, (L, M) in enumerate(_lm) if L == 2 and abs(M) in (1, 2)]
+    print(f"MODE_SELECT={_MODE_SELECT} -> summing only {[_lm[i] for i in MODE_IDX]} (indices {MODE_IDX})", flush=True)
+else:
+    MODE_IDX = None
+
 def calc_l_d_ms(l, m, theta, s=-2):
     sint = np.sin(theta/2); cost = np.cos(theta/2)
     k_i = np.maximum(0, m-s); k_f = np.minimum(l+m, l-s)
@@ -84,9 +106,14 @@ def write_vtk_2D(ylm, r, t, dt, clm, xs, ys, sx, sy, fol, all_modes, modes, r_ar
     clm_ij = clm[rt,:]
     r_ji = np.einsum('ij->ji', r)
     if all_modes == True:
-        hphc = np.einsum('ijm->ji', ylm*clm_ij)/r_ji  #Plotting just h
-        hphc_1d = np.einsum('ijm->ji', ylm*clm_ij)    #Plotting rxh
-        #hphc = np.einsum('ijm->ji', ylm*clm_ij) #Plotting rxh
+        if MODE_IDX is None:
+            hphc = np.einsum('ijm->ji', ylm*clm_ij)/r_ji  #Plotting just h
+            hphc_1d = np.einsum('ijm->ji', ylm*clm_ij)    #Plotting rxh
+            #hphc = np.einsum('ijm->ji', ylm*clm_ij) #Plotting rxh
+        else:  # four-mode (or subset) sum: only the selected mode indices
+            sub = (ylm*clm_ij)[..., MODE_IDX]
+            hphc = np.einsum('ijm->ji', sub)/r_ji
+            hphc_1d = np.einsum('ijm->ji', sub)
     else:  #plot chosen mode
         hphc = (ylm*clm_ij)[...,modes]
         # for m in range(1,len(modes)):
@@ -175,6 +202,10 @@ xy_corner = gw.xy_max_2D*np.sqrt(2)
 xy_corner_star = xy_corner + 2 * gw.M_ADM * np.log((xy_corner / (2*gw.M_ADM)) - 1)
 
 times = range(int(start_time), int(end_time)+1)  # ALL movie frames (0..num_times-1); smoke used [0,3000,5000]
+_tsub = os.environ.get("VTK_TIMES", "")           # optional smoke subset, e.g. VTK_TIMES="0 3000 5000"
+if _tsub:
+    times = [int(x) for x in _tsub.replace(",", " ").split()]
+    print(f"VTK_TIMES override -> {len(times)} frame(s): {times}", flush=True)
 l = len(times)
 
 def run_single_time(t):

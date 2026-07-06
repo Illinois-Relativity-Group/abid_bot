@@ -37,7 +37,8 @@ The single most important thing to understand: **config flows `config.sh` → `p
 `gwbot.py`, and every Python stage starts with `from gwbot import gw`.**
 
 - `config.sh` exports a small set of env vars (`PSI4_NUM`, `M_ADM`, `OMEGA_CUT`, `XY_MAX_2D`,
-  `XY_NUM_2D`, `SCALE_FACTOR`, `TRET_MODE`, overlay flags). This is the **only file a user edits**.
+  `XY_NUM_2D`, `SCALE_FACTOR`, `TRET_MODE`, overlay flags, `MODE_SELECT`, `MAKE_VTK`). This is the
+  **only file a user edits**.
 - `params_gw.py` reads those env vars (with hardcoded sol_05 fallbacks), assembles a nested list
   `params_gw = [generalGWSettings, psi4Settings, gridSettings, simulationSettings, testGWSettings,
   memorySettings]`, and **prints/runs side effects at import time**.
@@ -74,6 +75,11 @@ generated `ccc_ffi.input`.
 
 - **Mode ordering** is `l=2 m=2..-2, then l=3 m=3..-3, …` (index 0 = (2,2)). This same ordering
   is reconstructed in `make_lookup.py`, `make_vtk.py`, and `make_1d_plots.py` — keep them in sync.
+- **`MODE_SELECT`** (config.sh, default `4mode`) gates the mesh sum in `make_vtk.py` and the overlay
+  curve in `make_1d_plots.py` down to only `(2,±1)+(2,±2)` (the non-axisymmetric quadrupole); `all`
+  uses every mode. The dual diagnostic plots (all-mode + four-mode) are emitted either way. **`MAKE_VTK`**
+  (default 0) gates the heavy stage-4 VTK in `runData_generation.sh` (the mesh movie usually comes
+  from `sbatch submit_vtk_4mode.sh`).
 - **Retarded time** is the physics core. `make_vtk.py` indexes the strain by a per-pixel retarded-
   time index `rt = t - (r - r_areal_star)/dt`, where `r_areal_star` is the tortoise coordinate
   `r* = r + 2M ln(r/2M - 1)` that anchors `t_ret = 0` at the grid center on frame 0. `make_clm.py`
