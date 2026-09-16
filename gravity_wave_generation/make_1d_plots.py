@@ -36,6 +36,26 @@ OVERLAY_MAXFRAMES = int(os.environ.get("OVERLAY_MAXFRAMES", "0"))        # 0 = a
 # just the overlay curve independently ("all" | "2mode" | "4mode").
 OVERLAY_MODE      = os.environ.get("OVERLAY_MODE", os.environ.get("MODE_SELECT", "4mode")).lower()
 
+# Fixed y-axis half-range for the 1D overlay FRAMES, in (R/M_ADM)*h_+ units: the frame axis
+# always spans -Y_LIM_1D .. +Y_LIM_1D. The frames are never autoscaled -- autoscale picks a
+# different scale for every extraction radius and for the full/pos crops, so frames from separate
+# runs could not be compared or cut into one movie. config.sh (Y_LIM_1D) overrides the number;
+# unset falls back to the constant below. The diagnostic .png plots are NOT affected.
+Y_LIM_1D_DEFAULT = 4.224408619435217e-04   # sol_05, radius 7, four-mode scale
+_ylim_raw = os.environ.get("Y_LIM_1D", "").strip()
+if not _ylim_raw:
+    Y_LIM_1D = Y_LIM_1D_DEFAULT
+else:
+    try:
+        Y_LIM_1D = abs(float(_ylim_raw))
+    except ValueError:
+        raise SystemExit(
+            f"config.sh: Y_LIM_1D must be a number (got {_ylim_raw!r}). The 1D overlay frames "
+            f"are deliberately never autoscaled -- leave Y_LIM_1D empty to use the default "
+            f"{Y_LIM_1D_DEFAULT:.16g}, or set the half-range you want.")
+if Y_LIM_1D <= 0:
+    raise SystemExit(f"config.sh: Y_LIM_1D must be > 0 (got {Y_LIM_1D!r}).")
+
 data   = np.loadtxt(gw.rhphc_file)
 u_code = data[:, 0]                                    # retarded time, code units (M_sun)
 
@@ -70,7 +90,7 @@ def make_overlay_frames(u, hs, suffix):
 
     fig, ax = plt.subplots(1)
     ax.set_xlim(u[0], u[-1])
-    ax.set_ylim(-1.2 * max_h, 1.2 * max_h)
+    ax.set_ylim(-Y_LIM_1D, Y_LIM_1D)
     graph, = ax.plot([], [], color="white")
     ax.set_facecolor(bg)
     fig.patch.set_facecolor(bg)
@@ -100,7 +120,12 @@ def make_overlay_frames(u, hs, suffix):
         else:
             plt.savefig(fp, facecolor=fig.get_facecolor(), dpi=300)
     plt.close(fig)
-    print(f"  [{suffix}] overlay: {nframes} {OVERLAY_BG} frame(s) -> overlay_1d_{suffix}/")
+    print(f"  [{suffix}] overlay: {nframes} {OVERLAY_BG} frame(s) -> overlay_1d_{suffix}/  "
+          f"ylim=+-{Y_LIM_1D:.16g} [fixed]  (max|h_+|={max_h:.6e})")
+    if max_h > Y_LIM_1D:
+        print(f"  [{suffix}] WARNING: max|h_+|={max_h:.6e} exceeds Y_LIM_1D={Y_LIM_1D:.16g} "
+              f"by {max_h / Y_LIM_1D:.2f}x -- the curve is CLIPPED in these frames. "
+              f"Raise Y_LIM_1D in config.sh if that is not intended.")
 
 
 def make_set(sel, suffix, note):

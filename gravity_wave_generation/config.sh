@@ -31,6 +31,16 @@ export TRET_MODE=both                   # 1D-plot retarded-time range: both | po
 export MAKE_1D_OVERLAY=0                # 0 = off (default); 1 = also emit the overlay frames
 export OVERLAY_BG=transparent          # transparent (alpha, no chroma key) | green (chroma key)
 
+# --- 1D overlay-frame y-axis (FIXED -- never autoscaled) ----------------------
+# Y-axis half-range for the 1D overlay frames, in (R/M_ADM)*h_+ units: every frame spans
+# -Y_LIM_1D .. +Y_LIM_1D, on every radius and on both the full and pos crops. This is
+# deliberately NOT autoscaled: autoscale gives each run its own scale, and frames on different
+# scales cannot be compared or cut into one movie. Change the number here to rescale; unsetting
+# it does not restore autoscale, it just falls back to the same value hardcoded in
+# make_1d_plots.py (Y_LIM_1D_DEFAULT). Stage 5 logs the limit and warns if the data is clipped.
+# The diagnostic .png plots are not affected -- they still autoscale.
+export Y_LIM_1D=4.224408619435217e-04
+
 # --- mode selection (drives BOTH the 2D mesh and the 1D overlay) --------------
 export MODE_SELECT=4mode                # 4mode (default) = only the non-axisymmetric quadrupole
                                         #   (2,+-1)+(2,+-2) -- the physically clean 1/r modes;

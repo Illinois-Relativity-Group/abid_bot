@@ -37,7 +37,7 @@ The single most important thing to understand: **config flows `config.sh` → `p
 `gwbot.py`, and every Python stage starts with `from gwbot import gw`.**
 
 - `config.sh` exports a small set of env vars (`PSI4_NUM`, `M_ADM`, `OMEGA_CUT`, `XY_MAX_2D`,
-  `XY_NUM_2D`, `SCALE_FACTOR`, `TRET_MODE`, overlay flags, `MODE_SELECT`, `MAKE_VTK`). This is the
+  `XY_NUM_2D`, `SCALE_FACTOR`, `TRET_MODE`, overlay flags, `MODE_SELECT`, `Y_LIM_1D`, `MAKE_VTK`). This is the
   **only file a user edits**.
 - `params_gw.py` reads those env vars (with hardcoded sol_05 fallbacks), assembles a nested list
   `params_gw = [generalGWSettings, psi4Settings, gridSettings, simulationSettings, testGWSettings,
@@ -80,6 +80,12 @@ generated `ccc_ffi.input`.
   uses every mode. The dual diagnostic plots (all-mode + four-mode) are emitted either way. **`MAKE_VTK`**
   (default 0) gates the heavy stage-4 VTK in `runData_generation.sh` (the mesh movie usually comes
   from `sbatch submit_vtk_4mode.sh`).
+- **`Y_LIM_1D`** fixes the y-axis half-range of the 1D **overlay frames** (in `(R/M_ADM)*h_+`
+  units). The frames are never autoscaled: autoscale gives each radius and each full/pos crop its
+  own scale, so frames from separate runs cannot be compared or cut into one movie. `config.sh`
+  sets the number; if it is unset, `make_1d_plots.py` falls back to `Y_LIM_1D_DEFAULT` — it does
+  **not** fall back to autoscale. Only the frames are pinned; the diagnostic `.png` plots still
+  autoscale. Stage 5 logs the limit used and warns when `max|h_+|` exceeds it (clipped curve).
 - **Retarded time** is the physics core. `make_vtk.py` indexes the strain by a per-pixel retarded-
   time index `rt = t - (r - r_areal_star)/dt`, where `r_areal_star` is the tortoise coordinate
   `r* = r + 2M ln(r/2M - 1)` that anchors `t_ret = 0` at the grid center on frame 0. `make_clm.py`

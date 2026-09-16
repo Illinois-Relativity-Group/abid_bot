@@ -26,6 +26,7 @@ frames, and 1D strain plots. (Downstream OBJ conversion + Blender rendering live
    export MAKE_1D_OVERLAY=0    # 1 = also emit overlay animation frames for the mesh movie
    export OVERLAY_BG=transparent  # overlay background: transparent (alpha) | green (chroma key)
    export MODE_SELECT=4mode    # mesh + overlay modes: 4mode = (2,±1)+(2,±2) only | all = every mode
+   export Y_LIM_1D=4.224408619435217e-04  # FIXED y-axis half-range for the 1D overlay frames
    export MAKE_VTK=0           # 1 = also emit the heavy 2D VTK stage from runData_generation.sh
    ```
    `num_modes`, `num_times`, `r_areal`, `gw_dt`, and the Fortran `NCOL` are auto-derived
@@ -76,6 +77,14 @@ clean 1/r radiation), `all` keeps every mode. The comparison **diagnostic** plot
 all-mode *and* `clm_sum_4mode_vs_tret` four-mode) are written regardless. The 2D VTK stage is heavy
 and **off by default** (`MAKE_VTK=0`); set `MAKE_VTK=1` to emit it from the driver, or run
 `sbatch submit_vtk_4mode.sh` for the full per-radius mesh movie.
+
+`Y_LIM_1D` fixes the y-axis of the **1D overlay frames** to `±Y_LIM_1D` (units of
+`(R/M_ADM)·h_+`). The frames are **never autoscaled**: autoscaling to `±1.2·max|h_+|` gives every
+extraction radius — and the `full` vs `pos` crops — its own scale, so frames from separate runs
+cannot be compared or cut into one movie. Change the number in `config.sh` to rescale; unsetting it
+does not bring autoscale back, it falls through to the same value hardcoded as `Y_LIM_1D_DEFAULT`
+in `make_1d_plots.py`. Stage 5 prints the limit in use and warns if `max|h_+|` exceeds it, since
+the curve is then clipped. The diagnostic `.png` plots are unaffected and still autoscale.
 
 `config.sh` → `params_gw.py` → `gwbot.py` (the `gw` object) carries the config to every
 Python stage; the bash rhphc stage reads the same exported vars.
