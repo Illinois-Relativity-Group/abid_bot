@@ -2,8 +2,8 @@
 #
 # link_h5data.sh -- build $root/h5data from the raw simulation output on riemann.
 #
-# On riemann the ~3.5 TB of sol_32 output lives outside the abid_bot tree, in
-# $h5src (see params). This script:
+# OPTIONAL. Only needed when the raw output is too large to live inside the
+# checkout. Set h5src in params, then:
 #   1. renames every raw date folder  YY_MM_DD_HHMMSS  ->  3d_data_YY_MM_DD_HHMMSS
 #      in place in $h5src, and
 #   2. symlinks each of those, plus the diagnostics files and horizon/ from
@@ -14,7 +14,9 @@
 #
 # Safe to re-run: existing links are refreshed, already-renamed folders skipped.
 #
-# Usage:  . params ; . bin/link_h5data.sh
+# Usage:  . params ; . h5data/link_h5data.sh
+#
+# If you populate h5data/ by hand instead, you do not need this at all.
 
 if [ -z "$root" ] || [ -z "$h5src" ]; then
 	echo "link_h5data.sh: \$root and \$h5src must be set -- source params first"
@@ -26,30 +28,6 @@ mkdir -p $h5data
 
 echo "raw data source : $h5src"
 echo "target          : $h5data"
-
-########## 1. pull the May folders up into the main tree ##########
-# sol32_may_hdf5/ holds the 26_05_05..26_05_25 folders that are missing from
-# the top level -- move them up so every date sits in one folder.
-if [ -d "$h5src/sol32_may_hdf5" ]; then
-	echo "merging sol32_may_hdf5/ into $h5src"
-	for d in $h5src/sol32_may_hdf5/*/; do
-		[ -d "$d" ] || continue
-		b=$(basename -- "$d")
-		if [ -e "$h5src/$b" ] || [ -e "$h5src/3d_data_$b" ]; then
-			# 6 of the May dates (26_05_01..26_05_05) exist at the top
-			# level with the full 128 rho_b files, while the copy in
-			# sol32_may_hdf5 is an empty stub. Keep the full one.
-			if [ -z "$(ls -A "$d" 2>/dev/null)" ]; then
-				rmdir "$d" && echo "	dropped empty duplicate: $b"
-			else
-				echo "	already present, skipping: $b"
-			fi
-		else
-			mv -- "$d" "$h5src/$b"
-		fi
-	done
-	rmdir $h5src/sol32_may_hdf5 2>/dev/null && echo "	sol32_may_hdf5/ now empty, removed"
-fi
 
 ########## 2. prefix the raw date folders with 3d_data_ ##########
 renamed=0
