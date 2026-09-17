@@ -10,10 +10,16 @@ __pycache__/
 *.pyc
 *.tar.gz
 
-# user data
-h5data/3d_data_*
-h5data/bad_data/
-h5data/bhns*
-h5data/horizon/
-h5data/*.mon
-h5data/*.gp
+# user data -- ignore everything in h5data except the geometry we ship.
+# Enumerating the data filenames instead misses Psi4_rad.mon.N, ejv_GW.N.dat
+# and a symlinked horizon/ (a trailing slash does not match a symlink).
+h5data/*
+!h5data/*.3d
+!h5data/*.py
+!h5data/link_h5data.sh
+
+# editing backups and run logs
+*.orig
+*.bak
+*.bak[0-9]*
+*.log

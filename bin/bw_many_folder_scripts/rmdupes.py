@@ -1,7 +1,7 @@
 """Quarantine duplicated time ranges listed in duplicate.txt.
 
 Each line of duplicate.txt is a path to a folder under h5data/. The folder is
-moved to h5data/bad_data/ and its matching xml/ folder is removed.
+moved to h5data/bad_data/duplicates/ and its matching xml/ folder is removed.
 
 h5data/3d_data_* is very often a SYMLINK into a data tree that lives outside
 the checkout. os.rename moves the link itself; shutil.move would resolve it and
@@ -27,7 +27,14 @@ with open(duplicate_txt) as f:
 
         h5data = os.path.dirname(target)
         name = os.path.basename(target)
-        bad_data = os.path.join(h5data, 'bad_data')
+        # Duplicates go in their own subdirectory, NOT in bad_data/ next to the
+        # folders clean_h5folders.sh quarantines. The two mean opposite things:
+        # bad_data/<f> is unusable (no *.h5), bad_data/duplicates/<f> is
+        # perfectly good data that is simply redundant. link_h5data.sh releases
+        # from bad_data/ on a "has .h5 again" test, which a duplicate passes --
+        # so sharing one directory meant re-linking resurrected the duplicate
+        # frames.
+        bad_data = os.path.join(h5data, 'bad_data', 'duplicates')
         os.makedirs(bad_data, exist_ok=True)
         dest = os.path.join(bad_data, name)
 

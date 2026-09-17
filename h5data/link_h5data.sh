@@ -87,6 +87,9 @@ echo "renamed $renamed folders to 3d_data_*"
 # moves them back. If the data has since arrived, drop the stale entry so the
 # folder gets linked normally again.
 if [ -d "$h5data/bad_data" ]; then
+	# only the top level: bad_data/duplicates/ is rmdupes.py's, and those
+	# folders DO have .h5 in $h5src, so releasing them would bring the
+	# duplicate frames straight back.
 	for l in "$h5data"/bad_data/3d_data_*; do
 		[ -e "$l" ] || [ -L "$l" ] || continue
 		b=$(basename -- "$l")
@@ -98,15 +101,9 @@ if [ -d "$h5data/bad_data" ]; then
 				# a real directory here is data somebody moved in, not a
 				# link we made. Never rm -rf it.
 				echo "	$b: bad_data holds a real directory, not a link -- left alone"
-			elif [ "${release_bad_data:-0}" = "1" ]; then
+			else
 				rm -f -- "$l"
 				echo "	$b has data again, released from bad_data"
-			else
-				# Not released by default: rmdupes.py quarantines DUPLICATE
-				# folders here too, and those also have .h5 in $h5src, so
-				# releasing on that test alone brings the duplicate frames
-				# straight back. Set release_bad_data=1 if you have checked.
-				echo "	$b has data in h5src but stays quarantined (release_bad_data=1 to release)"
 			fi
 		fi
 	done

@@ -63,11 +63,19 @@ overwrite a value you have already set.
 **`offset` matters.** It is `first h5 iteration / it`. If your run does not start
 at iteration 0 and `offset` is left at 0, every frame gets the wrong `t/M`.
 
+Because `setup_params.py` will not overwrite a value you have set, adding
+*earlier* data later does not lower `offset` on its own. Re-running the script
+prints a loud `KEPT <yours> (derived <x> -- differs by more than 1%)`; put the
+field back to its shipped placeholder if you want the new value.
+
 ## 3. Run setup
 
     . setup.sh
 
-This cleans empty folders into `h5data/bad_data/`, builds `xml/` with one
+This cleans unusable folders into `h5data/bad_data/` and duplicate ones into
+`h5data/bad_data/duplicates/` — the two are kept apart because a duplicate is
+perfectly good data that is merely redundant, and only the former is ever
+released again. It then builds `xml/` with one
 settings folder per data folder, and generates the black hole and spin-vector
 geometry. Check `xml/` afterwards — it should hold `.xml`, `.3d`, `.vtk` and
 `time_*.txt` files.

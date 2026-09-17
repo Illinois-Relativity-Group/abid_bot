@@ -43,10 +43,14 @@ runs VisIt 3.3.3 rather than 3.1.4. Images render directly on the login machine.
 - `clean_h5folders.sh` refuses to run with `$root` unset (it did
   `rm -rf $root/xml$1/` unquoted) and moves an existing quarantine aside
   instead of deleting it. `rmdupes.py` does the same.
+- `rmdupes.py` quarantines duplicates into `h5data/bad_data/duplicates/`
+  rather than into `bad_data/` itself. The two mean opposite things --
+  `bad_data/<f>` is unusable, `bad_data/duplicates/<f>` is good data that is
+  merely redundant -- and `link_h5data.sh` releases from `bad_data/` on a
+  "has .h5 again" test that a duplicate passes, so sharing one directory meant
+  re-linking resurrected the duplicate frames.
 - `h5data/link_h5data.sh` refuses to link `h5data` into itself, never `rm -rf`s
-  a real directory out of `bad_data/`, and no longer auto-releases quarantined
-  folders -- `rmdupes.py` puts *duplicates* there too, and they pass the
-  "has .h5 again" test, so releasing on it brought duplicate frames back.
+  a real directory out of `bad_data/`, and releases only the top level.
 - `runSingle.sh`/`runLocal.sh` stop with an error when `foldernum` or `ranknum`
   is empty. They have no `firstFolder`..`lastFolder` to fall back on, so an
   empty selector rendered nothing and looked like a clean run.
