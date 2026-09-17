@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# riemann (local) job header -- replaces multirun_template_anvil.
+# There is no batch scheduler and no compute nodes here: the run scripts
+# built from this template are executed directly on riemann by
+# runMulti.sh / filmBundled.sh, $maxParallel of them at a time.
+#
+# No "module load" -- riemann has no module system. VisIt 3.3.3 lives in
+# /data/shared/visit/bin and the system provides gcc/hdf5/python3.
+export PATH=/data/shared/visit/bin:$PATH

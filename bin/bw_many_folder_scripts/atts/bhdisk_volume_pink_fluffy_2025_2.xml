@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<Object name="VolumeAttributes">
+    <Field name="osprayShadowsEnabledFlag" type="bool">false</Field>
+    <Field name="osprayUseGridAcceleratorFlag" type="bool">false</Field>
+    <Field name="osprayPreIntegrationFlag" type="bool">false</Field>
+    <Field name="ospraySingleShadeFlag" type="bool">false</Field>
+    <Field name="osprayOneSidedLightingFlag" type="bool">false</Field>
+    <Field name="osprayAoTransparencyEnabledFlag" type="bool">false</Field>
+    <Field name="ospraySpp" type="int">1</Field>
+    <Field name="osprayAoSamples" type="int">0</Field>
+    <Field name="osprayAoDistance" type="double">100000</Field>
+    <Field name="osprayMinContribution" type="double">0.001</Field>
+    <Field name="legendFlag" type="bool">false</Field>
+    <Field name="lightingFlag" type="bool">false</Field>
+    <Object name="colorControlPoints">
+        <Object name="ColorControlPointList">
+            <Object name="ColorControlPoint">
+                <Field name="colors" type="unsignedCharArray" length="4">0 255 200 255 </Field>
+                <Field name="position" type="float">0.0</Field>
+            </Object>
+            <Object name="ColorControlPoint">
+                <Field name="colors" type="unsignedCharArray" length="4">255 255 0 255 </Field>
+                <Field name="position" type="float">0.3215434</Field>
+            </Object>
+            <Object name="ColorControlPoint">
+                <Field name="colors" type="unsignedCharArray" length="4">255 255 0 255 </Field>
+                <Field name="position" type="float">0.4790997</Field>
+            </Object>
+            <Object name="ColorControlPoint">
+                <Field name="colors" type="unsignedCharArray" length="4">231 52 31 255 </Field>
+                <Field name="position" type="float">0.881029</Field>
+            </Object>
+            <Object name="ColorControlPoint">
+                <Field name="colors" type="unsignedCharArray" length="4">238 55 230 208 </Field>
+                <Field name="position" type="float">1</Field>
+            </Object>
+            <Field name="smoothing" type="string">CubicSpline</Field>
+            <Field name="equal" type="bool">false</Field>
+            <Field name="discrete" type="bool">false</Field>
+            <Field name="category" type="string"></Field>
+        </Object>
+    </Object>
+    <Field name="opacityAttenuation" type="float">0.5215687</Field>
+    <Field name="opacityMode" type="string">FreeformMode</Field>
+    <Object name="opacityControlPoints">
+        <Object name="GaussianControlPointList">
+            <Object name="GaussianControlPoint">
+                <Field name="x" type="float">0.860088</Field>
+                <Field name="height" type="float">0.816092</Field>
+                <Field name="width" type="float">0.0942562</Field>
+                <Field name="xBias" type="float">0</Field>
+                <Field name="yBias" type="float">0</Field>
+            </Object>
+            <Object name="GaussianControlPoint">
+                <Field name="x" type="float">0.667158</Field>
+                <Field name="height" type="float">0.563218</Field>
+                <Field name="width" type="float">0.0913107</Field>
+                <Field name="xBias" type="float">0</Field>
+                <Field name="yBias" type="float">0</Field>
+            </Object>
+            <Object name="GaussianControlPoint">
+                <Field name="x" type="float">0.562592</Field>
+                <Field name="height" type="float">0.436782</Field>
+                <Field name="width" type="float">0.0942563</Field>
+                <Field name="xBias" type="float">0</Field>
+                <Field name="yBias" type="float">0</Field>
+            </Object>
+            <Object name="GaussianControlPoint">
+                <Field name="x" type="float">0.360825</Field>
+                <Field name="height" type="float">0.114943</Field>
+                <Field name="width" type="float">0.0427099</Field>
+                <Field name="xBias" type="float">0</Field>
+                <Field name="yBias" type="float">0</Field>
+            </Object>
+            <Object name="GaussianControlPoint">
+                <Field name="x" type="float">0.761414</Field>
+                <Field name="height" type="float">0.878161</Field>
+                <Field name="width" type="float">0.0736377</Field>
+                <Field name="xBias" type="float">0</Field>
+                <Field name="yBias" type="float">0</Field>
+            </Object>
+            <Object name="GaussianControlPoint">
+                <Field name="x" type="float">0.969072</Field>
+                <Field name="height" type="float">1</Field>
+                <Field name="width" type="float">0.125184</Field>
+                <Field name="xBias" type="float">0</Field>
+                <Field name="yBias" type="float">0</Field>
+            </Object>
+            <Object name="GaussianControlPoint">
+                <Field name="x" type="float">0.455081</Field>
+                <Field name="height" type="float">0.298851</Field>
+                <Field name="width" type="float">0.0765832</Field>
+                <Field name="xBias" type="float">0</Field>
+                <Field name="yBias" type="float">0</Field>
+            </Object>
+            <Object name="GaussianControlPoint">
+                <Field name="x" type="float">0.265096</Field>
+                <Field name="height" type="float">0.0689655</Field>
+                <Field name="width" type="float">0.0500736</Field>
+                <Field name="xBias" type="float">0</Field>
+                <Field name="yBias" type="float">0</Field>
+            </Object>
+            <Object name="GaussianControlPoint">
+                <Field name="x" type="float">0.172312</Field>
+                <Field name="height" type="float">0.0574713</Field>
+                <Field name="width" type="float">0.0382916</Field>
+                <Field name="xBias" type="float">0</Field>
+                <Field name="yBias" type="float">0</Field>
+            </Object>
+            <Object name="GaussianControlPoint">
+                <Field name="x" type="float">0.0706922</Field>
+                <Field name="height" type="float">0.0114943</Field>
+                <Field name="width" type="float">0.0265096</Field>
+                <Field name="xBias" type="float">0</Field>
+                <Field name="yBias" type="float">0</Field>
+            </Object>
+        </Object>
+    </Object>
+    <Field name="resampleFlag" type="bool">true</Field>
+    <Field name="resampleTarget" type="int">100000</Field>
+    <Field name="opacityVariable" type="string">default</Field>
+    <Field name="compactVariable" type="string">default</Field>
+    <Field name="freeformOpacity" type="unsignedCharArray" length="256">0 0 0 0 0 0 0 0 0 0 0 0 0 29 29 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 52 52 52 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 55 52 52 46 46 46 46 46 46 46 46 46 46 46 46 46 49 49 49 49 49 49 49 49 49 49 49 49 46 46 46 49 49 49 49 49 49 49 49 49 49 49 49 49 49 49 49 49 49 49 49 49 49 49 49 46 46 46 46 46 46 46 46 46 46 49 49 49 49 49 49 49 49 49 49 49 49 49 49 49 49 49 49 49 49 52 52 52 52 52 52 52 52 52 52 52 52 52 52 52 52 52 52 52 49 49 46 43 41 38 32 29 23 17 14 8 0 </Field>
+    <Field name="useColorVarMin" type="bool">true</Field>
+    <Field name="colorVarMin" type="float">-3</Field>
+    <Field name="useColorVarMax" type="bool">true</Field>
+    <Field name="colorVarMax" type="float">0</Field>
+    <Field name="useOpacityVarMin" type="bool">false</Field>
+    <Field name="opacityVarMin" type="float">0</Field>
+    <Field name="useOpacityVarMax" type="bool">false</Field>
+    <Field name="opacityVarMax" type="float">0</Field>
+    <Field name="smoothData" type="bool">true</Field>
+    <Field name="samplesPerRay" type="int">20000</Field>
+    <Field name="rendererType" type="string">RayCasting</Field>
+    <Field name="gradientType" type="string">SobelOperator</Field>
+    <Field name="scaling" type="string">Linear</Field>
+    <Field name="skewFactor" type="double">1</Field>
+    <Field name="limitsMode" type="string">OriginalData</Field>
+    <Field name="sampling" type="string">Rasterization</Field>
+    <Field name="rendererSamples" type="float">3</Field>
+    <Field name="lowGradientLightingReduction" type="string">Lower</Field>
+    <Field name="lowGradientLightingClampFlag" type="bool">false</Field>
+    <Field name="lowGradientLightingClampValue" type="double">1</Field>
+    <Field name="materialProperties" type="doubleArray" length="4">0.4 0.75 0 15 </Field>
+</Object>
