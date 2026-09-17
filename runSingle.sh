@@ -21,7 +21,7 @@ h5prefix=3d_data_
 
 ########run movies variables
 
-#pbsfile=$root/bin/bw_many_folder_scripts/singleRun_frontera_frames.pbs
+# pbsfile: unused on riemann (no batch scheduler); the .pbs file is not in this branch
 picsavedir=$root/movies
 logdir=$root/log
 visitScript=$root/bin/bw_many_folder_scripts/run.py
