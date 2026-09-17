@@ -40,10 +40,14 @@ runs VisIt 3.3.3 rather than 3.1.4. Images render directly on the login machine.
 - Twelve other `atts/*.xml` files still carry only the 3.1.4 `colorByMag` field.
   They have not been exercised here; if a vector plot comes out the wrong
   colour, that is the first thing to check.
-- Two unused pseudocolor variants, `atts/NSNS_pseudo_disk_opaque.xml` and
-  `atts/NSNS_pseudo_disk_diskGW.xml`, still contain XML comments and would
-  render with all-default attributes if ever wired into `params` in place of
-  `NSNS_pseudo_disk.xml` (which is clean). Strip the comments before using
-  either one.
+- All 146 `atts/*.xml` files parse as well-formed XML and none contains an XML
+  comment. Two arrived corrupt and were repaired:
+  `Vec_spin_MassiveDisk_superzoomin.xml` had a vi status line pasted into it
+  followed by a second complete copy, and `bhdisk_view_10deg_superzoomin_first.xml`
+  was 21 bytes of a truncated shell redirect and was removed.
 - `abid_bot_bhdisk/bhdisk_riemann` on `master` is an unported SLURM tree despite
   its name. Use this branch instead.
+- Four inherited auxiliary files still carry another user's Anvil scratch paths:
+  `copy_data.sh`, `compute_spinvec_start.ipynb`, and the two scripts in
+  `bin/particle_tracer/`. None is part of the documented workflow; edit the
+  paths before using any of them.
