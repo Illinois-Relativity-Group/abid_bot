@@ -100,8 +100,13 @@ view2XML=$root/bin/bw_many_folder_scripts/atts/bhdisk_view_reg.xml
 
 # cutNormal:		Normal of the clip plane used when cutPlot=1 in the run
 #			scripts. "0,-1,0" shows the back half; "0,0,1" cuts in the
-#			orbital plane instead. Must match your view.
-cutNormal="0,-1,0"
+#			orbital plane (topdown) instead. Must match your view.
+#			Leave it EMPTY to keep each plot type's own default, which is
+#			what the reference case uses: the volume plot
+#			(PlotDensAsVol) cuts topdown "0,0,1" and the isosurface plot
+#			(PlotDensAsIso) cuts the back half "0,-1,0". Setting it here
+#			overrides both.
+cutNormal=""
 export cutNormal
 
 # showTimeLabel:	1 draws the "t/M = ..." caption, 0 leaves it off (stills).

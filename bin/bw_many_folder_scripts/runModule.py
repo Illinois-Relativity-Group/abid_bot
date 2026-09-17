@@ -1097,7 +1097,11 @@ class VisitPlot:
                             #clip(self.CoM, self.myView.viewNormal, forceAddOp or frame==self.firstFrame)
                             print('Current View Normal for Clip Operator:', self.myView.viewNormal)
                             #clip(self.CoM, (0.0, 1.0, 0.0), forceAddOp or frame==self.firstFrame) # for normal cut in xz plane
-                            clip(self.CoM, (0.0, 0.0, 1.0), forceAddOp or frame==self.firstFrame) # for topdown cut
+                            # volume path's own default is the topdown cut (0,0,1); the
+                            # isosurface path below defaults to the back half (0,-1,0).
+                            # Both are sol_32 behaviour, so each keeps its own default and
+                            # an explicit cutNormal in params overrides both.
+                            clip(self.CoM, _env_normal('cutNormal', (0.0, 0.0, 1.0)), forceAddOp or frame==self.firstFrame)
                 if self.density_iso():
                         SetActivePlots(self.idx("density"))
                         SetPlotOptions(self.rho_atts)
