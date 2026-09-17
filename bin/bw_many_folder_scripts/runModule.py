@@ -9,6 +9,33 @@ import sys
 import time
 import datetime
 
+import os as _os
+
+
+def _env_flag(name, default=False):
+        """Read a 0/1 switch exported by params. Unset -> default."""
+        v = _os.environ.get(name)
+        if v is None or v == "":
+                return default
+        return v.strip() not in ("0", "false", "False", "no")
+
+
+def _env_normal(name, default):
+        """Read a "x,y,z" clip normal exported by params. Unset -> default."""
+        v = _os.environ.get(name)
+        if v is None or v == "":
+                return default
+        try:
+                parts = tuple(float(x) for x in v.split(","))
+        except ValueError:
+                print("%s=%r is not 'x,y,z'; using %r" % (name, v, default))
+                return default
+        if len(parts) != 3:
+                print("%s=%r needs 3 components; using %r" % (name, v, default))
+                return default
+        return parts
+
+
 
 #some function taken from visit source code that wasn't loading for some reason
 def EvalCubicSpline(t, allX, allY):
@@ -278,7 +305,8 @@ def setAnnotations(lightlist=[]):#sets background, sets up text
 def setSave(saveFolder): #sets saveattributes
         s = SaveWindowAttributes()
         s.format = s.PNG
-        # s.SetPixelData(2) # Transparent background
+        if _env_flag('transparentBG'):
+                s.SetPixelData(2)   # alpha channel instead of bgcolor
         s.outputToCurrentDirectory = 1
         s.fileName = saveFolder
 
@@ -991,11 +1019,9 @@ class VisitPlot:
                 SetTimeSliderState(frame) #if statelist is [3,4,5], frame=3(h5data) and state=0(xml list).
                 tcur = self.timeTXT[state][5:-4]
                 print("t/M = {}".format(int(float(tcur))))
-                self.txt.text = "t/M = {}".format(int(float(tcur)))
-                # set NO_TIME_LABEL=1 in the environment to render without the
-                # t/M caption (for stills / publication figures)
-                import os as _os
-                if _os.environ.get("NO_TIME_LABEL"):
+                if _env_flag("showTimeLabel", default=True):
+                        self.txt.text = "t/M = {}".format(int(float(tcur)))
+                else:
                         self.txt.text = ""
 
                 self.LoadAttr(view, "myView")
@@ -1076,7 +1102,7 @@ class VisitPlot:
                             #box(self.CoM_y, forceAddOp or frame==self.firstFrame)
                             #clip(self.CoM, self.myView.viewNormal, forceAddOp or frame==self.firstFrame)
                             print('Current View Normal for Clip Operator:', self.myView.viewNormal)
-                            clip(self.CoM, (0.0, -1.0, 0.0), forceAddOp or frame==self.firstFrame)
+                            clip(self.CoM, _env_normal('cutNormal', (0.0, -1.0, 0.0)), forceAddOp or frame==self.firstFrame)
                 if self.bsq2r():
                         SetActivePlots(self.idx("bsq2r"))
                         SetPlotOptions(self.bsq_atts)
