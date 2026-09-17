@@ -24,6 +24,15 @@ if [ -z "$root" ] || [ -z "$h5src" ]; then
 fi
 
 h5data=$root/h5data
+
+# Linking h5data into itself nests self-referential links inside the data dirs
+# -- the exact pathology clean_h5folders.sh has to clean up afterwards.
+if [ "$(readlink -f -- "$h5src")" = "$(readlink -f -- "$h5data")" ]; then
+	echo "link_h5data.sh: h5src and \$root/h5data are the same directory."
+	echo "                Your data is already in place; you do not need this script."
+	return 1 2>/dev/null || exit 1
+fi
+
 mkdir -p $h5data
 
 echo "raw data source : $h5src"
@@ -85,8 +94,20 @@ if [ -d "$h5data/bad_data" ]; then
 		# can hold only CCTK_Proc1.out and would otherwise be released,
 		# occupy a folder index and render nothing.
 		if ls "$h5src/$b"/*.h5 >/dev/null 2>&1; then
-			rm -rf -- "$l"
-			echo "	$b has data again, released from bad_data"
+			if [ ! -L "$l" ]; then
+				# a real directory here is data somebody moved in, not a
+				# link we made. Never rm -rf it.
+				echo "	$b: bad_data holds a real directory, not a link -- left alone"
+			elif [ "${release_bad_data:-0}" = "1" ]; then
+				rm -f -- "$l"
+				echo "	$b has data again, released from bad_data"
+			else
+				# Not released by default: rmdupes.py quarantines DUPLICATE
+				# folders here too, and those also have .h5 in $h5src, so
+				# releasing on that test alone brings the duplicate frames
+				# straight back. Set release_bad_data=1 if you have checked.
+				echo "	$b has data in h5src but stays quarantined (release_bad_data=1 to release)"
+			fi
 		fi
 	done
 fi

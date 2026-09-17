@@ -122,8 +122,24 @@ def current(params_text, name):
 
 
 def rewrite(params_text, name, value, quoted=True):
-    repl = '%s=%s' % (name, '"%s"' % value if quoted else value)
-    return re.sub(r'^%s=[^\n]*' % re.escape(name), repl, params_text, count=1, flags=re.M)
+    """Replace a field's value, keeping its quoting style and trailing comment.
+
+    Rewriting the whole line instead would silently delete a user's inline
+    comment -- bhdisk_sol_32's params carries `it="512" #45_low_m/m`.
+    """
+    pat = re.compile(r'^(%s=)("?)([^"#\n]*)("?)([^\n]*)$' % re.escape(name), re.M)
+
+    def repl(m):
+        # keep whatever quoting the line already used; fall back to the caller's
+        # preference only when the existing value was bare
+        q = m.group(2) if m.group(2) else ('"' if quoted else '')
+        # an unquoted value absorbs the spaces before an inline comment; put
+        # them back so `offset=0   # note` does not become `offset=4012# note`
+        old = m.group(3)
+        gap = old[len(old.rstrip()):]
+        return '%s%s%s%s%s%s' % (m.group(1), q, value, q, gap, m.group(5))
+
+    return pat.sub(repl, params_text, count=1)
 
 
 def main():
@@ -206,7 +222,23 @@ def main():
     first_time = "%017.11f" % (offset * dt)
 
     mon = data_rows(os.path.join(h5dir, "bhns.mon"), 12)
+
+    # Row 0, i.e. t=0, deliberately -- not the row nearest firstTime.
+    # maxdensity is the colour-map normalisation:
+    #   logrho = log10(rho_b / maxdensity)
+    # so it is a display constant that has to stay fixed for every frame of
+    # every campaign of a run, or two movies of the same data cannot be
+    # compared. The params comment below says "make sure the time row
+    # corresponds to firstTime", which reads as the first RENDERED frame; it
+    # means the simulation's initial time, which is firstTime only for a run
+    # that starts at iteration 0.
+    # Corroboration: on bhdisk_sol_05 the value supplied by the person who ran
+    # the simulation is 4.61833e-04, and row 0 gives 4.619584e-04 (0.03%),
+    # while the row nearest firstTime gives 5.97e-04 (29% out).
     maxdensity = float(mon[0][8])
+
+    # M is the ADM mass of the initial data and is conserved, so row 0 is right
+    # here even when the frames start much later.
     M = float(mon[0][11]) + float(mon[0][12])
 
     derived = {

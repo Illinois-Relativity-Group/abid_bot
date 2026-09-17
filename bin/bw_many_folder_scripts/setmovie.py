@@ -7,7 +7,18 @@ import glob
 from os import listdir
 from os.path import isfile, join
 import shutil
-from distutils.util import strtobool
+
+# distutils was removed from the stdlib in Python 3.12; it only imports there
+# when setuptools happens to be installed and shimming it. This is the whole of
+# what we used from it.
+def strtobool(v):
+    v = str(v).strip().lower()
+    if v in ("y", "yes", "t", "true", "on", "1"):
+        return 1
+    if v in ("n", "no", "f", "false", "off", "0"):
+        return 0
+    raise ValueError("invalid truth value %r" % (v,))
+
 import xml.etree.ElementTree as ET
 from scipy.interpolate import CubicSpline 
 

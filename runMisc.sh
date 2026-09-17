@@ -1,16 +1,31 @@
 # riemann: VisIt 3.3.3 is installed system-wide, no module system
 export PATH=/data/shared/visit/bin:$PATH
 
-. params
+# honour the same setN argument as setup.sh and the other run scripts:
+# ". runMisc.sh 2" reads params2 and renders from xml2/
+setN=$1
+if [[ -f "params$setN" ]];then
+	echo "using params$setN"
+	. params$setN
+else
+	[[ -n "$setN" ]] && echo "params$setN not found. using params"
+	setN=""
+	. params
+fi
 
-if [[ -z $root ]]; then echo error: No root. Aborting. >&2; exit 1; fi
+# sourced, not executed (README says ". runMisc.sh"), so an exit here would
+# close the user's shell -- return when we can, exit only if run as a script.
+if [[ -z $root ]]; then echo "error: No root. Aborting." >&2; return 1 2>/dev/null || exit 1; fi
 
 ############################# Parameters
 zoom_flag=0
 
 
 fly_over_flag=0
-fly_around_flag=1
+# All three flags ship OFF. Turn exactly one on, and set the h5folder for
+# that section below to a folder that exists in YOUR h5data -- the names
+# shipped here are from the case this file was inherited from.
+fly_around_flag=0
 
 
 #plotting varibles
@@ -38,7 +53,7 @@ attsdir=$root/bin/bw_many_folder_scripts/atts
 
 ############################# zoom #############################
 jobName=my_case_misc
-h5folder=3d_data_25_11_01_051428
+h5folder=3d_data_25_11_01_051428   # CHANGE ME: inherited example, almost certainly not in your h5data
 idx=15
 totframes=100
 pyscript=run.py
@@ -67,7 +82,7 @@ fi
 
 ############################# fly_over #############################
 jobName=my_case_misc
-h5folder=3d_data_24_02_13_144642
+h5folder=3d_data_24_02_13_144642   # CHANGE ME: inherited example, almost certainly not in your h5data
 idx=71
 totframes=100
 pyscript=run.py
@@ -85,7 +100,7 @@ fi
 
 ############################# fly_around #############################
 jobName=my_case_misc
-h5folder=3d_data_25_12_05_035059
+h5folder=3d_data_25_12_05_035059   # CHANGE ME: inherited example, almost certainly not in your h5data
 idx=26
 totframes=100
 pyscript=run.py

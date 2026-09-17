@@ -10,9 +10,17 @@ listed in `RIEMANN.md`.
 
 ## Before you start
 
-Nothing to install and no modules to load. `params` puts VisIt 3.3.3
-(`/data/shared/visit/bin`) on your `$PATH`, and the python here is the system
-`python3` — the setup scripts are stdlib only.
+No modules to load. `params` puts VisIt 3.3.3 (`/data/shared/visit/bin`) on
+your `$PATH`, and the python is the system `python3`. What has to be present,
+and is on riemann already:
+
+| needs | used by |
+|---|---|
+| VisIt 3.3.3 | every render |
+| `python3` with **scipy** | `setmovie.py` interpolates the horizon and spin tracks |
+| `h5dump` / `h5ls` (hdf5-tools) | `setup_params.py` and `movieSeq_v2_arg.bash` read iteration and time out of your h5 files |
+
+`setup_params.py` itself is stdlib-only; the rest of the pipeline is not.
 
 Every script sources `params` itself, so you never source it by hand.
 `setup.sh` and the four `run*.sh` scripts are meant to be **sourced**
@@ -66,14 +74,14 @@ geometry. Check `xml/` afterwards — it should hold `.xml`, `.3d`, `.vtk` and
 
 For a second configuration — a different camera, a different colour map —
 copy `params` to `params2` and run `. setup.sh 2`. It reads `params2` and
-writes `xml2/`, leaving the first set untouched. Every run script takes the
+writes `xml2/`, leaving the first set untouched. All four run scripts take the
 same argument: `. runMulti.sh 2` renders the second configuration. Any suffix
 works, not just `2`.
 
 ## 4. Render
 
     . runSingle.sh      # a few frames -- edit foldernum / ranknum first
-    . runLocal.sh       # the same script, kept under the older name
+    . runLocal.sh       # near-identical; ships refPlot=0 and a dated out dir
     . runMulti.sh       # a movie -- edit firstFolder / lastFolder
     . runMisc.sh        # zoom / fly-over / fly-around paths
 
@@ -85,9 +93,17 @@ overwrite. Swap the commented line next to `picsavefolder=` to change either.
 
 Choose what to render with the `foldernum` and `ranknum` arrays near the top
 of the script: `foldernum` lists data folders (1-indexed, in `xml/` order) and
-`ranknum` lists ranks within a folder (0-indexed). Leave either empty and it
-falls back — `foldernum` to the `firstFolder`..`lastFolder` range, `ranknum` to
-all ranks.
+`ranknum` lists ranks within a folder (0-indexed).
+
+Only `runMulti.sh` has a fallback for an empty array — `foldernum=()` there
+means the `firstFolder`..`lastFolder` range and `ranknum=()` means every rank.
+`runSingle.sh` and `runLocal.sh` have no range to fall back on, so they require
+both arrays and stop with an error if either is empty.
+
+`runSingle.sh` and `runLocal.sh` are the same script with different shipped
+defaults: `runSingle` sets `refPlot=1` and writes to an undated folder,
+`runLocal` sets `refPlot=0` and dates the folder. Read the top of whichever you
+pick rather than assuming.
 
 riemann has no batch scheduler, so `runMulti.sh` runs `$maxParallel` VisIt
 processes at once on this machine. It is a shared box — 160 cores — so raise

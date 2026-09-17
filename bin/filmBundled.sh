@@ -6,7 +6,8 @@ cur=$PWD
 
 jobName=$1
 dir=$root/h5data/$2
-xmldir=$root/xml/$2
+# $setN is set by the run script that sourced us, so "runMisc.sh 2" uses xml2/
+xmldir=$root/xml${setN}/$2
 idx=$3
 totframes=$4
 ranksPerjob=$5

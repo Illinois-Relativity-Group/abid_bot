@@ -98,6 +98,16 @@ picsavefolder=$picsavedir/"$DATE"_"$jobName"; mkdir -p $picsavefolder
 #picsavefolder=$picsavedir/"$jobName"; mkdir -p $picsavefolder		#if you don't want date&time in folder name
 logfolder=$logdir/"$DATE"_"$jobName"; mkdir -p $logfolder
 
+# runSingle/runLocal have no firstFolder..lastFolder range to fall back on, so
+# an empty selector here renders nothing at all. Say so rather than exit 0 in
+# silence and look like a successful run that produced no frames.
+if [ ${#foldernum[@]} -eq 0 ] || [ ${#ranknum[@]} -eq 0 ]; then
+	echo "error: foldernum and ranknum must both be non-empty in $(basename ${BASH_SOURCE[0]})." >&2
+	echo "       foldernum lists data folders (1-indexed), ranknum lists ranks (0-indexed)." >&2
+	echo "       For a whole range instead, use runMulti.sh with firstFolder/lastFolder." >&2
+	return 1 2>/dev/null || exit 1
+fi
+
 cd $logfolder
 
 for dir in $(ls -d ${h5dir}"/"$h5prefix* ); do

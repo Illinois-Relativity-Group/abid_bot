@@ -104,7 +104,12 @@ firstTdt=0
 
 for xmlfol in xmlfollist:
     timelist=[file for file in os.listdir(xmlfolder+xmlfol) if file.startswith("bh1_cm_")]
-    timelist.sort()
+    # numeric, not lexicographic: setmovie.py names these with "{:07.2f}",
+    # which pads to 4 integer digits, so past t/M 10000 the names stop being
+    # equal width and "bh1_cm_10001.36.txt" sorts before "bh1_cm_9995.52.txt".
+    # i indexes spin_%04d.vtk below, so a string sort hands each frame another
+    # frame's spin vector.
+    timelist.sort(key=lambda fn: float(fn[7:-4]))
     #print(timelist)
     for i in range(0,len(timelist)):
         fnlen=len(timelist[i])
