@@ -22,13 +22,9 @@
     <Field name="centering" type="string">Natural</Field>
     <Field name="colorTableName" type="string">bhdisk_opaque</Field>
     <Field name="invertColorTable" type="bool">false</Field>
-    <Field name="opacityType" type="string">ColorTable</Field>   <!-- every shell alpha=1, ignoring both the Constant opacity below AND the ct alpha. Switch back to "Constant" to get the translucent (opacity x ct_alpha) behavior. -->
-
+    <Field name="opacityType" type="string">ColorTable</Field>
     <Field name="opacityVariable" type="string"></Field>
-    <!-- <Field name="opacity" type="double">0.1277777777777</Field> old 3D -->
-    <!-- <Field name="opacity" type="double">0.0977777777777</Field> new 3D (TOO LOW: this MULTIPLIES the bhdisk_opaque ct alpha, e.g. 0.098*0.71=0.07 -> outer shells stay transparent) -->
-    <Field name="opacity" type="double">1.0</Field>   <!-- neutral multiplier: per-shell opacity == bhdisk_opaque ct alpha (~0.55-0.80). Lower this for a uniform translucency dial. -->
-
+    <Field name="opacity" type="double">1.0</Field>
     <Field name="opacityVarMin" type="double">0</Field>
     <Field name="opacityVarMax" type="double">1</Field>
     <Field name="opacityVarMinFlag" type="bool">false</Field>

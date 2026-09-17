@@ -24,9 +24,6 @@
     <Field name="invertColorTable" type="bool">false</Field>
     <Field name="opacityType" type="string">Constant</Field>
     <Field name="opacityVariable" type="string"></Field>
-    <!-- OPAQUE TEST VARIANT: opacity=1.0 is a NEUTRAL multiplier, so per-shell opacity == the
-         bhdisk_opaque.ct alpha ramp (~0.7-0.8). Original NSNS_pseudo_disk.xml had opacity=0.01 +
-         colortable "bhdisk" (alpha ramp 0..0.37) -> outer shells were ~0.0005 opaque (bg bled through). -->
     <Field name="opacity" type="double">1.0</Field>
     <Field name="opacityVarMin" type="double">0</Field>
     <Field name="opacityVarMax" type="double">1</Field>
