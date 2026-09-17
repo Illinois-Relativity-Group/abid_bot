@@ -169,6 +169,13 @@ def main():
     # dt_xon) assumes monitor rows are written every it/3 iterations, which
     # does not hold in general (these runs write bhns.xon every 256
     # iterations, not it/3=170.67) and silently gives the wrong dt.
+    #
+    # Use the WIDEST baseline available in this folder (first and last
+    # parsed pair), not just the first two -- h5dump truncates the 'time'
+    # attribute to ~6 significant figures, so a two-point difference over a
+    # single `it`-step carries ~0.6% quantization noise from that rounding.
+    # Spreading the same rounding error over the whole folder instead of one
+    # step divides that noise down by however many steps span the folder.
     if len(it_vals) < 2:
         die("%s has only one iteration in rho_b.file_0.h5 -- cannot derive dt "
             "from the h5 time attribute" % it_dir)
@@ -176,11 +183,11 @@ def main():
     if time_pairs is None:
         die("h5dump -A could not read time attributes from %s/rho_b.file_0.h5" % it_dir)
     try:
-        t0 = time_pairs[it_vals[0]]
-        t1 = time_pairs[it_vals[1]]
+        t_first = time_pairs[it_vals[0]]
+        t_last = time_pairs[it_vals[-1]]
     except KeyError as exc:
         die("no 'time' attribute found for iteration %s in %s" % (exc, it_dir))
-    dt_h5 = (t1 - t0) / (it_vals[1] - it_vals[0]) * it
+    dt_h5 = (t_last - t_first) / (it_vals[-1] - it_vals[0]) * it
 
     # bhns.xon is still read here -- dt_xon is kept only as a visible sanity
     # comparison (see the printout below), and firstTime is derived from
