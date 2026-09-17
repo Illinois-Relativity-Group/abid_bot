@@ -89,7 +89,7 @@ ranknum=(0)
 count=1
 DATE=$(date +%y%m%d_%H%M)
 picsavefolder=$picsavedir/"$jobName"; mkdir -p $picsavefolder
-#picsavefolder=$picsavedir/"$jobName"; mkdir -p $picsavefolder		#if you don't want date&time in folder name
+#picsavefolder=$picsavedir/"$DATE"_"$jobName"; mkdir -p $picsavefolder		#if you DO want date&time in folder name
 logfolder=$logdir/"$DATE"_"$jobName"; mkdir -p $logfolder
 
 cd $logfolder

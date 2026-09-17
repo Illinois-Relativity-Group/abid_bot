@@ -25,7 +25,7 @@
 #find a case that is not covered in this code, then I would encourage you to generalize the code to 
 #include that case. This is mainly done through "if" statements and such.
 
-# Remember to run params, then bin/link_h5data.sh to set up your data folders
+# Optional: set h5src in params, then run . h5data/link_h5data.sh to build h5data/
 # riemann: no module system; system python3 is used
 # module load python
 

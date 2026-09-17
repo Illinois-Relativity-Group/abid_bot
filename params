@@ -28,7 +28,7 @@ export PATH=/data/shared/visit/bin:$PATH
 
 # h5src:		Where the raw simulation output actually lives on riemann.
 #			It is ~3.5 TB, so it stays outside abid_bot and
-#			bin/link_h5data.sh symlinks it into $root/h5data.
+#			h5data/link_h5data.sh symlinks it into $root/h5data.
 h5src=""   # optional; only used by h5data/link_h5data.sh
 
 #gwdir:
