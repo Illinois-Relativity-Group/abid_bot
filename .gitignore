@@ -32,3 +32,11 @@ bin/bw_many_folder_scripts/gap.txt
 bin/bw_many_folder_scripts/list_sorted.txt
 bin/bw_many_folder_scripts/list_tmp.txt
 bin/gpto3d
+# per-case set definitions -- the bot is generic, the sets are not.
+# setN adds params<N> + runMulti<N>.sh/runLocal<N>.sh for one case's views, cuts and job sizing.
+# Keep them in the case tree, never on this branch; the shipped `params` is the template they copy.
+params[0-9]*
+runMulti[0-9]*.sh
+runLocal[0-9]*.sh
+# pid file written by renderMissing.sh so a resumed run can be found without pgrep patterns
+.renderMissing*.pid
