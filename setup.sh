@@ -39,6 +39,10 @@ else
 	. params
 fi
 
+# Colour tables must live in ~/.visit or VisIt cannot resolve them. An att using
+# opacityType=ColorTable falls back SILENTLY when the name is missing, so install before rendering.
+. $bin/install_colortables.sh
+
 . $bin/clean_h5folders.sh $setN
 . $bin/make_h5folders.sh $setN
 
