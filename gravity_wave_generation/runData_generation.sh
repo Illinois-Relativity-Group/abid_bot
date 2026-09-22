@@ -7,7 +7,11 @@
 #  The ylm/r lookup is radius-independent and built ONCE (shared by all radii).
 #  Re-runs skip rhphc/lookup if their output exists; FORCE=1 regenerates them.
 # ============================================================================
-set -e
+#set -e
+#module load texlive
+#module load anaconda
+#conda activate plotenv
+
 cd "$(dirname "$0")"
 source ./config.sh
 
